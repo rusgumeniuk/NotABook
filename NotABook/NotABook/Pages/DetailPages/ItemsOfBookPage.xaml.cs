@@ -59,7 +59,6 @@ namespace NotABook.Pages.DetailPages
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-
         }
 
         private async void btnAddNewItem_Clicked(object sender, EventArgs e)
