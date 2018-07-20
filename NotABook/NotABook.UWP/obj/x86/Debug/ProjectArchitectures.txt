@@ -1,0 +1,1 @@
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\NotABook.UWP.csproj;x86

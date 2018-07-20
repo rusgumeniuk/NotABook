@@ -1,0 +1,58 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NotABook.Pages.MainPages.MasterPage"             
+             xmlns:localPages1="clr-namespace:NotABook.Pages.MainPages"
+             xmlns:detailPages="clr-namespace:NotABook.Pages.DetailPages"             
+             xmlns:helpedPages="clr-namespace:NotABook.Pages.DetailPages.HelpedPages"
+             Title="This">
+    <ContentPage.Content>
+        <StackLayout>                
+            <ListView x:Name="listView" x:FieldModifier="public">
+                <ListView.ItemsSource>
+                    <x:Array Type="{x:Type localPages1:MasterPageItem}">
+                        <localPages1:MasterPageItem Title ="All books" TargetType ="{x:Type detailPages:AllBooksPage}"/>
+                        <localPages1:MasterPageItem Title ="List Of Categories" TargetType="{x:Type detailPages:CategoryListPage}"/>
+                        <localPages1:MasterPageItem Title="Items of Book" TargetType="{x:Type detailPages:ItemsOfBookPage}"/>
+                    </x:Array>
+                </ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Text="{Binding Title}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="downList"
+                  x:FieldModifier="public"
+                  VerticalOptions="End">
+                <ListView.ItemsSource>
+                    <x:Array Type="{x:Type localPages1:MasterPageItem}">
+                        <localPages1:MasterPageItem Title="Options" TargetType="{x:Type helpedPages:OptionsPage}"/>
+                        <localPages1:MasterPageItem Title="FAQ" TargetType="{x:Type helpedPages:FaqPage}"/>
+                        <localPages1:MasterPageItem Title="About" TargetType="{x:Type helpedPages:AboutPage}"/>
+                    </x:Array>
+                </ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Text="{Binding Title}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

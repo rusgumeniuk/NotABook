@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NotABook.Pages.DetailPages.HelpedPages.AboutPage">
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Label x:Name="test" Text="Up"/>
+
+            <Image Source="pict.png"/>
+            <!--Paste here icon of app or photo-->
+
+            <Label HorizontalTextAlignment="Center" Text="Welcome!"/>
+            <Label HorizontalTextAlignment="Center" Text="I am trainee programmer and it's my first Xamarin app."/>
+            <Label HorizontalTextAlignment="Center" Text="So discover it and enjoy. For report or advice contact me via Telegram @mr_Omman or email rus.gumeniuk@gmail.com"/>
+
+            <StackLayout>
+                <Label x:Name="tester"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

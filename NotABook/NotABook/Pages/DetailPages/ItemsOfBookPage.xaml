@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NotABook.Pages.DetailPages.ItemsOfBookPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Items of book" HorizontalOptions="Start"/>
+            <Label x:Name="lblIsEmpty"/>
+            <ListView 
+                x:Name="listOfItems"
+                x:FieldModifier="public"
+                ItemsSource="{Binding Items}"
+                ItemSelected="OnItemSelected"
+                ItemTapped="listOfItems_ItemTapped"
+                HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <ScrollView>
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout>
+                                        <Label Text="{Binding Title}" FontSize="Medium"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding Description}"/>
+                                            <Label HorizontalOptions="EndAndExpand" Text="{Binding DateOfLastChanging}"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <!--<StackLayout HorizontalOptions="EndAndExpand">
+                                        <Button x:Name="BtnDelete" Clicked="BtnDelete_Clicked" Text="Delete" Resources="{Binding Id}"/>
+                                    </StackLayout>-->
+                                </StackLayout>
+                                
+                                </ScrollView>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button x:Name="btnAddNewItem" Text="Add new Item" Clicked="btnAddNewItem_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

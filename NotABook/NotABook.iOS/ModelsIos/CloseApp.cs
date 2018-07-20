@@ -1,0 +1,20 @@
+﻿using System;
+using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Foundation;
+using UIKit;
+
+[assembly: Xamarin.Forms.Dependency(typeof(NotABook.iOS.ModelsIos.CloseApp))]
+namespace NotABook.iOS.ModelsIos
+{
+    public class CloseApp : Interfaces.IClosingApp
+    {
+        public void CloseApplication()
+        {
+            Thread.CurrentThread.Abort();
+        }
+    }
+}
