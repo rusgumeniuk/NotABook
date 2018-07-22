@@ -7,7 +7,7 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Title: " FontSize="Medium"/>
-                <Entry x:Name="entryTitle" Text="{Binding Title}"/>
+                <Entry HorizontalOptions="FillAndExpand" x:Name="entryTitle" Text="{Binding Title}"/>
             </StackLayout>
 
             <Label Text="Categories:" FontAttributes="Italic" FontSize="Medium"/>

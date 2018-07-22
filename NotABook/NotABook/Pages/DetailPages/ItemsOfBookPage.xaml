@@ -12,12 +12,16 @@
                 ItemsSource="{Binding Items}"
                 ItemSelected="OnItemSelected"
                 ItemTapped="listOfItems_ItemTapped"
-                HasUnevenRows="True">
+                HasUnevenRows="True"                
+                IsPullToRefreshEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ViewCell.View>
-                                <ScrollView>
+                            <ViewCell.ContextActions>                                
+                                <MenuItem Clicked="OnHello_Clicked" CommandParameter="{Binding .}" Text="Hello" IsDestructive="True"/>
+                                <MenuItem Clicked ="OnDelete_Clicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True"/>
+                            </ViewCell.ContextActions>
+                            <ViewCell.View>                                
                                 <StackLayout Orientation="Horizontal">
                                     <StackLayout>
                                         <Label Text="{Binding Title}" FontSize="Medium"/>
@@ -26,12 +30,7 @@
                                             <Label HorizontalOptions="EndAndExpand" Text="{Binding DateOfLastChanging}"/>
                                         </StackLayout>
                                     </StackLayout>
-                                    <!--<StackLayout HorizontalOptions="EndAndExpand">
-                                        <Button x:Name="BtnDelete" Clicked="BtnDelete_Clicked" Text="Delete" Resources="{Binding Id}"/>
-                                    </StackLayout>-->
-                                </StackLayout>
-                                
-                                </ScrollView>
+                                </StackLayout>                                                              
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>

@@ -24,8 +24,7 @@ namespace NotABook.Pages.ItemPages
         {
             InitializeComponent();
             ItemsSource = category.ItemsWithThisCategory;
-            this.BindingContext = this;
-            //BtnDelete.IsVisible = true;
+            this.BindingContext = this;            
         }
 
 
@@ -34,12 +33,7 @@ namespace NotABook.Pages.ItemPages
             InitializeComponent();
             ItemsSource = NotABook.App.ItemsList;
             Models.Book curBook = NotABook.App.currentBook;
-            this.BindingContext = this;
-            aaaaaa = new DataTemplate()
-            {
-                
-            };
-            
+            this.BindingContext = this;                      
             
 
             //lblTitle.Text = item.Title;
@@ -59,7 +53,8 @@ namespace NotABook.Pages.ItemPages
 
         private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-
+            var obj = ((Button)sender);
+            (obj.CommandParameter as Item).DeleteItem();
         }
     }
 }

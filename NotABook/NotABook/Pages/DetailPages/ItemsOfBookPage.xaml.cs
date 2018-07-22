@@ -87,5 +87,17 @@ namespace NotABook.Pages.DetailPages
                     await Navigation.PushAsync(new ItemCarouselPage(item));
             }
         }
+
+        public void OnDelete_Clicked(object sender, EventArgs e)
+        {
+            var mi = ((MenuItem)sender);
+            //DisplayAlert("test", mi.CommandParameter + "delete", "OK");
+            (mi.CommandParameter as Item).DeleteItem();
+        }
+
+        private void OnHello_Clicked(object sender, EventArgs e)
+        {
+            DisplayAlert("Here", "Hello", "ok");
+        }
     }
 }

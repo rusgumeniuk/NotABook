@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-
+using Xamarin.Forms.Xaml;
+using System.Threading.Tasks;
 namespace NotABook.Models
 {
     public class Item : BaseClass 
@@ -51,6 +52,11 @@ namespace NotABook.Models
             return stringBuilder.Remove(stringBuilder.Length - 2, 2).Append(".").ToString();
         }
 
+        public void DeleteItem()
+        {
+            this.Categories.Clear();
+            NotABook.App.currentBook.ItemsOfBook.Remove(this.Id);                       
+        }
         #endregion
     }
 }

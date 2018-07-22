@@ -21,7 +21,7 @@
                         <Label x:FieldModifier="public" x:Name="lblDescript" Text="{Binding Description}"/>
                     </StackLayout>
                     <Button x:Name="btnEdit" Text="Edit item" Clicked="btnEdit_Clicked"/>
-                    <!--<Button x:Name="BtnDelete" Text="Delete item" Clicked="BtnDelete_Clicked" x:FieldModifier="public" IsVisible="False"/>-->
+                    <Button x:Name="BtnDelete" Text="Delete item" Clicked="BtnDelete_Clicked" CommandParameter="{Binding .}"/>
                 </StackLayout>
             </ContentPage>
         </DataTemplate>

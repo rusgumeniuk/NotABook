@@ -49,8 +49,7 @@ namespace NotABook.Pages.ItemPages
                     Description = editorDescript.Text,
                     Categories = SelectedCategories
                 };
-            }
-            //await DisplayAlert("Save info", "Saved!", "oke");
+            }            
             await Navigation.PopAsync(true);                  
         }
     }
