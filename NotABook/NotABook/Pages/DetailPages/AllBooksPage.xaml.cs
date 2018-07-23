@@ -55,5 +55,15 @@ namespace NotABook.Pages.DetailPages
                 (((MenuItem)sender).CommandParameter as Models.Book).ItemsOfBook.Clear();                
             }   
         }
+
+        async private void OnEdit_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Pages.DetailPages.HelpedPages.AddEditBookPage(((MenuItem)sender).CommandParameter as Models.Book)); 
+        }
+
+        async private void BtnAddNewBook_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Pages.DetailPages.HelpedPages.AddEditBookPage());
+        }
     }
 }

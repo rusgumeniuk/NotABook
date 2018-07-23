@@ -26,6 +26,12 @@
                                     Clicked="OnClearBook_Clicked"
                                     CommandParameter="{Binding .}"
                                     IsDestructive="True"/>
+                                <MenuItem 
+                                    Text="Edit"
+                                    x:Name="OnEdit"
+                                    Clicked="OnEdit_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout>
@@ -45,7 +51,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <!--<Button x:Name="BtnCount" Clicked ="BtnCount_Clicked" Text="clickMe"/>-->
+            <Button x:Name="BtnAddNewBook" Text="Add new book" Clicked="BtnAddNewBook_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

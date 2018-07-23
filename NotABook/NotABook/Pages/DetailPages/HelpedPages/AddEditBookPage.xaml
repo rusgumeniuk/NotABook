@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NotABook.Pages.DetailPages.HelpedPages.AddEditBookPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Title: " FontSize="Medium"/>
+                <Entry HorizontalOptions="FillAndExpand" x:Name="entryTitle" Text="{Binding Title}"/>
+            </StackLayout>
+
+            <Button x:Name="BtnSave" Clicked="BtnSave_Clicked" Text="Save" HorizontalOptions="EndAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
