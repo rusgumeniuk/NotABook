@@ -38,10 +38,22 @@ namespace NotABook.Pages.DetailPages
         {
             if (e.Item is Models.Book selectedBook)
             {
-                App.currentBook = selectedBook;
-                //ItemsOfBookPage page = new ItemsOfBookPage(selectedBook);
+                App.currentBook = selectedBook;                
                 await Navigation.PushAsync(new ItemsOfBookPage(selectedBook));
             }
+        }
+
+        private void OnDelete_Clicked(object sender, EventArgs e)
+        {
+            (((MenuItem)sender).CommandParameter as Models.Book).DeleteBook();
+        }
+
+        async private void OnClearBook_Clicked(object sender, EventArgs e)
+        {            
+            if (await DisplayAlert("Title", "Do u want to clear item's list?", "Okey", "Cancel"))
+            {
+                (((MenuItem)sender).CommandParameter as Models.Book).ItemsOfBook.Clear();                
+            }   
         }
     }
 }

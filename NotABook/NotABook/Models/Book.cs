@@ -19,5 +19,15 @@ namespace NotABook.Models
         {
             NotABook.App.Books.Add(this);
         }
+
+        public void DeleteBook()
+        {
+            if (App.currentBook == this)
+                App.currentBook = null;
+
+            ItemsOfBook.Clear();
+            CategoriesOfBook.Clear();
+            App.Books.Remove(this);
+        }
     }
 }

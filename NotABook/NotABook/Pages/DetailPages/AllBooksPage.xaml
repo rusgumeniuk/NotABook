@@ -13,6 +13,20 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem
+                                    Text="Delete book" 
+                                    x:Name="OnDelete"
+                                    Clicked="OnDelete_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
+                                <MenuItem 
+                                    Text="Clear book"
+                                    x:Name="OnClearBook"
+                                    Clicked="OnClearBook_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
+                            </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout>
                                     <Label Text="{Binding Title}" Font ="20" FontAttributes="Bold"/>
