@@ -10,11 +10,11 @@
                 <Entry HorizontalOptions="FillAndExpand" x:Name="entryTitle" Text="{Binding Title}"/>
             </StackLayout>
 
-            <Label Text="Categories:" FontAttributes="Italic" FontSize="Medium"/>
-            <Picker 
-                    x:Name="picker" 
-                    SelectedIndexChanged="picker_SelectedIndexChanged"
-                    ItemsSource="{Static app:App.CategoriesList}"/>
+            <Label Text="Select Categories:" FontAttributes="Italic" FontSize="Medium"/>
+            <Picker x:Name="PickerOfAllCategories"/>
+            <Label Text="Selected Categories:" FontAttributes="Italic" FontSize="Medium"/>
+            <Picker x:Name="PickerOfSelectedCategories"/>
+
             <Label Text="Description:" FontSize="Medium"/>
             <Editor x:Name="editorDescript" Text="{Binding Description}"/>
             <Button x:Name="BtnSave" Clicked="BtnSave_Clicked" Text="Save" HorizontalOptions="EndAndExpand"/>

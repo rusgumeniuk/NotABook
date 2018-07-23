@@ -16,10 +16,11 @@ namespace NotABook.Pages.ItemPages
         public ItemCarouselPage(Models.Book currentBook)
         {
             InitializeComponent();
-            ItemsSource = NotABook.App.ItemsList;
+            ItemsSource = App.ItemsList;
             Models.Book curBook = NotABook.App.currentBook;
             this.BindingContext = this;                                
         }
+
         public ItemCarouselPage(Category category)
         {
             InitializeComponent();
@@ -27,20 +28,12 @@ namespace NotABook.Pages.ItemPages
             this.BindingContext = this;            
         }
 
-
         public ItemCarouselPage(Item item)
         {
             InitializeComponent();
             ItemsSource = NotABook.App.ItemsList;
             Models.Book curBook = NotABook.App.currentBook;
             this.BindingContext = this;                      
-            
-
-            //lblTitle.Text = item.Title;
-            //lblDateOfChanging.Text = item.DateOfLastChanging.ToString();
-            //lblCategories.Text = item.GetCategories();
-            //lblDescript.Text = item.Description;            
-
         }
 
         private async void btnEdit_Clicked(object sender, EventArgs e)

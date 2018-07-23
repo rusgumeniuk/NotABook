@@ -13,7 +13,11 @@
                 ItemSelected="OnItemSelected"
                 ItemTapped="listOfItems_ItemTapped"
                 HasUnevenRows="True"                
-                IsPullToRefreshEnabled="True">
+                >
+                <!--IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsRefreshing}"-->
+                
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

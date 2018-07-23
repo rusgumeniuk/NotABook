@@ -15,23 +15,48 @@ namespace NotABook.Pages.ItemPages
 	public partial class AddEditItemPage : ContentPage
 	{
         Models.Item currentItem = null;
-        ObservableCollection<Category> SelectedCategories { get; set; } = new ObservableCollection<Category>();
-		public AddEditItemPage ()
+        ObservableCollection<Category> SelectedCategories = new ObservableCollection<Category>();      
+
+        public AddEditItemPage ()
 		{
 			InitializeComponent ();
-		}
+            CreatePickers();       
+        }
 
         public AddEditItemPage(Models.Item item)
         {
             InitializeComponent();
-            currentItem = item;                        
+            currentItem = item;
             BindingContext = item;
+            CreatePickers(item);
         }
 
-        private void picker_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void PickerOfAllCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedCategories.Add(picker.SelectedItem as Category);
+            if (PickerOfAllCategories.SelectedIndex != -1)
+            {
+                if (!SelectedCategories.Contains(PickerOfAllCategories.SelectedItem as Category))
+                {
+                    SelectedCategories.Add(PickerOfAllCategories.SelectedItem as Category);
+                    PickerOfAllCategories.SelectedIndex = -1;
+                }
+                else DisplayAlert("Ooops", "You have already added this category", "Okey");
+            }
         }
+
+        private void PickerOfSelectedCategories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (PickerOfSelectedCategories.SelectedIndex != -1)
+            {
+                Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
+                SelectedCategories.Remove(selectedCategory);
+                PickerOfSelectedCategories.SelectedIndex = -1;
+                DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");                
+            }            
+        }
+
 
         private async void BtnSave_Clicked(object sender, EventArgs e)
         {
@@ -51,6 +76,25 @@ namespace NotABook.Pages.ItemPages
                 };
             }            
             await Navigation.PopAsync(true);                  
+        }        
+
+        private void CreatePickers()
+        {
+            PickerOfAllCategories.ItemsSource = App.CategoriesList;
+            PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
+
+            PickerOfSelectedCategories.ItemsSource = SelectedCategories;
+            PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
+        }
+
+        private void CreatePickers(Item item)
+        {
+            PickerOfAllCategories.ItemsSource = App.CategoriesList;
+            PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
+
+            SelectedCategories = item.Categories;
+            PickerOfSelectedCategories.ItemsSource = SelectedCategories;
+            PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
         }
     }
 }
