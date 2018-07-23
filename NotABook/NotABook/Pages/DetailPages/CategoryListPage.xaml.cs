@@ -15,7 +15,7 @@ namespace NotABook.Pages.DetailPages
         public CategoryListPage()
         {
             InitializeComponent();
-            Models.Category[] categories = NotABook.App.currentBook.CategoriesList.ToArray();
+            Models.Category[] categories = NotABook.App.currentBook.CategoriesOfBook.ToArray();
             Models.Book curBook = NotABook.App.currentBook;
         }
 
@@ -23,8 +23,7 @@ namespace NotABook.Pages.DetailPages
         {
             if (e.SelectedItem is Models.Category selectedCategory)
             {
-                ItemsOfBookPage page = new ItemsOfBookPage(selectedCategory);
-                await Navigation.PushAsync(page);
+                await Navigation.PushAsync(new ItemsOfBookPage(selectedCategory));
             }
         }
     }

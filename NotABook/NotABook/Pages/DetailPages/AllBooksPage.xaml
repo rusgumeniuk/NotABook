@@ -7,26 +7,24 @@
         <StackLayout>
             <ListView
                 x:Name="bookList"
-                ItemsSource="{Static local:App.BooksList}"
+                ItemsSource="{Static local:App.Books}"
                 ItemTapped="BookList_ItemTapped"
                 HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
-                                <!--<ScrollView>-->
                                 <StackLayout>
                                     <Label Text="{Binding Title}" Font ="20" FontAttributes="Bold"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="Count of items: " FontAttributes="Italic"/>
-                                        <Label Text="{Binding ItemsList.Count}"/>
+                                        <Label Text="{Binding ItemsOfBook.Count}"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="Last changed: "/>
                                         <Label Text="{Binding DateOfLastChanging}"/>
                                     </StackLayout>
                                 </StackLayout>
-                                <!--</ScrollView>-->
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>

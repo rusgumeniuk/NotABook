@@ -34,7 +34,7 @@ namespace NotABook.Models
         public Category() : base()
         {
             if (NotABook.App.currentBook != null)
-                NotABook.App.currentBook.CategoriesOfBook.Add(this.Id, this);
+                NotABook.App.currentBook.CategoriesOfBook.Add(/*this.Id,*/ this);
         }
 
         public Category(string title) : this()

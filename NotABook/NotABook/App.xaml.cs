@@ -16,26 +16,21 @@ namespace NotABook
         #region Lists etc
         public static Book currentBook = null;
 
-        public static Dictionary<Guid, Book> Books { get; set; } = new Dictionary<Guid, Book>();
+        public static ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
 
-        public static ObservableCollection<Book> BooksList => new ObservableCollection<Book>(Books.Values.ToList());
-        public static ObservableCollection<Item> ItemsList => new ObservableCollection<Item>(currentBook?.ItemsOfBook.Values.ToList());
-        public static ObservableCollection<Category> CategoriesList => new ObservableCollection<Category>(currentBook?.CategoriesOfBook.Values.ToList());
+       
+        public static ObservableCollection<Item> ItemsList => currentBook?.ItemsOfBook;
+        public static ObservableCollection<Category> CategoriesList => currentBook?.CategoriesOfBook;
         public static ObservableCollection<Book> CurrentBook => new ObservableCollection<Book>() { currentBook };
         #endregion
 
         public App ()
 		{
-            //#if DEBUG            
-            ////LiveReload.Init();
-            //#endif
-
-
             InitializeComponent();
 
             {
                 currentBook = new Book("coolBook");
-                //Books.Add(currentBook.Id, currentBook);
+
                 Book book = new Book("Second");
                 Book book1 = new Book("Third");
 

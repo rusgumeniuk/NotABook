@@ -39,8 +39,8 @@ namespace NotABook.Pages.DetailPages
             if (e.Item is Models.Book selectedBook)
             {
                 App.currentBook = selectedBook;
-                ItemsOfBookPage page = new ItemsOfBookPage(selectedBook);
-                await Navigation.PushAsync(page);
+                //ItemsOfBookPage page = new ItemsOfBookPage(selectedBook);
+                await Navigation.PushAsync(new ItemsOfBookPage(selectedBook));
             }
         }
     }

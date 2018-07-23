@@ -20,7 +20,7 @@ namespace NotABook.Models
         public Item() : base()
         {
             if (NotABook.App.currentBook != null)
-                NotABook.App.currentBook.ItemsOfBook.Add(this.Id, this);
+                NotABook.App.currentBook.ItemsOfBook.Add(/*this.Id,*/ this);
         }
 
         public Item(string title) : this()
@@ -55,7 +55,7 @@ namespace NotABook.Models
         public void DeleteItem()
         {
             this.Categories.Clear();
-            NotABook.App.currentBook.ItemsOfBook.Remove(this.Id);                       
+            NotABook.App.currentBook.ItemsOfBook.Remove(this);                       
         }
         #endregion
     }

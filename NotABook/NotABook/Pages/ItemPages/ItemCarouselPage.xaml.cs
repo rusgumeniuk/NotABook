@@ -45,16 +45,14 @@ namespace NotABook.Pages.ItemPages
 
         private async void btnEdit_Clicked(object sender, EventArgs e)
         {
-            //Pages.AddEditItemPage(SelectedItem);
-
-            ItemPages.AddEditItemPage page = new ItemPages.AddEditItemPage(SelectedItem as Item);
-            await Navigation.PushAsync(page);
+            //ItemPages.AddEditItemPage page = new ItemPages.AddEditItemPage(SelectedItem as Item);
+            await Navigation.PushAsync(new ItemPages.AddEditItemPage(SelectedItem as Item));
         }
 
         private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-            var obj = ((Button)sender);
-            (obj.CommandParameter as Item).DeleteItem();
+           // var obj = ((Button)sender);
+            (((Button)sender).CommandParameter as Item).DeleteItem();
         }
     }
 }

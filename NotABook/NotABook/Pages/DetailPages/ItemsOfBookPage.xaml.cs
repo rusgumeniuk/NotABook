@@ -27,7 +27,7 @@ namespace NotABook.Pages.DetailPages
             if (NotABook.App.ItemsList.Count < 1)
                 lblIsEmpty.Text = "No one item!";
             
-            Items = book.ItemsList;
+            Items = book.ItemsOfBook;
 
             this.BindingContext = this;
         }
@@ -38,10 +38,10 @@ namespace NotABook.Pages.DetailPages
 
 
             book = currentBook;
-            if (book.ItemsList.Count < 1)
+            if (book.ItemsOfBook.Count < 1)
                 lblIsEmpty.Text = "No one item!";
             
-            Items = book.ItemsList;
+            Items = book.ItemsOfBook;
 
             this.BindingContext = this;
         }
@@ -63,9 +63,7 @@ namespace NotABook.Pages.DetailPages
 
         private async void btnAddNewItem_Clicked(object sender, EventArgs e)
         {
-            //Pages.AddEditItemPage();    
-            ItemPages.AddEditItemPage page = new ItemPages.AddEditItemPage();
-            await Navigation.PushAsync(page);
+            await Navigation.PushAsync(new ItemPages.AddEditItemPage());
         }
 
         private void BtnDelete_Clicked(object sender, EventArgs e)
@@ -90,9 +88,7 @@ namespace NotABook.Pages.DetailPages
 
         public void OnDelete_Clicked(object sender, EventArgs e)
         {
-            var mi = ((MenuItem)sender);
-            //DisplayAlert("test", mi.CommandParameter + "delete", "OK");
-            (mi.CommandParameter as Item).DeleteItem();
+            (((MenuItem)sender).CommandParameter as Item).DeleteItem();
         }
 
         private void OnHello_Clicked(object sender, EventArgs e)
