@@ -44,15 +44,15 @@ namespace NotABook.Pages.ItemPages
         }
 
         private async void btnEdit_Clicked(object sender, EventArgs e)
-        {
-            //ItemPages.AddEditItemPage page = new ItemPages.AddEditItemPage(SelectedItem as Item);
+        {           
             await Navigation.PushAsync(new ItemPages.AddEditItemPage(SelectedItem as Item));
         }
 
-        private void BtnDelete_Clicked(object sender, EventArgs e)
+       async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-           // var obj = ((Button)sender);
-            (((Button)sender).CommandParameter as Item).DeleteItem();
+            Item item = (((Button)sender).CommandParameter as Item);            
+            await Navigation.PopAsync();
+            item.DeleteItem();
         }
     }
 }
