@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 
 namespace NotABook.Models
 {
-   public class BaseClass : INotifyPropertyChanged
+    public class BaseClass : INotifyPropertyChanged
     {
         #region Fields
 
