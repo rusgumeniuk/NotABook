@@ -25,16 +25,17 @@ namespace NotABook.Models
         {
             get => App.currentBook.ItemsOfBook[App.currentBook.GetIndexOfItemByID(itemId)];
             set => itemId = value.Id;
-        }
-
-        public static ObservableCollection<CategoryInItem> Items { get; set; }
+        }        
 
         #endregion
 
         #region Constr
 
-        public CategoryInItem() { }
-        public CategoryInItem(Category category, Item item)
+        public CategoryInItem()
+        {
+            App.currentBook?.CategoryInItemsOfBook.Add(this);
+        }
+        public CategoryInItem(Category category, Item item) : this()
         {
             categoryId = category.Id;
             itemId = item.Id;
@@ -52,7 +53,7 @@ namespace NotABook.Models
         public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Category category)
         {
             ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
-            foreach (var cii in CategoryInItem.Items)
+            foreach (var cii in App.currentBook?.CategoryInItemsOfBook)
             {
                 if (cii.categoryId == category.Id) list.Add(cii);
             }
@@ -61,7 +62,7 @@ namespace NotABook.Models
         public static ObservableCollection<CategoryInItem> GetCIIListByItem(Item item)
         {
             ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
-            foreach (var cii in CategoryInItem.Items)
+            foreach (var cii in App.currentBook?.CategoryInItemsOfBook)
             {
                 if (cii.itemId == item.Id) list.Add(cii);
             }
@@ -79,7 +80,7 @@ namespace NotABook.Models
 
         public static Guid GetGuidOfPair(Category category, Item item)
         {
-            foreach (var cii in CategoryInItem.Items)
+            foreach (var cii in App.currentBook?.CategoryInItemsOfBook)
             {
                 if (cii.categoryId == category.Id && cii.itemId == item.Id) return cii.Id;
             }
@@ -87,7 +88,7 @@ namespace NotABook.Models
         }
         public static Guid GetGuidOfPair(Guid currentCategoryId, Guid currentItemId)
         {
-            foreach (var cii in CategoryInItem.Items)
+            foreach (var cii in App.currentBook?.CategoryInItemsOfBook)
             {
                 if (cii.categoryId == currentCategoryId && cii.itemId == currentItemId) return cii.Id;
             }
@@ -99,21 +100,36 @@ namespace NotABook.Models
             if(CategoryInItem.IsContainsThisPair(category, item))
             {
                 Guid guid = CategoryInItem.GetGuidOfPair(category, item);
-                CategoryInItem.Items.RemoveAt(GetIndexOfPair(guid));
+                App.currentBook?.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(guid));
             }
             return !IsContainsThisPair(category, item);
         }
         public bool DeleteConnection()
         {
-            Items.Remove(this);
+            App.currentBook?.CategoryInItemsOfBook.Remove(this);
             return !IsContainsThisPair(this.categoryId, this.itemId);
+        }
+
+        public static void DeleteAllConnectionWithItem(Item item)
+        {
+            foreach (var pair in App.currentBook?.CategoryInItemsOfBook)
+            {
+                if (pair.itemId == item.Id) DeleteConnection(pair.Category, item);
+            }
+        }
+        public static void DeleteAllConnectionWithCategory(Category category)
+        {
+            foreach (var pair in App.currentBook?.CategoryInItemsOfBook)
+            {
+                if (pair.categoryId == category.Id) DeleteConnection(category, pair.Item);
+            }
         }
 
         public static int GetIndexOfPair(Guid guid)
         {
-            for (int i = 0; i < CategoryInItem.Items.Count; ++i)
+            for (int i = 0; i < App.currentBook?.CategoryInItemsOfBook.Count; ++i)
             {
-                if (Items[i].Id == guid) return i;
+                if (App.currentBook?.CategoryInItemsOfBook[i].Id == guid) return i;
             }
             return -1;
         }

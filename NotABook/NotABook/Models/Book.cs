@@ -11,6 +11,8 @@ namespace NotABook.Models
 
         private ObservableCollection<Category> categoriesOfBook = new ObservableCollection<Category>();
 
+        private ObservableCollection<CategoryInItem> categoriesInItemOfBook = new ObservableCollection<CategoryInItem>();
+
         #endregion
 
         #region Propereties
@@ -32,6 +34,16 @@ namespace NotABook.Models
             {
                 categoriesOfBook = value;
                 OnPropertyChanged("CategoriesOfBook");
+            }
+        }
+
+        public ObservableCollection<CategoryInItem> CategoryInItemsOfBook
+        {
+            get => categoriesInItemOfBook;
+            set
+            {
+                categoriesInItemOfBook = value;
+                OnPropertyChanged("CategoryInItemsOfBook");
             }
         }
 

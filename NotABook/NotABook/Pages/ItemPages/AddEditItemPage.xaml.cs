@@ -47,13 +47,20 @@ namespace NotABook.Pages.ItemPages
 
         private void PickerOfSelectedCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             if (PickerOfSelectedCategories.SelectedIndex != -1)
             {
-                Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
-                SelectedCategories.Remove(selectedCategory);
+                //Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
+                try
+                {
+                    if (SelectedCategories.Count == 1) SelectedCategories.Remove(PickerOfSelectedCategories.SelectedItem as Category); // ???
+                    else SelectedCategories.Remove(PickerOfSelectedCategories.SelectedItem as Category);
+                }
+                catch(Exception ex)
+                {
+                    DisplayAlert("", ex.Message, "ok");
+                }                               
+                DisplayAlert("Category removed","item was removed from list", "ok");
                 PickerOfSelectedCategories.SelectedIndex = -1;
-                DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");                
             }            
         }
 

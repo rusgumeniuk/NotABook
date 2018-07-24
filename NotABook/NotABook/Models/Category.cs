@@ -15,13 +15,12 @@ namespace NotABook.Models
         {
             get
             {
-                if (NotABook.App.ItemsList.Count < 1) return null;
+                if (NotABook.App.CategoryInItemsList.Count < 1) return null;
 
                 ObservableCollection<Item> items = new ObservableCollection<Item>();
-                foreach (Models.Item item in NotABook.App.ItemsList)
+                foreach (var item in NotABook.App.CategoryInItemsList)
                 {
-                    if (item.Categories.Contains(this))
-                        items.Add(item);
+                    if (item.Category.Id == this.Id) items.Add(item.Item);
                 }
                 return items;
             }
@@ -33,7 +32,7 @@ namespace NotABook.Models
         public Category() : base()
         {
             if (NotABook.App.currentBook != null)
-                NotABook.App.currentBook.CategoriesOfBook.Add(/*this.Id,*/ this);
+                NotABook.App.currentBook.CategoriesOfBook.Add(this);
         }
 
         public Category(string title) : this()
@@ -53,10 +52,7 @@ namespace NotABook.Models
 
         public void RemoveCategoryFromAllItems()
         {
-            foreach (var item in ItemsWithThisCategory)
-            {
-                item.Categories.Remove(this);
-            }
+            CategoryInItem.DeleteAllConnectionWithCategory(this);
             App.currentBook?.OnPropertyChanged("DateOfLastChanging");
         }
 

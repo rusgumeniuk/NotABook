@@ -10,9 +10,7 @@ namespace NotABook.Models
 
         #endregion
 
-        #region Prop
-
-        private ObservableCollection<Category> categories;
+        #region Prop        
 
         public string Description
         {
@@ -26,10 +24,21 @@ namespace NotABook.Models
 
         public ObservableCollection<Category> Categories
         {
-            get => categories;
-            set
+            get
             {
-                categories = value;
+                ObservableCollection<Category> categories = new ObservableCollection<Category>();
+                foreach (var item in App.currentBook?.CategoryInItemsOfBook)
+                {
+                    if (item.Item.Id == this.Id) categories.Add(item.Category);
+                }
+                return categories;
+            }
+            set
+            {                                
+                foreach (var category in value)
+                {
+                    CategoryInItem.CreateCategoryInItem(category, this);
+                }
                 OnPropertyChanged("Categories");
             }
         }
@@ -41,7 +50,7 @@ namespace NotABook.Models
         public Item() : base()
         {
             if (NotABook.App.currentBook != null)
-                NotABook.App.currentBook.ItemsOfBook.Add( this);
+                NotABook.App.currentBook.ItemsOfBook.Add(this);
         }
 
         public Item(string title) : this()
@@ -77,6 +86,7 @@ namespace NotABook.Models
         {
             this.Categories.Clear();
             App.currentBook?.ItemsOfBook.Remove(this);
+            CategoryInItem.DeleteAllConnectionWithItem(this);
             App.currentBook?.OnPropertyChanged("DateOfLastChanging");
         }
 

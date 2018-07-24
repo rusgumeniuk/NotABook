@@ -21,6 +21,8 @@ namespace NotABook
        
         public static ObservableCollection<Item> ItemsList => currentBook?.ItemsOfBook;
         public static ObservableCollection<Category> CategoriesList => currentBook?.CategoriesOfBook;
+        public static ObservableCollection<CategoryInItem> CategoryInItemsList => currentBook?.CategoryInItemsOfBook;
+
         public static ObservableCollection<Book> CurrentBook => new ObservableCollection<Book>() { currentBook };
         #endregion
 
