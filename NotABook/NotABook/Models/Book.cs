@@ -8,17 +8,53 @@ namespace NotABook.Models
 {
     public class Book : BaseClass
     {
-        public ObservableCollection<Item> ItemsOfBook { get; set; } = new ObservableCollection<Item>();
-        public ObservableCollection<Category> CategoriesOfBook { get; set; } = new ObservableCollection<Category>();
-        
+        #region Fields
+
+        private ObservableCollection<Item> itemsOfBook = new ObservableCollection<Item>();        
+
+        private ObservableCollection<Category> categoriesOfBook = new ObservableCollection<Category>();
+
+        #endregion
+
+        #region Propereties
+
+        public ObservableCollection<Item> ItemsOfBook
+        {
+            get => itemsOfBook;
+            set
+            {
+                itemsOfBook = value;
+                OnPropertyChanged("ItemsOfBook");
+            }
+        }
+
+        public ObservableCollection<Category> CategoriesOfBook
+        {
+            get => categoriesOfBook;
+            set
+            {
+                categoriesOfBook = value;
+                OnPropertyChanged("CategoriesOfBook");
+            }
+        }
+
+        #endregion
+
+        #region Constr
+
         public Book() : base()
         {
             NotABook.App.Books.Add(this);
         }
+
         public Book(string title) : base(title)
         {
             NotABook.App.Books.Add(this);
         }
+
+        #endregion
+
+        #region Methods
 
         public void DeleteBook()
         {
@@ -29,5 +65,7 @@ namespace NotABook.Models
             CategoriesOfBook.Clear();
             App.Books.Remove(this);
         }
+
+        #endregion
     }
 }

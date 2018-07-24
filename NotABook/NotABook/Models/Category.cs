@@ -13,6 +13,7 @@ namespace NotABook.Models
         {
             get => ItemsWithThisCategory.Count;
         }
+
         public ObservableCollection<Item> ItemsWithThisCategory
         {
             get
@@ -28,6 +29,7 @@ namespace NotABook.Models
                 return items;
             }
         }
+
         #endregion
 
         #region Constr
@@ -43,10 +45,13 @@ namespace NotABook.Models
         }
         #endregion
 
+        #region Methods
+
         public void DeleteCategory()
         {
             App.currentBook.CategoriesOfBook.Remove(this);
             RemoveCategoryFromAllItems();
+            App.currentBook?.OnPropertyChanged("DateOfLastChanging");
         }
 
         public void RemoveCategoryFromAllItems()
@@ -55,6 +60,9 @@ namespace NotABook.Models
             {
                 item.Categories.Remove(this);
             }
+            App.currentBook?.OnPropertyChanged("DateOfLastChanging");
         }
+
+        #endregion
     }
 }

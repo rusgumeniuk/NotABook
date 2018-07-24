@@ -8,10 +8,35 @@ namespace NotABook.Models
 {
     public class Item : BaseClass 
     {
-        #region Prop
-        public string Description { get; set; }
+        #region Fields
 
-        public ObservableCollection<Category> Categories { get; set; }
+        private string description;
+
+        #endregion
+
+        #region Prop
+
+        private ObservableCollection<Category> categories;
+
+        public string Description
+        {
+            get => description;
+            set
+            {
+                description = value;
+                OnPropertyChanged("Description");
+            }
+        }        
+
+        public ObservableCollection<Category> Categories
+        {
+            get => categories;
+            set
+            {
+                categories = value;
+                OnPropertyChanged("Categories");
+            }
+        }
 
         public string CategoriesStr { get => this.GetCategories(); }
         #endregion
@@ -56,16 +81,9 @@ namespace NotABook.Models
         {
             this.Categories.Clear();
             App.currentBook?.ItemsOfBook.Remove(this);
-            //try
-            //{
-            //    App.currentBook?.ItemsOfBook.Remove(this);
-            //}
-            //catch(Exception ex)
-            //{
-            //    throw new Exception(ex.Message);
-            //}
-
+            App.currentBook?.OnPropertyChanged("DateOfLastChanging");
         }
+
         #endregion
     }
 }
