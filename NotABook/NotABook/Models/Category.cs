@@ -42,5 +42,19 @@ namespace NotABook.Models
             Title = title;
         }
         #endregion
+
+        public void DeleteCategory()
+        {
+            App.currentBook.CategoriesOfBook.Remove(this);
+            RemoveCategoryFromAllItems();
+        }
+
+        public void RemoveCategoryFromAllItems()
+        {
+            foreach (var item in ItemsWithThisCategory)
+            {
+                item.Categories.Remove(this);
+            }
+        }
     }
 }

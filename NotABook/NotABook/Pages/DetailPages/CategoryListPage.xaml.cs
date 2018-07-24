@@ -26,5 +26,23 @@ namespace NotABook.Pages.DetailPages
                 await Navigation.PushAsync(new ItemsOfBookPage(selectedCategory));
             }
         }
+
+        async private void OnEdit_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new HelpedPages.AddEditCategoryPage(((MenuItem)sender).CommandParameter as Models.Category));
+        }
+
+        async private void OnDelete_Clicked(object sender, EventArgs e)
+        {
+            
+            if (await DisplayAlert("Delete category", "Do u want to delete this category?", "Yes", "No"))
+            (((MenuItem)sender).CommandParameter as Models.Category).DeleteCategory();
+            
+        }
+
+        async private void BtnAddNewCategory_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new HelpedPages.AddEditCategoryPage());
+        }
     }
 }

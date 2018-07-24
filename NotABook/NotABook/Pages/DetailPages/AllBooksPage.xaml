@@ -14,6 +14,12 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
+                                <MenuItem 
+                                    Text="Edit"
+                                    x:Name="OnEdit"
+                                    Clicked="OnEdit_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
                                 <MenuItem
                                     Text="Delete book" 
                                     x:Name="OnDelete"
@@ -25,13 +31,7 @@
                                     x:Name="OnClearBook"
                                     Clicked="OnClearBook_Clicked"
                                     CommandParameter="{Binding .}"
-                                    IsDestructive="True"/>
-                                <MenuItem 
-                                    Text="Edit"
-                                    x:Name="OnEdit"
-                                    Clicked="OnEdit_Clicked"
-                                    CommandParameter="{Binding .}"
-                                    IsDestructive="True"/>
+                                    IsDestructive="True"/>                                
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout>
@@ -50,7 +50,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
             <Button x:Name="BtnAddNewBook" Text="Add new book" Clicked="BtnAddNewBook_Clicked"/>
         </StackLayout>
     </ContentPage.Content>

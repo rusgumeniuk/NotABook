@@ -10,26 +10,39 @@
                 x:Name="categoriesList"
                 ItemsSource="{Static app:App.CategoriesList}"
                 HasUnevenRows="True"
-                ItemSelected="categoriesList_ItemSelected">
+                ItemSelected="categoriesList_ItemSelected"
+                >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem
+                                    Text="Edit"
+                                    x:Name="OnEdit"
+                                    Clicked="OnEdit_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
+                                <MenuItem 
+                                    Text="Delete"
+                                    x:Name="OnDelete"
+                                    Clicked ="OnDelete_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
+                            </ViewCell.ContextActions>
                             <ViewCell.View>
-                                <!--<ScrollView>-->
                                 <StackLayout>
                                     <Label Text="{Binding Title}" FontSize="Medium"/>
                                     <StackLayout Orientation="Horizontal" >
                                         <Label Text="Count of items: " FontAttributes="Italic"/>
                                         <Label Text="{Binding CountOfItemsWithThisCategory}" FontAttributes="Italic"/>
                                     </StackLayout>
-
-                                </StackLayout>
-                                <!--</ScrollView>-->
+                                </StackLayout>                                
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="BtnAddNewCategory" Text="Add new category" Clicked="BtnAddNewCategory_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
