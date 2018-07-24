@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace NotABook.Models
 {
@@ -60,6 +61,26 @@ namespace NotABook.Models
             ItemsOfBook.Clear();
             CategoriesOfBook.Clear();
             App.Books.Remove(this);
+        }
+
+        public int GetIndexOfItemByID(Guid itemId)
+        {
+            for (int i = 0; i < App.currentBook.ItemsOfBook.Count; ++i)
+            {
+                if (App.currentBook.ItemsOfBook[i].Id == itemId) return i;
+            }
+
+            return -1;
+        }
+
+        public int GetIndexOfCategoryByID(Guid categoryId)
+        {
+            for (int i = 0; i < App.currentBook.CategoriesOfBook.Count; ++i)
+            {
+                if (App.currentBook.CategoriesOfBook[i].Id == categoryId) return i;
+            }
+
+            return -1;
         }
 
         #endregion
