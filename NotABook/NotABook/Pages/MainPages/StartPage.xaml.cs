@@ -16,11 +16,22 @@ namespace NotABook.Pages.MainPages
 		{
 			InitializeComponent ();
             masterPage.listView.ItemSelected += OnItemSelected;
+            masterPage.downList.ItemSelected += DownList_ItemSelected;
 
             if (Device.RuntimePlatform == Device.UWP)
             {
                 MasterBehavior = MasterBehavior.Popover;
             }            
+        }
+
+        private void DownList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Pages.MainPages.MasterPageItem item)
+            {
+                Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
+                masterPage.downList.SelectedItem = null;
+                IsPresented = false;
+            }
         }
 
         private void BtnExit_Clicked(object sender, EventArgs e)

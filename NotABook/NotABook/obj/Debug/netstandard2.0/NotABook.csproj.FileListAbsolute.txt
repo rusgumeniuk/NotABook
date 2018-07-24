@@ -21,3 +21,4 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Deb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\XamlC.stamp
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.pdb
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.csprojAssemblyReference.cache
