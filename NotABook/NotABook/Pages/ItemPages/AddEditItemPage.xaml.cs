@@ -65,13 +65,12 @@ namespace NotABook.Pages.ItemPages
 
 
         private async void BtnSave_Clicked(object sender, EventArgs e)
-        {
-            string text = String.Empty;
+        {            
             if (currentItem != null)
             {
                 try
                 {
-                    text = CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
+                    CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
                 }
                 catch(Exception ex)
                 {

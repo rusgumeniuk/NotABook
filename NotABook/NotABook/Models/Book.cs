@@ -25,7 +25,8 @@ namespace NotABook.Models
             set
             {
                 itemsOfBook = value;
-              //  OnPropertyChanged("ItemsOfBook");
+                if (IsTestingOff)
+                    OnPropertyChanged("ItemsOfBook");
             }
         }
 
@@ -35,7 +36,8 @@ namespace NotABook.Models
             set
             {
                 categoriesOfBook = value;
-               // OnPropertyChanged("CategoriesOfBook");
+                if (IsTestingOff)
+                    OnPropertyChanged("CategoriesOfBook");
             }
         }
 
@@ -45,7 +47,8 @@ namespace NotABook.Models
             set
             {
                 categoriesInItemOfBook = value;
-                //OnPropertyChanged("CategoryInItemsOfBook");
+                if (IsTestingOff)
+                    OnPropertyChanged("CategoryInItemsOfBook");
             }
         }
 

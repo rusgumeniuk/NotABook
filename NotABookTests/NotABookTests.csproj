@@ -48,8 +48,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategoryInItemTest.cs" />
-    <Compile Include="NoTestClass.cs" />
+    <Compile Include="BookMethodsTest.cs" />
+    <Compile Include="CategoryInItemMethodsTest.cs" />
+    <Compile Include="CategoryMethodsTest.cs" />
+    <Compile Include="ItemMethodsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace NotABook.Models
 {
     public class Item : BaseClass 
@@ -8,8 +11,8 @@ namespace NotABook.Models
         #region Fields
 
         private string description;
-
-        private Book currentBook;
+        
+        public Book CurrentBook { get; private set; }
 
         #endregion
 
@@ -21,7 +24,8 @@ namespace NotABook.Models
             set
             {
                 description = value;
-                OnPropertyChanged("Description");
+                if (IsTestingOff)
+                    OnPropertyChanged("Description");
             }
         }        
 
@@ -29,12 +33,21 @@ namespace NotABook.Models
         {
             get
             {
-                if (currentBook == null) return null;
-
+                int i = 0;
+                Console.WriteLine(++i);
+                if (CurrentBook == null) throw new ArgumentNullException();
+                Console.WriteLine(++i);
                 ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                foreach (var item in currentBook.CategoryInItemsOfBook)
+                Console.WriteLine(++i);
+                foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
                 {
-                    if (item.Item.Id == this.Id) categories.Add(item.Category);
+                    Console.WriteLine("cycle");
+                    if (pair.Item.Id == Id)
+                    {
+                        Console.WriteLine("IF start");
+                        categories.Add(pair.Category);
+                        Console.WriteLine("IF end");
+                    }
                 }
                 return categories;
             }
@@ -43,9 +56,11 @@ namespace NotABook.Models
                 //CategoryInItem.DeleteAllConnectionWithItem(this);
                 foreach (var category in value)
                 {
-                    CategoryInItem.CreateCategoryInItem(currentBook, category, this);
+                    CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
                 }
-                OnPropertyChanged("Categories");
+
+                if (IsTestingOff)
+                    OnPropertyChanged("Categories");
             }
         }
 
@@ -55,7 +70,7 @@ namespace NotABook.Models
         #region Constr
         public Item(Book curBook) : base()
         {
-            currentBook = curBook;
+            CurrentBook = curBook ?? throw new ArgumentNullException();
             curBook.ItemsOfBook.Add(this);
         }
 
@@ -72,7 +87,7 @@ namespace NotABook.Models
         public Item(Book curBook, string title, string descriprion, ObservableCollection<Category> categories) : this(curBook, title, descriprion)
         {
             Categories = categories;
-        }
+        }       
         #endregion
 
         #region Methods
@@ -80,8 +95,8 @@ namespace NotABook.Models
         public bool ChangeBook(Book newBook)
         {
             //TEST IT!
-            Book lastBook = currentBook;
-            currentBook = newBook ?? throw new ArgumentNullException();
+            Book lastBook = CurrentBook;
+            CurrentBook = newBook ?? throw new ArgumentNullException();
             return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
         }
 
@@ -98,11 +113,11 @@ namespace NotABook.Models
 
         public void DeleteItem()
         {
-            if (currentBook == null) throw new ArgumentNullException();
+            if (CurrentBook == null) throw new ArgumentNullException();
             this.Categories.Clear();
-            currentBook.ItemsOfBook.Remove(this);
-            CategoryInItem.DeleteAllConnectionWithItem(currentBook, this);
-            currentBook.OnPropertyChanged("DateOfLastChanging");
+            CurrentBook.ItemsOfBook.Remove(this);
+            CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
+            CurrentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         #endregion

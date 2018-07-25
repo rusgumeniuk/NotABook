@@ -7,6 +7,7 @@ namespace NotABook.Models
     {
         #region Fields
 
+        protected bool IsTestingOff = false; //To start tests project set "false". 
         private string title;
 
         #endregion
@@ -21,7 +22,8 @@ namespace NotABook.Models
             set
             {
                 title = value;
-                //OnPropertyChanged("Title");
+                if(IsTestingOff)
+                    OnPropertyChanged("Title");
             }
         }
 

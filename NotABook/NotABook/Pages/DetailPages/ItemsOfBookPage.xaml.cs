@@ -98,19 +98,18 @@ namespace NotABook.Pages.DetailPages
 
         private void OnDeleteConnetions_Clicked(object sender, EventArgs e)
         {
-            string text = String.Empty;
+            
             try
             {
-                text = CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item) ?? "null";
+                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item);
             }
             catch(Exception ex)
             {
-                DisplayAlert("exception", ex.Message, "ok");
-                text = "exp";
+                DisplayAlert("exception", ex.Message, "ok");                
             }
             
             DisplayAlert("", "deleted", "ok");
-            DisplayAlert("", text, "ok");
+           
         }
     }
 }

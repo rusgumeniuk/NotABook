@@ -5,7 +5,7 @@ namespace NotABook.Models
 {
     public class Category : BaseClass
     {
-        private Book currentBook;
+        public Book CurrentBook { get; private set; }
 
         #region Prop
 
@@ -18,11 +18,11 @@ namespace NotABook.Models
         {
             get
             {
-                if (currentBook == null) throw new ArgumentNullException();
-                if (currentBook.CategoryInItemsOfBook.Count < 1) return null;
+                if (CurrentBook == null) throw new ArgumentNullException();
+                if (CurrentBook.CategoryInItemsOfBook.Count < 1) return null;
 
                 ObservableCollection<Item> items = new ObservableCollection<Item>();
-                foreach (var item in currentBook.CategoryInItemsOfBook)
+                foreach (var item in CurrentBook.CategoryInItemsOfBook)
                 {
                     if (item.Category.Id == this.Id) items.Add(item.Item);
                 }
@@ -35,8 +35,8 @@ namespace NotABook.Models
         #region Constr
         public Category(Book curBook) : base()
         {
-            currentBook = curBook;
-            currentBook.CategoriesOfBook.Add(this);
+            CurrentBook = curBook ?? throw new ArgumentNullException();
+            CurrentBook.CategoriesOfBook.Add(this);
         }
 
         public Category(Book curBook, string title) : this(curBook)
@@ -49,17 +49,17 @@ namespace NotABook.Models
 
         public void DeleteCategory()
         {
-            if (currentBook == null) throw new ArgumentNullException();
-            currentBook.CategoriesOfBook.Remove(this);
+            if (CurrentBook == null) throw new ArgumentNullException();
+            CurrentBook.CategoriesOfBook.Remove(this);
             RemoveCategoryFromAllItems();
-            currentBook.OnPropertyChanged("DateOfLastChanging");
+            CurrentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         public void RemoveCategoryFromAllItems()
         {
-            if (currentBook == null) throw new ArgumentNullException();
-            CategoryInItem.DeleteAllConnectionWithCategory(currentBook, this);
-            currentBook.OnPropertyChanged("DateOfLastChanging");
+            if (CurrentBook == null) throw new ArgumentNullException();
+            CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, this);
+            CurrentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         #endregion
