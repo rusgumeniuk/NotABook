@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
+using System;
 namespace NotABook.Models
 {
     public class Item : BaseClass 
@@ -7,6 +8,8 @@ namespace NotABook.Models
         #region Fields
 
         private string description;
+
+        private Book currentBook;
 
         #endregion
 
@@ -26,18 +29,21 @@ namespace NotABook.Models
         {
             get
             {
+                if (currentBook == null) return null;
+
                 ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                foreach (var item in App.currentBook?.CategoryInItemsOfBook)
+                foreach (var item in currentBook.CategoryInItemsOfBook)
                 {
                     if (item.Item.Id == this.Id) categories.Add(item.Category);
                 }
                 return categories;
             }
             set
-            {                                
+            {
+                //CategoryInItem.DeleteAllConnectionWithItem(this);
                 foreach (var category in value)
                 {
-                    CategoryInItem.CreateCategoryInItem(category, this);
+                    CategoryInItem.CreateCategoryInItem(currentBook, category, this);
                 }
                 OnPropertyChanged("Categories");
             }
@@ -47,29 +53,37 @@ namespace NotABook.Models
         #endregion
 
         #region Constr
-        public Item() : base()
+        public Item(Book curBook) : base()
         {
-            if (NotABook.App.currentBook != null)
-                NotABook.App.currentBook.ItemsOfBook.Add(this);
+            currentBook = curBook;
+            curBook.ItemsOfBook.Add(this);
         }
 
-        public Item(string title) : this()
+        public Item(Book curBook, string title) : this(curBook)
         {
             Title = title;
         }
 
-        public Item(string title, string descriprion) : this(title)
+        public Item(Book curBook, string title, string descriprion) : this(curBook, title)
         {
             Description = descriprion;
         }
 
-        public Item(string title, string descriprion, ObservableCollection<Category> categories) : this(title, descriprion)
+        public Item(Book curBook, string title, string descriprion, ObservableCollection<Category> categories) : this(curBook, title, descriprion)
         {
             Categories = categories;
         }
         #endregion
 
         #region Methods
+
+        public bool ChangeBook(Book newBook)
+        {
+            //TEST IT!
+            Book lastBook = currentBook;
+            currentBook = newBook ?? throw new ArgumentNullException();
+            return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
+        }
 
         public string GetCategories()
         {
@@ -84,10 +98,11 @@ namespace NotABook.Models
 
         public void DeleteItem()
         {
+            if (currentBook == null) throw new ArgumentNullException();
             this.Categories.Clear();
-            App.currentBook?.ItemsOfBook.Remove(this);
-            CategoryInItem.DeleteAllConnectionWithItem(this);
-            App.currentBook?.OnPropertyChanged("DateOfLastChanging");
+            currentBook.ItemsOfBook.Remove(this);
+            CategoryInItem.DeleteAllConnectionWithItem(currentBook, this);
+            currentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         #endregion

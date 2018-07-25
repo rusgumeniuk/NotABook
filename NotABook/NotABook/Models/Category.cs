@@ -1,9 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using System;
 
 namespace NotABook.Models
 {
     public class Category : BaseClass
     {
+        private Book currentBook;
+
         #region Prop
 
         public int CountOfItemsWithThisCategory
@@ -15,10 +18,11 @@ namespace NotABook.Models
         {
             get
             {
-                if (NotABook.App.CategoryInItemsList.Count < 1) return null;
+                if (currentBook == null) throw new ArgumentNullException();
+                if (currentBook.CategoryInItemsOfBook.Count < 1) return null;
 
                 ObservableCollection<Item> items = new ObservableCollection<Item>();
-                foreach (var item in NotABook.App.CategoryInItemsList)
+                foreach (var item in currentBook.CategoryInItemsOfBook)
                 {
                     if (item.Category.Id == this.Id) items.Add(item.Item);
                 }
@@ -29,13 +33,13 @@ namespace NotABook.Models
         #endregion
 
         #region Constr
-        public Category() : base()
+        public Category(Book curBook) : base()
         {
-            if (NotABook.App.currentBook != null)
-                NotABook.App.currentBook.CategoriesOfBook.Add(this);
+            currentBook = curBook;
+            currentBook.CategoriesOfBook.Add(this);
         }
 
-        public Category(string title) : this()
+        public Category(Book curBook, string title) : this(curBook)
         {
             Title = title;
         }
@@ -45,15 +49,17 @@ namespace NotABook.Models
 
         public void DeleteCategory()
         {
-            App.currentBook.CategoriesOfBook.Remove(this);
+            if (currentBook == null) throw new ArgumentNullException();
+            currentBook.CategoriesOfBook.Remove(this);
             RemoveCategoryFromAllItems();
-            App.currentBook?.OnPropertyChanged("DateOfLastChanging");
+            currentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         public void RemoveCategoryFromAllItems()
         {
-            CategoryInItem.DeleteAllConnectionWithCategory(this);
-            App.currentBook?.OnPropertyChanged("DateOfLastChanging");
+            if (currentBook == null) throw new ArgumentNullException();
+            CategoryInItem.DeleteAllConnectionWithCategory(currentBook, this);
+            currentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         #endregion

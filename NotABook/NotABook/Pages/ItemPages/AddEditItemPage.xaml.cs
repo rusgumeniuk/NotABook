@@ -49,17 +49,16 @@ namespace NotABook.Pages.ItemPages
         {
             if (PickerOfSelectedCategories.SelectedIndex != -1)
             {
-                //Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
+                Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
                 try
                 {
-                    if (SelectedCategories.Count == 1) SelectedCategories.Remove(PickerOfSelectedCategories.SelectedItem as Category); // ???
-                    else SelectedCategories.Remove(PickerOfSelectedCategories.SelectedItem as Category);
+                    SelectedCategories.Remove(selectedCategory);
                 }
-                catch(Exception ex)
+                catch(Exception /*ex*/)
                 {
-                    DisplayAlert("", ex.Message, "ok");
+                    //DisplayAlert("", ex.Message, "ok");
                 }                               
-                DisplayAlert("Category removed","item was removed from list", "ok");
+                DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
                 PickerOfSelectedCategories.SelectedIndex = -1;
             }            
         }
@@ -67,21 +66,32 @@ namespace NotABook.Pages.ItemPages
 
         private async void BtnSave_Clicked(object sender, EventArgs e)
         {
+            string text = String.Empty;
             if (currentItem != null)
             {
+                try
+                {
+                    text = CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
+                }
+                catch(Exception ex)
+                {
+                   await DisplayAlert("btn", ex.Message, "ok");
+                }
+                
                 currentItem.Title = entryTitle.Text;
                 currentItem.Categories = SelectedCategories;
                 currentItem.Description = editorDescript.Text;
             }
             else
             {
-                Item newItem = new Item()
+                Item newItem = new Item(NotABook.App.currentBook)
                 {
                     Title = entryTitle.Text,
                     Description = editorDescript.Text,
                     Categories = SelectedCategories
                 };
-            }            
+            }
+            //DisplayAlert("STRING", text, "ok");
             await Navigation.PopAsync(true);                  
         }        
 

@@ -16,14 +16,16 @@ namespace NotABook
         #region Lists etc
         public static Book currentBook = null;
 
-        public static ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
-
+        public static ObservableCollection<Book> Books
+        {
+            get => Book.Books;
+            set => Book.Books = value;
+        }           
        
         public static ObservableCollection<Item> ItemsList => currentBook?.ItemsOfBook;
         public static ObservableCollection<Category> CategoriesList => currentBook?.CategoriesOfBook;
-        public static ObservableCollection<CategoryInItem> CategoryInItemsList => currentBook?.CategoryInItemsOfBook;
+        public static ObservableCollection<CategoryInItem> CategoryInItemsList => currentBook?.CategoryInItemsOfBook;        
 
-        public static ObservableCollection<Book> CurrentBook => new ObservableCollection<Book>() { currentBook };
         #endregion
 
         public App ()
@@ -36,13 +38,13 @@ namespace NotABook
                 Book book = new Book("Second");
                 Book book1 = new Book("Third");
 
-                Category appleCategory = new Category("apple");
-                Category saltCateg = new Category("salt");
-                Category meatCategory = new Category("meat");
+                Category appleCategory = new Category(currentBook, "apple");
+                Category saltCateg = new Category(currentBook, "salt");
+                Category meatCategory = new Category(currentBook, "meat");
 
-                Item bisc = new Item("Biscuit", "very good", new ObservableCollection<Category>() { appleCategory });
-                Item salat = new Item("Salat", "very healthy", new ObservableCollection<Category>() { saltCateg });
-                Item meat = new Item("Meeeat", "so cool", new ObservableCollection<Category>() { saltCateg, meatCategory });
+                Item bisc = new Item(currentBook, "Biscuit", "very good", new ObservableCollection<Category>() { appleCategory });
+                Item salat = new Item(currentBook, "Salat", "very healthy", new ObservableCollection<Category>() { saltCateg });
+                Item meat = new Item(currentBook, "Meeeat", "so cool", new ObservableCollection<Category>() { saltCateg, meatCategory });
             }                      
 
 			MainPage = new Pages.MainPages.StartPage();                                  

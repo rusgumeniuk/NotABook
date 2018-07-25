@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace NotABook.Models
 {
-    public class BaseClass : INotifyPropertyChanged
+   abstract public class BaseClass : INotifyPropertyChanged
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace NotABook.Models
             set
             {
                 title = value;
-                OnPropertyChanged("Title");
+                //OnPropertyChanged("Title");
             }
         }
 

@@ -34,7 +34,7 @@ namespace NotABook.Pages.DetailPages.HelpedPages
             }
             else
             {
-                Models.Category category = new Models.Category()
+                Models.Category category = new Models.Category(NotABook.App.currentBook)
                 {
                     Title = entryTitle.Text
                 };

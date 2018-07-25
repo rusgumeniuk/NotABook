@@ -95,5 +95,22 @@ namespace NotABook.Pages.DetailPages
         {
             DisplayAlert("Here", "Hello", "ok");
         }
+
+        private void OnDeleteConnetions_Clicked(object sender, EventArgs e)
+        {
+            string text = String.Empty;
+            try
+            {
+                text = CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item) ?? "null";
+            }
+            catch(Exception ex)
+            {
+                DisplayAlert("exception", ex.Message, "ok");
+                text = "exp";
+            }
+            
+            DisplayAlert("", "deleted", "ok");
+            DisplayAlert("", text, "ok");
+        }
     }
 }

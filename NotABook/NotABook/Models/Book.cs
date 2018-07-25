@@ -17,13 +17,15 @@ namespace NotABook.Models
 
         #region Propereties
 
+        public static ObservableCollection<Book> Books = new ObservableCollection<Book>();
+
         public ObservableCollection<Item> ItemsOfBook
         {
             get => itemsOfBook;
             set
             {
                 itemsOfBook = value;
-                OnPropertyChanged("ItemsOfBook");
+              //  OnPropertyChanged("ItemsOfBook");
             }
         }
 
@@ -33,7 +35,7 @@ namespace NotABook.Models
             set
             {
                 categoriesOfBook = value;
-                OnPropertyChanged("CategoriesOfBook");
+               // OnPropertyChanged("CategoriesOfBook");
             }
         }
 
@@ -43,7 +45,7 @@ namespace NotABook.Models
             set
             {
                 categoriesInItemOfBook = value;
-                OnPropertyChanged("CategoryInItemsOfBook");
+                //OnPropertyChanged("CategoryInItemsOfBook");
             }
         }
 
@@ -53,12 +55,12 @@ namespace NotABook.Models
 
         public Book() : base()
         {
-            NotABook.App.Books.Add(this);
+            Books.Add(this);
         }
 
         public Book(string title) : base(title)
         {
-            NotABook.App.Books.Add(this);
+            Books.Add(this);
         }
 
         #endregion
