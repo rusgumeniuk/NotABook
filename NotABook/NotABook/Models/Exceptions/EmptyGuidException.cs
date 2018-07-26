@@ -6,6 +6,7 @@ namespace NotABook.Models.Exceptions
 {
     public class EmptyGuidException : ArgumentException
     {
+        public EmptyGuidException() : base() { }
         public EmptyGuidException(string message) : base(message) { }
     }
 }

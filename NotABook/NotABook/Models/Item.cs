@@ -3,6 +3,7 @@ using System.Text;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
@@ -33,7 +34,8 @@ namespace NotABook.Models
         {
             get
             {
-                if (CurrentBook == null) throw new ArgumentNullException();             
+                if (CurrentBook == null)
+                    throw new BookNullException();             
                 ObservableCollection<Category> categories = new ObservableCollection<Category>();             
                 foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
                 {                  
@@ -63,7 +65,7 @@ namespace NotABook.Models
         #region Constr
         public Item(Book curBook) : base()
         {
-            CurrentBook = curBook ?? throw new ArgumentNullException();
+            CurrentBook = curBook ?? throw new BookNullException();
             curBook.ItemsOfBook.Add(this);
         }
 
@@ -89,7 +91,7 @@ namespace NotABook.Models
         {
             //TEST IT!
             Book lastBook = CurrentBook;
-            CurrentBook = newBook ?? throw new ArgumentNullException();
+            CurrentBook = newBook ?? throw new BookNullException();
             return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
         }
 
@@ -107,7 +109,7 @@ namespace NotABook.Models
         public void DeleteItem()
         {
             if (CurrentBook == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             
             CurrentBook.ItemsOfBook.Remove(this);
             CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);

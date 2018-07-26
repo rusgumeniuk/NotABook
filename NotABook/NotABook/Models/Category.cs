@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System;
+using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
@@ -19,11 +20,11 @@ namespace NotABook.Models
             get
             {
                 if (CurrentBook == null)
-                    throw new ArgumentNullException();
+                    throw new BookNullException();
                 if (CurrentBook.CategoryInItemsOfBook.Count < 1)
-                    throw new ArgumentException();
+                    throw new ElementIsNotInCollectionException();
                 if (!CategoryInItem.IsCategoryHasConnection(CurrentBook, this))
-                    throw new InvalidProgramException();
+                    throw new ElementIsNotInCollectionException();
 
                 ObservableCollection<Item> items = new ObservableCollection<Item>();
                 foreach (var pair in CurrentBook.CategoryInItemsOfBook)
@@ -54,7 +55,7 @@ namespace NotABook.Models
         public void DeleteCategory()
         {
             if (CurrentBook == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             CurrentBook.CategoriesOfBook.Remove(this);
             RemoveCategoryFromAllItems();
 
@@ -65,7 +66,7 @@ namespace NotABook.Models
         public void RemoveCategoryFromAllItems()
         {
             if (CurrentBook == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, this);
             if (IsTestingOff)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");

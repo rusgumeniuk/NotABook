@@ -6,6 +6,7 @@ namespace NotABook.Models.Exceptions
 {
     public class ItemNullException : ArgumentNullException
     {
+        public ItemNullException() : base() { }
         public ItemNullException(string message) : base(message) { }
     }
 }

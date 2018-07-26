@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
@@ -73,9 +74,9 @@ namespace NotABook.Models
         public bool DeleteBook()
         {
             if (this == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (!IsBooksContainsThisBook(this))
-                throw new ArgumentException();
+                throw new ElementIsNotInCollectionException();
             CategoryInItemsOfBook.Clear();
             ItemsOfBook.Clear();
             CategoriesOfBook.Clear();            
@@ -86,9 +87,9 @@ namespace NotABook.Models
         public static bool DeleteBook(Book book)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (!IsBooksContainsThisBook(book))
-                throw new ArgumentException();
+                throw new ElementIsNotInCollectionException();
 
             book.CategoryInItemsOfBook.Clear();
             book.ItemsOfBook.Clear();
@@ -102,9 +103,9 @@ namespace NotABook.Models
         public static bool AddBookToCollection(Book book)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (IsBooksContainsThisBook(book))
-                throw new ArgumentException();
+                throw new ElementAlreadyExistException();
 
             Books.Add(book);
 
@@ -115,7 +116,7 @@ namespace NotABook.Models
         public static bool IsBooksContainsThisBook(Book book)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             foreach(Book boook in Book.Books)
             {
                 if (book.Id == boook.Id) return true;
@@ -125,9 +126,9 @@ namespace NotABook.Models
         public static bool IsBooksContainsThisBook(Guid bookId)
         {
             if (bookId == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (bookId == Guid.Empty)
-                throw new ArgumentException();
+                throw new EmptyGuidException();
 
             foreach (Book boook in Book.Books)
             {
@@ -158,9 +159,9 @@ namespace NotABook.Models
         public int GetIndexOfItemByID(Guid itemId)
         {
             if (itemId == null)
-                throw new ArgumentNullException();
+                throw new ItemNullException();
             if (itemId == Guid.Empty)
-                throw new ArgumentException();
+                throw new EmptyGuidException();
             for (int i = 0; i < ItemsOfBook.Count; ++i)
             {
                 if (ItemsOfBook[i].Id == itemId) return i;
@@ -171,9 +172,11 @@ namespace NotABook.Models
         public static int GetIndexOfItemByID(Book book, Guid itemId)
         {
             if (book == null )
-                throw new ArgumentNullException();                        
-            if (itemId == null || itemId == Guid.Empty)
-                throw new ArgumentException();
+                throw new BookNullException();
+            if (itemId == null)
+                throw new ItemNullException();
+            if (itemId == Guid.Empty)
+                throw new EmptyGuidException();
             for (int i = 0; i < book.ItemsOfBook.Count; ++i)
             {
                 if (book.ItemsOfBook[i].Id == itemId) return i;
@@ -185,9 +188,9 @@ namespace NotABook.Models
         public int GetIndexOfCategoryByID(Guid categoryId)
         {
             if (categoryId == null)
-                throw new ArgumentNullException();
+                throw new CategoryNullException();
             if (categoryId == Guid.Empty)
-                throw new ArgumentException();
+                throw new EmptyGuidException();
             for (int i = 0; i < CategoriesOfBook.Count; ++i)
             {
                 if (CategoriesOfBook[i].Id == categoryId) return i;
@@ -198,14 +201,16 @@ namespace NotABook.Models
         public static int GetIndexOfCategoryByID(Book book, Guid categoryId)
         {
             if (book == null )
-                throw new ArgumentNullException();
-            if (categoryId == null || categoryId == Guid.Empty)
-                throw new ArgumentException();
+                throw new BookNullException();
+            if (categoryId == null)
+                throw new CategoryNullException();
+            if (categoryId == Guid.Empty)
+                throw new EmptyGuidException();
+
             for (int i = 0; i < book.CategoriesOfBook.Count; ++i)
             {
                 if (book.CategoriesOfBook[i].Id == categoryId) return i;
             }
-
             return -1;
         }
 
@@ -213,9 +218,9 @@ namespace NotABook.Models
         public bool DeleteItem(Item item)
         {
             if (item == null)
-                throw new ArgumentNullException();
+                throw new ItemNullException();
             if (!IsBookContainsItem(this, item))
-                throw new ArgumentException();
+                throw new ElementIsNotInCollectionException();
 
             item.DeleteItem();
             return !IsBookContainsItem(this, item);
@@ -233,9 +238,11 @@ namespace NotABook.Models
         public static bool DeleteItem(Book book, Item item)
         {
             if (book == null)
-                throw new ArgumentNullException();
-            if (item == null || !IsBookContainsItem(book, item))
-                throw new ArgumentException();
+                throw new BookNullException();
+            if (item == null)
+                throw new ItemNullException();
+            if(!IsBookContainsItem(book, item))
+                throw new ElementIsNotInCollectionException();
 
             item.DeleteItem();
             return !IsBookContainsItem(book, item);
@@ -243,9 +250,11 @@ namespace NotABook.Models
         public static bool DeleteItem(Book book, Guid itemId)
         {
             if (book == null)
-                throw new ArgumentNullException();
-            if (itemId == Guid.Empty || !IsBookContainsItem(book, itemId))
-                throw new ArgumentException();
+                throw new BookNullException();
+            if (itemId == Guid.Empty)
+                throw new EmptyGuidException();
+            if(!IsBookContainsItem(book, itemId))
+                throw new ElementIsNotInCollectionException();
 
             book.ItemsOfBook[Book.GetIndexOfItemByID(book, itemId)].DeleteItem();
             return !IsBookContainsItem(book, itemId);
@@ -255,9 +264,9 @@ namespace NotABook.Models
         public bool DeleteCategory(Category category)
         {
             if (category == null)
-                throw new ArgumentNullException();
+                throw new CategoryNullException();
             if (!IsBookContainsCategory(this, category))
-                throw new ArgumentException();
+                throw new ElementIsNotInCollectionException();
 
             category.DeleteCategory();
             return !IsBookContainsCategory(this, category);
@@ -275,9 +284,11 @@ namespace NotABook.Models
         public static bool DeleteCategory(Book book, Category category)
         {
             if (book == null)
-                throw new ArgumentNullException();
-            if (category == null || !IsBookContainsCategory(book, category))
-                throw new ArgumentException();
+                throw new BookNullException();
+            if (category == null)
+                throw new CategoryNullException();
+            if(!IsBookContainsCategory(book, category))
+                throw new ElementIsNotInCollectionException();
 
             category.DeleteCategory();
             return !IsBookContainsCategory(book, category);
@@ -285,9 +296,11 @@ namespace NotABook.Models
         public static bool DeleteCategory(Book book, Guid categoryId)
         {
             if (book == null)
-                throw new ArgumentNullException();
-            if (categoryId == Guid.Empty || !IsBookContainsCategory(book, categoryId))
-                throw new ArgumentException();
+                throw new BookNullException();
+            if (categoryId == Guid.Empty)
+                throw new EmptyGuidException();
+            if (!IsBookContainsCategory(book, categoryId)) 
+                throw new ElementIsNotInCollectionException();
 
             book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].DeleteCategory();
             return !IsBookContainsCategory(book, categoryId);

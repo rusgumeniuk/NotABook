@@ -6,6 +6,7 @@ namespace NotABook.Models.Exceptions
 {
     public class ElementAlreadyExistException : ArgumentException
     {
+        public ElementAlreadyExistException() : base() { }
         public ElementAlreadyExistException(string message) : base(message) { }
     }
 }

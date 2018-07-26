@@ -1,5 +1,6 @@
 ﻿ using System;
 using System.Collections.ObjectModel;
+using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
@@ -36,12 +37,13 @@ namespace NotABook.Models
 
         public CategoryInItem(Book curBook)
         {
-            CurrentBook = curBook ?? throw new ArgumentNullException();
+            CurrentBook = curBook ?? throw new BookNullException();
             CurrentBook.CategoryInItemsOfBook.Add(this);
         }
         public CategoryInItem(Book curBook, Category category, Item item) 
         {
-            if(IsContainsThisPair(curBook, category, item)) throw new ArgumentException();
+            if(IsContainsThisPair(curBook, category, item))
+                throw new ElementAlreadyExistException();
             CurrentBook = curBook;
             categoryId = category.Id;
             itemId = item.Id; 
@@ -55,15 +57,22 @@ namespace NotABook.Models
         //
         public static CategoryInItem CreateCategoryInItem(Book curBook, Category category, Item item)
         {
-            if (CategoryInItem.IsContainsThisPair(curBook, category, item)) throw new ArgumentException();
-            if (curBook == null) throw new ArgumentNullException();
+            if (curBook == null)
+                throw new BookNullException();
+            if (CategoryInItem.IsContainsThisPair(curBook, category, item))
+                throw new ElementAlreadyExistException();
+            
             return new CategoryInItem(curBook, category, item);
         }
 
         //
         public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Book book, Category category)
         {
-            if (book == null || category == null) throw new ArgumentNullException();
+            if (book == null)
+                throw new BookNullException();
+            if(category == null)
+                throw new CategoryNullException();
+
             ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
             foreach (var pair in book.CategoryInItemsOfBook)
             {
@@ -73,7 +82,11 @@ namespace NotABook.Models
         }
         public static ObservableCollection<CategoryInItem> GetCIIListByItem(Book book, Item item)
         {
-            if (book == null || item == null) throw new ArgumentNullException();
+            if (book == null)
+                throw new BookNullException();
+            if( item == null)
+                throw new ItemNullException();
+
             ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
             foreach (var pair in book.CategoryInItemsOfBook)
             {
@@ -85,8 +98,10 @@ namespace NotABook.Models
         //
         public static bool IsItemHasConnection(Book book, Item item)
         {
-            if (book == null) throw new ArgumentNullException();
-            if (item == null) throw new ArgumentException();
+            if (book == null)
+                throw new BookNullException();
+            if (item == null)
+                throw new ItemNullException();
 
             foreach(var pair in book.CategoryInItemsOfBook)
             {
@@ -96,8 +111,10 @@ namespace NotABook.Models
         }
         public static bool IsCategoryHasConnection(Book book, Category category)
         {
-            if (book == null) throw new ArgumentNullException();
-            if (category == null) throw new ArgumentException();
+            if (book == null)
+                throw new BookNullException();
+            if (category == null)
+                throw new CategoryNullException();
 
             foreach (var pair in book.CategoryInItemsOfBook)
             {
@@ -109,22 +126,34 @@ namespace NotABook.Models
         //
         public static bool IsContainsThisPair(Book book, Category category, Item item)
         {
-            if (book == null) throw new ArgumentNullException();
-            if (category == null || item == null) throw new ArgumentException();
+            if (book == null)
+                throw new BookNullException();
+            if (category == null)
+                throw new CategoryNullException();
+            if (item == null)
+                throw new ItemNullException();
+
             return GetGuidOfPair(book, category, item) != Guid.Empty;
         }
         public static bool IsContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            if (book == null) throw new ArgumentNullException();
-            if (categoryId == null || itemId == null) throw new ArgumentException();
+            if (book == null)
+                throw new BookNullException();
+            if (categoryId == null || itemId == null)
+                throw new EmptyGuidException();
+
             return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty;
         }
 
         //
         public static Guid GetGuidOfPair(Book book, Category category, Item item)
         {
-            if (book == null) throw new ArgumentNullException();
-            if (category == null || item == null) throw new ArgumentException();
+            if (book == null)
+                throw new BookNullException();
+            if (category == null)
+                throw new CategoryNullException();
+            if (item == null)
+                throw new ItemNullException();
             foreach (var pair in book.CategoryInItemsOfBook)
             {
                 if (pair.categoryId == category.Id && pair.itemId == item.Id) return pair.Id;
@@ -133,8 +162,10 @@ namespace NotABook.Models
         }
         public static Guid GetGuidOfPair(Book book, Guid currentCategoryId, Guid currentItemId)
         {
-            if (book == null) throw new ArgumentNullException();
-            if (currentCategoryId == null || currentItemId == null) throw new ArgumentException();
+            if (book == null)
+                throw new BookNullException();
+            if (currentCategoryId == null || currentItemId == null)
+                throw new EmptyGuidException();
             foreach (var pair in book.CategoryInItemsOfBook)
             {
                 if (pair.categoryId == currentCategoryId && pair.itemId == currentItemId) return pair.Id;
@@ -145,7 +176,9 @@ namespace NotABook.Models
         //
         public static int GetIndexOfPair(Book book, Guid guid)
         {
-            if (book == null) throw new ArgumentNullException();
+            if (book == null)
+                throw new BookNullException();
+
             for (int i = 0; i < book.CategoryInItemsOfBook.Count; ++i)
             {
                 if (book.CategoryInItemsOfBook[i].Id == guid) return i;
@@ -157,9 +190,9 @@ namespace NotABook.Models
         public static int DeleteConnection(Book book, Category category, Item item)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (!IsContainsThisPair(book, category, item))
-                throw new ArgumentException();
+                throw new ElementIsNotInCollectionException();
 
             Guid guid = CategoryInItem.GetGuidOfPair(book, category, item);
             book.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(book, guid));
@@ -169,9 +202,9 @@ namespace NotABook.Models
         public static int DeleteConnection(Book book, Guid categoryId, Guid itemId)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (!IsContainsThisPair(book, categoryId, itemId))
-                throw new ArgumentException();
+                throw new ElementIsNotInCollectionException();
 
             Guid guid = CategoryInItem.GetGuidOfPair(book, categoryId, itemId);
             book.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(book, guid));
@@ -182,8 +215,10 @@ namespace NotABook.Models
         //
         public bool DeleteConnection()
         {
-            if (CurrentBook == null) throw new ArgumentNullException();
-            if (!IsContainsThisPair(CurrentBook, categoryId, itemId)) throw new ArgumentException();
+            if (CurrentBook == null)
+                throw new BookNullException();
+            if (!IsContainsThisPair(CurrentBook, categoryId, itemId))
+                throw new ElementIsNotInCollectionException();
 
             CurrentBook.CategoryInItemsOfBook.Remove(this);
             return !IsContainsThisPair(CurrentBook, this.categoryId, this.itemId);
@@ -193,9 +228,9 @@ namespace NotABook.Models
         public static bool DeleteAllConnectionWithItem(Book book, Item item)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (item == null)
-                throw new ArgumentException();
+                throw new ItemNullException();
             if (!CategoryInItem.IsItemHasConnection(book, item))
                 return true;
 
@@ -210,9 +245,9 @@ namespace NotABook.Models
         public static bool DeleteAllConnectionWithCategory(Book book, Category category)
         {
             if (book == null)
-                throw new ArgumentNullException();
+                throw new BookNullException();
             if (category == null)
-                throw new ArgumentException();
+                throw new CategoryNullException();
             if (!CategoryInItem.IsCategoryHasConnection(book, category))
                 return true;
 
