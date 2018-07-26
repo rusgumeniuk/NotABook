@@ -119,7 +119,7 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(BookNullException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void DeleteBook_WhenThisBookIsNull_ReturnsBookNullException()
         {
             CurrentBook.DeleteBook();
@@ -204,7 +204,8 @@ namespace NotABookTests
         [ExpectedException(typeof(BookNullException))]
         public void GetIndexOfCategoryById_WhenBookIsNull_ReturnsBookNullException()
         {
-            Book.GetIndexOfCategoryByID(CurrentBook, new Category(CurrentBook).Id);
+            StartFunction();
+            Book.GetIndexOfCategoryByID(CurrentBook, new Category(null).Id);
         }
 
         [TestMethod]
@@ -293,7 +294,7 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ItemNullException))]
         public void DeleteItem_WhenItemIsNull_ReturnsItemNullException()
         {
             StartFunction();
@@ -372,8 +373,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(BookNullException))]
-        public void DeleteCategory_WhenItemIsNull_ReturnsBookNullException()
+        [ExpectedException(typeof(CategoryNullException))]
+        public void DeleteCategory_WhenCategoryIsNull_ReturnsCategoryNullException()
         {
             StartFunction();
             FirstCategory = null;

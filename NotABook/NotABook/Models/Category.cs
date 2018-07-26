@@ -40,7 +40,7 @@ namespace NotABook.Models
         #region Constr
         public Category(Book curBook) : base()
         {
-            CurrentBook = curBook ?? throw new ArgumentNullException();
+            CurrentBook = curBook ?? throw new BookNullException();
             CurrentBook.CategoriesOfBook.Add(this);
         }
 
