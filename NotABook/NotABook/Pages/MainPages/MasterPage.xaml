@@ -4,10 +4,10 @@
              xmlns:localPages1="clr-namespace:NotABook.Pages.MainPages"
              xmlns:detailPages="clr-namespace:NotABook.Pages.DetailPages"             
              xmlns:helpedPages="clr-namespace:NotABook.Pages.DetailPages.HelpedPages"
-             Title="This">
+             Title="Hello here">
     <ContentPage.Content>
-        <StackLayout>                
-            <ListView x:Name="listView" x:FieldModifier="public">
+        <StackLayout>
+            <ListView x:Name="upList" x:FieldModifier="public">
                 <ListView.ItemsSource>
                     <x:Array Type="{x:Type localPages1:MasterPageItem}">
                         <localPages1:MasterPageItem Title ="All books" TargetType ="{x:Type detailPages:AllBooksPage}"/>
@@ -20,7 +20,7 @@
                         <ViewCell>
                             <Grid Padding="5,10">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="1" Text="{Binding Title}"/>
@@ -44,7 +44,7 @@
                         <ViewCell>
                             <Grid Padding="5,10">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="1" Text="{Binding Title}"/>

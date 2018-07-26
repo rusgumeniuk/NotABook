@@ -17,22 +17,22 @@ namespace NotABook.Pages.DetailPages
 			InitializeComponent ();
 		}
 
-        private void BtnCount_Clicked(object sender, EventArgs e)
-        {
-            DisplayAlert("Count", NotABook.App.Books.Count.ToString(), "hmmm");
-        }
+        //private void BtnCount_Clicked(object sender, EventArgs e)
+        //{
+        //    DisplayAlert("Count", NotABook.App.Books.Count.ToString(), "hmmm");
+        //}
 
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            //if(e.SelectedItem is Models.Book book)
-            //{
-            //    if(book != NotABook.App.currentBook)
-            //    {
-            //        NotABook.App.currentBook = book;
-            //        Navigation.PushAsync(new ItemsOfBookPage());
-            //    }
-            //}
-        }
+        //void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    //if(e.SelectedItem is Models.Book book)
+        //    //{
+        //    //    if(book != NotABook.App.currentBook)
+        //    //    {
+        //    //        NotABook.App.currentBook = book;
+        //    //        Navigation.PushAsync(new ItemsOfBookPage());
+        //    //    }
+        //    //}
+        //}
 
         public async void BookList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -43,14 +43,23 @@ namespace NotABook.Pages.DetailPages
             }
         }
 
-        private void OnDelete_Clicked(object sender, EventArgs e)
+        async private void OnDelete_Clicked(object sender, EventArgs e)
         {
-            (((MenuItem)sender).CommandParameter as Models.Book).DeleteBook();
+            if (await DisplayAlert(
+                  "Delete book",
+                  "Do u want to delete item's list?\nAllItems and categories will be deleted too",
+                  "Okey",
+                  "Cancel"))
+                (((MenuItem)sender).CommandParameter as Models.Book).DeleteBook();
         }
 
         async private void OnClearBook_Clicked(object sender, EventArgs e)
         {            
-            if (await DisplayAlert("Title", "Do u want to clear item's list?", "Okey", "Cancel"))
+            if (await DisplayAlert(
+                "Clear all items of the book",
+                "Do u want to clear item's list?\nAllItems will be deleted", 
+                "Okey",
+                "Cancel"))
             {
                 (((MenuItem)sender).CommandParameter as Models.Book).ItemsOfBook.Clear();                
             }   

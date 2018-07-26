@@ -3,17 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NotABook.Pages.DetailPages.ItemsOfBookPage"
              xmlns:app="clr-namespace:NotABook">
-    <!--Title="{Static app:App.currentBook}">-->
+    
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Items of book" HorizontalOptions="Start"/>
-            <Label x:Name="lblIsEmpty"/>
+            <Label x:Name="LblIsEmpty"/>
             <ListView 
-                x:Name="listOfItems"
+                x:Name="ListOfItems"
                 x:FieldModifier="public"
                 ItemsSource="{Binding Items}"
-                ItemSelected="OnItemSelected"
-                ItemTapped="listOfItems_ItemTapped"
+                ItemTapped="ListOfItems_ItemTapped"
                 HasUnevenRows="True"                
                 >
                 <!--IsPullToRefreshEnabled="True"
@@ -23,8 +22,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ViewCell.ContextActions>                                
-                                <MenuItem Clicked="OnHello_Clicked" CommandParameter="{Binding .}" Text="Hello" IsDestructive="True"/>
+                            <ViewCell.ContextActions>                                                                
                                 <MenuItem Clicked ="OnDelete_Clicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True"/>
                                 <MenuItem Clicked="OnDeleteConnetions_Clicked" CommandParameter="{Binding .}" Text="Delete Con" IsDestructive="True"/>
                             </ViewCell.ContextActions>
@@ -32,10 +30,8 @@
                                 <StackLayout Orientation="Horizontal">
                                     <StackLayout>
                                         <Label Text="{Binding Title}" FontSize="Medium"/>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding Description}"/>
-                                            <Label HorizontalOptions="EndAndExpand" Text="{Binding DateOfLastChanging}"/>
-                                        </StackLayout>
+                                        <Label Text="{Binding Description}"/>
+                                        <Label  Text="{Binding DateOfLastChanging}"/>                                        
                                     </StackLayout>
                                 </StackLayout>                                                              
                             </ViewCell.View>
@@ -43,7 +39,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="btnAddNewItem" Text="Add new Item" Clicked="btnAddNewItem_Clicked"/>
+            <Button x:Name="BtnAddNewItem" Text="Add new Item" Clicked="BtnAddNewItem_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -2,15 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NotABook.Pages.DetailPages.CategoryListPage"
-             xmlns:app="clr-namespace:NotABook">
+             xmlns:app="clr-namespace:NotABook"
+             Title="{Binding curBook.Title}">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{x:Binding curBook.Title}"/>
             <ListView 
-                x:Name="categoriesList"
+                x:Name="CategoriesList"
                 ItemsSource="{Static app:App.CategoriesList}"
                 HasUnevenRows="True"
-                ItemSelected="categoriesList_ItemSelected"
+                ItemSelected="CategoriesList_ItemSelected"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -28,12 +29,18 @@
                                     Clicked ="OnDelete_Clicked"
                                     CommandParameter="{Binding .}"
                                     IsDestructive="True"/>
+                                <MenuItem
+                                    Text="Delete all connections"
+                                    x:Name="OnDeleteConnections"
+                                    Clicked="OnDeleteConnections_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout>
                                     <Label Text="{Binding Title}" FontSize="Medium"/>
                                     <StackLayout Orientation="Horizontal" >
-                                        <Label Text="Count of items: " FontAttributes="Italic"/>
+                                        <Label Text="Count of items with this category: " FontAttributes="Italic"/>
                                         <Label Text="{Binding CountOfItemsWithThisCategory}" FontAttributes="Italic"/>
                                     </StackLayout>
                                 </StackLayout>                                

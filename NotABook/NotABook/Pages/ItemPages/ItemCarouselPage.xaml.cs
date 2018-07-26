@@ -25,6 +25,7 @@ namespace NotABook.Pages.ItemPages
         {
             InitializeComponent();
             ItemsSource = category.ItemsWithThisCategory;
+            Models.Book curBook = NotABook.App.currentBook;
             this.BindingContext = this;            
         }
 
@@ -36,16 +37,24 @@ namespace NotABook.Pages.ItemPages
             this.BindingContext = this;                      
         }
 
-        private async void btnEdit_Clicked(object sender, EventArgs e)
+        private async void BtnEdit_Clicked(object sender, EventArgs e)
         {           
             await Navigation.PushAsync(new ItemPages.AddEditItemPage(SelectedItem as Item));
         }
 
        async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-            Item item = (((Button)sender).CommandParameter as Item);            
-            await Navigation.PopAsync();
-            item.DeleteItem();
+            try
+            {
+                await DisplayAlert("", Book.GetIndexOfItemByID(App.currentBook, (((Button)sender).CommandParameter as Item).Id).ToString(), "OK");
+                (((Button)sender).CommandParameter as Item).DeleteItem();
+                await Navigation.PopAsync();
+            }
+            catch(IndexOutOfRangeException ex)
+            {
+               await DisplayAlert("EXC", ex.Message + "\n\n" + ex.StackTrace, "OK");
+            }
+                       
         }
     }
 }

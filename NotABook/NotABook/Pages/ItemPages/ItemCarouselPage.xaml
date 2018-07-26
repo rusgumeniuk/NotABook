@@ -2,13 +2,13 @@
 <CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="NotABook.Pages.ItemPages.ItemCarouselPage"
+              xmlns:book ="clr-namespace:NotABook.Models"
               xmlns:app="clr-namespace:NotABook"
               Title="{Binding curBook.Title}">   
     <CarouselPage.ItemTemplate>
         <DataTemplate x:Name="aaaaaa" x:FieldModifier="public">
             <ContentPage x:Name="ccccc" x:FieldModifier="public">
-                <StackLayout x:Name="vvvvvv" x:FieldModifier="public">                    
-                    <Label x:Name="test"  HorizontalOptions="CenterAndExpand" Text="You are in carousel page"/>
+                <StackLayout x:Name="vvvvvv" x:FieldModifier="public">                                        
                     <StackLayout x:Name="stackL">
                         <Label x:Name="lblTitle" x:FieldModifier="public"  Text="{Binding Title}" FontSize="Medium"/>
                         <Label x:FieldModifier="public" x:Name="lblDateOfChanging" Text="{Binding DateOfLastChanging}"  FontAttributes="Italic"/>
@@ -18,9 +18,9 @@
                         <Label x:FieldModifier="public" x:Name="lblCategories" Text="{Binding CategoriesStr}" HorizontalOptions="EndAndExpand"/>
                     </StackLayout>
                     <StackLayout>
-                        <Label x:FieldModifier="public" x:Name="lblDescript" Text="{Binding Description}"/>
+                        <Label x:FieldModifier="public" x:Name="lblDescript" Text="{Binding Description}"/>                        
                     </StackLayout>
-                    <Button x:Name="btnEdit" Text="Edit item" Clicked="btnEdit_Clicked"/>
+                    <Button x:Name="BtnEdit" Text="Edit item" Clicked="BtnEdit_Clicked"/>
                     <Button x:Name="BtnDelete" Text="Delete item" Clicked="BtnDelete_Clicked" CommandParameter="{Binding .}"/>
                 </StackLayout>
             </ContentPage>

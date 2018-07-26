@@ -31,20 +31,21 @@ namespace NotABook
         public App ()
 		{
             InitializeComponent();
-
             {
-                currentBook = new Book("coolBook");
+                currentBook = new Book("My first book");
+                Book secondBook = new Book("Second book");
+                Book thirdBook = new Book("Third book");
 
-                Book book = new Book("Second");
-                Book book1 = new Book("Third");
+                Category chocolateCategory = new Category(currentBook, "Chocolate");
+                Category flourCategory = new Category(currentBook, "Flour");
+                Category eggsCategory = new Category(currentBook, "Eggs");
+                Category potatoCategory = new Category(currentBook, "Potato");
+                Category tomatoCategory = new Category(currentBook, "Tomato");
+                Category chickenCategory = new Category(currentBook, "Chicken");
 
-                Category appleCategory = new Category(currentBook, "apple");
-                Category saltCateg = new Category(currentBook, "salt");
-                Category meatCategory = new Category(currentBook, "meat");
-
-                Item bisc = new Item(currentBook, "Biscuit", "very good", new ObservableCollection<Category>() { appleCategory });
-                Item salat = new Item(currentBook, "Salat", "very healthy", new ObservableCollection<Category>() { saltCateg });
-                Item meat = new Item(currentBook, "Meeeat", "so cool", new ObservableCollection<Category>() { saltCateg, meatCategory });
+                Item chocolateBiscuit = new Item(currentBook, "Chocolate biscuit", "The best chocolate cake ever", new ObservableCollection<Category>() { chocolateCategory, flourCategory, eggsCategory });
+                Item salatWithPotatoAndTomato = new Item(currentBook, "Salat with potat, tomatos and eggs", "Very healthy salat", new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
+                Item chicken = new Item(currentBook, "Chicken", "Chicken like in KFC", new ObservableCollection<Category>() { chickenCategory, eggsCategory });
             }                      
 
 			MainPage = new Pages.MainPages.StartPage();                                  

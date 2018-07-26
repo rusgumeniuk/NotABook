@@ -1,11 +1,7 @@
 ﻿using NotABook.Models;
 using NotABook.Pages.ItemPages;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,17 +13,25 @@ namespace NotABook.Pages.DetailPages
 	{
         Book book = null;
         Category category = null;
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<Item> Items
+        {
+            get
+            {
+                if (category != null)
+                    return category.ItemsWithThisCategory;
+                if (book != null)
+                    return book.ItemsOfBook;
+                return null;
+            }            
+        }
 
         public ItemsOfBookPage()
         {
             InitializeComponent();
 
-            book = NotABook.App.currentBook;
-            if (NotABook.App.ItemsList.Count < 1)
-                lblIsEmpty.Text = "No one item!";
-            
-            Items = book.ItemsOfBook;
+            book = App.currentBook;
+            if (App.ItemsList.Count < 1)
+                LblIsEmpty.Text = "No one item!";                       
 
             this.BindingContext = this;
         }
@@ -39,9 +43,7 @@ namespace NotABook.Pages.DetailPages
 
             book = currentBook;
             if (book.ItemsOfBook.Count < 1)
-                lblIsEmpty.Text = "No one item!";
-            
-            Items = book.ItemsOfBook;
+                LblIsEmpty.Text = "No one item!";                       
 
             this.BindingContext = this;
         }
@@ -51,31 +53,23 @@ namespace NotABook.Pages.DetailPages
             InitializeComponent();
 
             category = currentCategory;
-            if (category.ItemsWithThisCategory == null) lblIsEmpty.Text = "No one item!";
-            Items = category.ItemsWithThisCategory;
+            if (category.ItemsWithThisCategory == null)
+                LblIsEmpty.Text = "No one item!";
 
             this.BindingContext = this;
         }
 
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-        }
 
-        private async void btnAddNewItem_Clicked(object sender, EventArgs e)
+        private async void BtnAddNewItem_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ItemPages.AddEditItemPage());
         }
 
-        private void BtnDelete_Clicked(object sender, EventArgs e)
-        {
-            
-        }
-
-        async private void listOfItems_ItemTapped(object sender, ItemTappedEventArgs e)
+        async private void ListOfItems_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item is Models.Item item)
             {
-                listOfItems.SelectedItem = null;
+                ListOfItems.SelectedItem = null;
 
                 if (book != null)
                     await Navigation.PushAsync(new ItemCarouselPage(book));
@@ -86,22 +80,35 @@ namespace NotABook.Pages.DetailPages
             }
         }
 
-        public void OnDelete_Clicked(object sender, EventArgs e)
+
+        async public void OnDelete_Clicked(object sender, EventArgs e)
         {
-            (((MenuItem)sender).CommandParameter as Item).DeleteItem();
+            try
+            {
+                if (await DisplayAlert(
+                    "Delete item",
+                    "Do u want to delete this item?",
+                    "Yes", "NO"))
+                    (((MenuItem)sender).CommandParameter as Item).DeleteItem();
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("EXC", ex.Message + "\n\n" + ex.StackTrace, "OK");
+            }         
         }
 
-        private void OnHello_Clicked(object sender, EventArgs e)
+        async private void OnDeleteConnetions_Clicked(object sender, EventArgs e)
         {
-            DisplayAlert("Here", "Hello", "ok");
-        }
+            if (await DisplayAlert(
+               "Delete item",
+               "Do u want to delete all connections with item?",
+               "Yes", "NO"))
+            {
+                //Item item = ((MenuItem)sender).CommandParameter as Item;
+                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item);
 
-        private void OnDeleteConnetions_Clicked(object sender, EventArgs e)
-        {
-            Item item = ((MenuItem)sender).CommandParameter as Item;
-            CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, item);
-
-            DisplayAlert("", $"{item.Title} deleted from selected list", "ok");
+                //DisplayAlert("", $"{item.Title} deleted from selected list", "ok");
+            }               
            
         }
     }

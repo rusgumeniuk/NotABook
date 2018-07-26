@@ -15,7 +15,7 @@ namespace NotABook.Pages.MainPages
 		public StartPage ()
 		{
 			InitializeComponent ();
-            masterPage.listView.ItemSelected += OnItemSelected;
+            masterPage.upList.ItemSelected += UpList_ItemSelected;
             masterPage.downList.ItemSelected += DownList_ItemSelected;
 
             if (Device.RuntimePlatform == Device.UWP)
@@ -33,20 +33,19 @@ namespace NotABook.Pages.MainPages
                 IsPresented = false;
             }
         }
-
-        private void BtnExit_Clicked(object sender, EventArgs e)
-        {
-            DependencyService.Get<Interfaces.IClosingApp>()?.CloseApplication();
-        }
-
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private void UpList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is Pages.MainPages.MasterPageItem item)
             {
                 Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
-                masterPage.listView.SelectedItem = null;
+                masterPage.upList.SelectedItem = null;
                 IsPresented = false;
             }
+        }
+
+        private void BtnExit_Clicked(object sender, EventArgs e)
+        {
+            DependencyService.Get<Interfaces.IClosingApp>()?.CloseApplication();
         }
     }
 }
