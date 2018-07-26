@@ -7,7 +7,7 @@ namespace NotABook.Models
     {
         #region Fields
 
-        protected bool IsTestingOff = false; //To start tests project set "false". 
+        protected bool IsTestingOff = true; //To start testing project set "false". 
         protected string title;
 
         #endregion
@@ -29,7 +29,7 @@ namespace NotABook.Models
 
         public DateTime DateOfCreating { get; private set; }
 
-        public DateTime DateOfLastChanging { get; protected set; }
+        public DateTime DateOfLastChanging { get; internal set; }
 
         #endregion
 
@@ -39,6 +39,8 @@ namespace NotABook.Models
             Id = Guid.NewGuid();
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
+            if (IsTestingOff)
+                OnPropertyChanged("New element");
         }
 
         public BaseClass(string title) : this()
@@ -61,9 +63,7 @@ namespace NotABook.Models
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                this.DateOfLastChanging = DateTime.Now;
-                if(App.currentBook != null)
-                    App.currentBook.DateOfLastChanging = DateTime.Now;
+                this.DateOfLastChanging = DateTime.Now;                
             }                
         }
 

@@ -36,5 +36,13 @@ namespace NotABook.Models
         {
             CurrentBook = book ?? throw new Exceptions.BookNullException();
         }
+
+        public new void OnPropertyChanged(string prop = "")
+        {            
+            base.OnPropertyChanged(prop);
+            if (CurrentBook == null)
+                throw new Exceptions.BookNullException();
+            CurrentBook.DateOfLastChanging = DateTime.Now;
+        }
     }
 }
