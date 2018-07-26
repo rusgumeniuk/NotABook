@@ -310,6 +310,7 @@ namespace NotABook.Models
             return !IsBookContainsCategory(book, categoryId);
         }
 
+        
         #endregion
     }
 }

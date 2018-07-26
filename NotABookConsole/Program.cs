@@ -22,45 +22,8 @@ namespace NotABookConsole
             StartFunction();
             try
             {
-                //string firstTitle = "Ti";
-                //string secondTitle = "To";
-                //string thirdTitle = firstTitle + secondTitle;
-
-                //string secondDesk = "desk";
-                //string thirdDesk = "script";
-
-                //ObservableCollection<Category> categories = new ObservableCollection<Category>() { new Category(CurrentBook, "first"), new Category(CurrentBook, "second") };
-
-                //Item firstItem = new Item(CurrentBook, firstTitle);
-                //Item secondItem = new Item(CurrentBook, secondTitle, secondDesk);
-                //Item thirdItem = new Item(CurrentBook, thirdTitle, thirdDesk, categories);
-
-                //SecondItem = new Item(CurrentBook);
-
-                try
-                {
-                    CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, SecondItem);
-
-                }
-                catch (ArgumentNullException ex)
-                {
-                    Console.WriteLine("arg NULL\n" + ex.Message);
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine("ARG\n" + ex.Message);
-                }        
-                catch(InvalidOperationException ex)
-                {
-                    Console.WriteLine("Invalid Op\n" + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("NO\n" + ex.Message + "\n\n");
-                    Console.WriteLine(ex.StackTrace);
-                }
-
-                Console.WriteLine("end");
+                StartFunction();
+               
             }
             catch (Exception ex)
             {

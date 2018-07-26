@@ -29,13 +29,13 @@ namespace NotABook.Models
                     OnPropertyChanged("Description");
             }
         }        
-
+        //
         public ObservableCollection<Category> Categories
         {
             get
             {
                 if (CurrentBook == null)
-                    throw new BookNullException();             
+                    throw new BookNullException();                
                 ObservableCollection<Category> categories = new ObservableCollection<Category>();             
                 foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
                 {                  
@@ -48,8 +48,11 @@ namespace NotABook.Models
             }
             set
             {
+                if (CurrentBook == null)
+                    throw new BookNullException();
+
                 CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
-                foreach (var category in value)
+                foreach (var category in value ?? throw new ArgumentNullException())
                 {
                     CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
                 }
@@ -63,6 +66,7 @@ namespace NotABook.Models
         #endregion
 
         #region Constr
+        //
         public Item(Book curBook) : base()
         {
             CurrentBook = curBook ?? throw new BookNullException();
@@ -86,13 +90,25 @@ namespace NotABook.Models
         #endregion
 
         #region Methods
-
+        //
         public bool ChangeBook(Book newBook)
         {
-            //TEST IT!
-            Book lastBook = CurrentBook;
+            Book lastBook = this.CurrentBook ?? throw new BookNullException();            
+            lastBook.DeleteItem(this);            
             CurrentBook = newBook ?? throw new BookNullException();
+            CurrentBook.ItemsOfBook.Add(this);            
             return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
+        }
+        public static bool ChangeBook(Book newBook, Item item)
+        {
+            if (item == null)
+                throw new ItemNullException();
+
+            Book lastBook = item.CurrentBook ?? throw new BookNullException();
+            lastBook.DeleteItem(item);
+            item.CurrentBook = newBook ?? throw new BookNullException();
+            item.CurrentBook.ItemsOfBook.Add(item);
+            return !lastBook.ItemsOfBook.Contains(item) && newBook.ItemsOfBook.Contains(item);
         }
 
         public string GetCategoriesInString()
@@ -103,10 +119,10 @@ namespace NotABook.Models
             {
                 stringBuilder.Append(categories.Title).Append(", ");
             }
-            return stringBuilder.Remove(stringBuilder.Length - 2, 2).Append(".").ToString();
+            return stringBuilder.Remove(stringBuilder.Length - 2, 2).ToString();
         }
-
-        public void DeleteItem()
+        //
+        public bool DeleteItem()
         {
             if (CurrentBook == null)
                 throw new BookNullException();
@@ -116,8 +132,23 @@ namespace NotABook.Models
 
             if(IsTestingOff)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
+            return !CurrentBook.ItemsOfBook.Contains(this) && !CategoryInItem.IsItemHasConnection(CurrentBook, this);
+        }              
+        public static  bool DeleteItem(Item item)
+        {
+            if (item == null)
+                throw new ItemNullException();
+            if (item.CurrentBook == null)
+                throw new BookNullException();
+
+            item.CurrentBook.ItemsOfBook.Remove(item);
+            CategoryInItem.DeleteAllConnectionWithItem(item.CurrentBook, item);
+
+            if (item.IsTestingOff)
+                item.CurrentBook.OnPropertyChanged("DateOfLastChanging");
+
+            return !item.CurrentBook.ItemsOfBook.Contains(item) && !CategoryInItem.IsItemHasConnection(item.CurrentBook, item);
         }
-        
 
         #endregion
     }
