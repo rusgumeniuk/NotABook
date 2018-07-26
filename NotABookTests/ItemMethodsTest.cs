@@ -8,31 +8,33 @@ namespace NotABookTests
     [TestClass]
     public class ItemMethodsTest
     {
-        private readonly Book CurrentBook = new Book("Boook");
+        #region StartedInfo
+        Book CurrentBook = null;
+        Item FirstItem = null;
+        Item SecondItem = null;
+        Category FirstCategory = null;
+        Category SecondCategory = null;
+        #endregion
 
-        //[TestMethod]
-        //public void ItemConstructor_WhenNotNull_ReturnsNewItem()
-        //{
-        //    string firstTitle = "Ti";
-        //    string secondTitle = "To";
-        //    string thirdTitle = firstTitle + secondTitle;
+        /*
+         * TODO list:
+         * DeleteItem()
+         * Categories
+         * ChangeBook
+         */
 
-        //    string secondDesk = "desk";
-        //    string thirdDesk = "script";
 
-        //    ObservableCollection<Category> categories = new ObservableCollection<Category>() { new Category(CurrentBook, "first"), new Category(CurrentBook, "second") };
 
-        //    Item firstItem = new Item(CurrentBook, firstTitle);
-        //    Item secondItem = new Item(CurrentBook, secondTitle, secondDesk);
-        //    Item thirdItem = new Item(CurrentBook, thirdTitle, thirdDesk, categories);
 
-        //    Assert.AreEqual(firstItem.Title, firstTitle);
-        //    Assert.IsNull(firstItem.Description);
+        private void StartFunction()
+        {
+            CurrentBook = new Book("CurBook");
 
-        //    Assert.AreEqual(secondItem.Description, secondDesk);
+            FirstCategory = new Category(CurrentBook, "Sweet");
+            SecondCategory = new Category(CurrentBook, "Salt");
 
-        //    Assert.AreEqual(thirdItem.Title, firstTitle + secondTitle);
-        //    //Assert.AreEqual(thirdItem.Categories.Count, categories.Count);
-        //}
+            FirstItem = new Item(CurrentBook, "1 item", "desc1", new ObservableCollection<Category>() { FirstCategory });
+            SecondItem = new Item(CurrentBook, "2 item", "descript 2", new ObservableCollection<Category>() { SecondCategory, FirstCategory });
+        }
     }
 }

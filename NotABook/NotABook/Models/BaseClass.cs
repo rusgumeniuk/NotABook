@@ -61,7 +61,7 @@ namespace NotABook.Models
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                DateOfLastChanging = DateTime.Now;
+                this.DateOfLastChanging = DateTime.Now;
                 if(App.currentBook != null)
                     App.currentBook.DateOfLastChanging = DateTime.Now;
             }

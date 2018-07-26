@@ -98,17 +98,10 @@ namespace NotABook.Pages.DetailPages
 
         private void OnDeleteConnetions_Clicked(object sender, EventArgs e)
         {
-            
-            try
-            {
-                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item);
-            }
-            catch(Exception ex)
-            {
-                DisplayAlert("exception", ex.Message, "ok");                
-            }
-            
-            DisplayAlert("", "deleted", "ok");
+            Item item = ((MenuItem)sender).CommandParameter as Item;
+            CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, item);
+
+            DisplayAlert("", $"{item.Title} deleted from selected list", "ok");
            
         }
     }

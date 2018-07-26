@@ -18,13 +18,17 @@ namespace NotABook.Models
         {
             get
             {
-                if (CurrentBook == null) throw new ArgumentNullException();
-                if (CurrentBook.CategoryInItemsOfBook.Count < 1) return null;
+                if (CurrentBook == null)
+                    throw new ArgumentNullException();
+                if (CurrentBook.CategoryInItemsOfBook.Count < 1)
+                    throw new ArgumentException();
+                if (!CategoryInItem.IsCategoryHasConnection(CurrentBook, this))
+                    throw new InvalidProgramException();
 
                 ObservableCollection<Item> items = new ObservableCollection<Item>();
-                foreach (var item in CurrentBook.CategoryInItemsOfBook)
+                foreach (var pair in CurrentBook.CategoryInItemsOfBook)
                 {
-                    if (item.Category.Id == this.Id) items.Add(item.Item);
+                    if (pair.GetCategoryId == Id) items.Add(pair.Item);
                 }
                 return items;
             }
@@ -49,17 +53,22 @@ namespace NotABook.Models
 
         public void DeleteCategory()
         {
-            if (CurrentBook == null) throw new ArgumentNullException();
+            if (CurrentBook == null)
+                throw new ArgumentNullException();
             CurrentBook.CategoriesOfBook.Remove(this);
             RemoveCategoryFromAllItems();
-            CurrentBook.OnPropertyChanged("DateOfLastChanging");
+
+            if(IsTestingOff)
+                CurrentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         public void RemoveCategoryFromAllItems()
         {
-            if (CurrentBook == null) throw new ArgumentNullException();
+            if (CurrentBook == null)
+                throw new ArgumentNullException();
             CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, this);
-            CurrentBook.OnPropertyChanged("DateOfLastChanging");
+            if (IsTestingOff)
+                CurrentBook.OnPropertyChanged("DateOfLastChanging");
         }
 
         #endregion

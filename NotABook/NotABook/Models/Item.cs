@@ -33,27 +33,20 @@ namespace NotABook.Models
         {
             get
             {
-                int i = 0;
-                Console.WriteLine(++i);
-                if (CurrentBook == null) throw new ArgumentNullException();
-                Console.WriteLine(++i);
-                ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                Console.WriteLine(++i);
+                if (CurrentBook == null) throw new ArgumentNullException();             
+                ObservableCollection<Category> categories = new ObservableCollection<Category>();             
                 foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
-                {
-                    Console.WriteLine("cycle");
-                    if (pair.Item.Id == Id)
-                    {
-                        Console.WriteLine("IF start");
-                        categories.Add(pair.Category);
-                        Console.WriteLine("IF end");
+                {                  
+                    if (pair.GetItemId == Id)
+                    {                 
+                        categories.Add(pair.Category);                     
                     }
                 }
                 return categories;
             }
             set
             {
-                //CategoryInItem.DeleteAllConnectionWithItem(this);
+                CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
                 foreach (var category in value)
                 {
                     CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
@@ -64,7 +57,7 @@ namespace NotABook.Models
             }
         }
 
-        public string CategoriesStr { get => this.GetCategories(); }
+        public string CategoriesStr { get => this.GetCategoriesInString(); }
         #endregion
 
         #region Constr
@@ -100,7 +93,7 @@ namespace NotABook.Models
             return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
         }
 
-        public string GetCategories()
+        public string GetCategoriesInString()
         {
             if (Categories.Count < 1) return "No one categories";
             StringBuilder stringBuilder = new StringBuilder();
@@ -113,12 +106,16 @@ namespace NotABook.Models
 
         public void DeleteItem()
         {
-            if (CurrentBook == null) throw new ArgumentNullException();
-            this.Categories.Clear();
+            if (CurrentBook == null)
+                throw new ArgumentNullException();
+            
             CurrentBook.ItemsOfBook.Remove(this);
             CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
-            CurrentBook.OnPropertyChanged("DateOfLastChanging");
+
+            if(IsTestingOff)
+                CurrentBook.OnPropertyChanged("DateOfLastChanging");
         }
+        
 
         #endregion
     }
