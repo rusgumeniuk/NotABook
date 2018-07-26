@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NotABook.Models;
 using System.Collections.ObjectModel;
+using NotABook.Models.Exceptions;
+
 namespace NotABookTests
 {
     [TestClass]
@@ -37,8 +39,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void IsItemHasConnection_WhenArgIsNull_ReturnsArgumentException()
+        [ExpectedException(typeof(ItemNullException))]
+        public void IsItemHasConnection_WhenItemIsNull_ReturnsItemNullException()
         {
             StartFunction();
 
@@ -46,14 +48,14 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void IsItemHasConnection_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void IsItemHasConnection_WhenBookIsNull_ReturnsBookNullException()
         {
             CategoryInItem.IsItemHasConnection(CurrentBook, null);
         }
         #endregion
 
-        #region GerGuidOfPair
+        #region GetGuidOfPair
         [TestMethod]
         public void GetGuidOfPairTest_WhenNotNull_ReturnsRealGuid()
         {
@@ -128,16 +130,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CreateCategoryInItemTest_WhenIPairAlreadyInList_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementAlreadyExistException))]
+        public void CreateCategoryInItemTest_WhenIPairAlreadyInList_ReturnsElementAlreadyExistException()
         {
             StartFunction();
             CategoryInItem.CreateCategoryInItem(CurrentBook, FirstCategory, FirstItem);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateCategoryInItemTest_WhenBookIsNull_ReturnsArgumentException()
+        [ExpectedException(typeof(BookNullException))]
+        public void CreateCategoryInItemTest_WhenBookIsNull_ReturnsBookNullException()
         {
             StartFunction();
             CategoryInItem.CreateCategoryInItem(null, new Category(CurrentBook), FirstItem);
@@ -156,8 +158,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetPairListByCategory_WhenCategoryIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(CategoryNullException))]
+        public void GetPairListByCategory_WhenCategoryIsNull_ReturnsCategoryNullException()
         {
             StartFunction();
 
@@ -165,8 +167,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetPairListByCategory_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void GetPairListByCategory_WhenBookIsNull_ReturnsBookNullException()
         {
             StartFunction();
             CategoryInItem.GetCIIListByCategory(null, SecondCategory);
@@ -186,8 +188,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteConnection_WhenAfterDeletingTryToDeleteAgain_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteConnection_WhenAfterDeletingTryToDeleteAgain_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
 
@@ -211,8 +213,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteConnectionWithArgs_WhenPairAlreadyDeleted_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteConnectionWithArgs_WhenPairAlreadyDeleted_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             CategoryInItem.DeleteConnection(CurrentBook, SecondCategory, SecondItem);
@@ -220,16 +222,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteConnectionWithArgs_WhenPairHasWrongArguments_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteConnectionWithArgs_WhenPairHasWrongArguments_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             CategoryInItem.DeleteConnection(CurrentBook, SecondCategory, new Item(CurrentBook));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteConnectionWithArgs_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteConnectionWithArgs_WhenBookIsNull_ReturnsBookNullException()
         {
             CategoryInItem.DeleteConnection(null, SecondCategory, SecondItem);
         }
@@ -255,16 +257,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteAllConnectionWithItem_WhenItemIsWrong_ReturnsArgumentException()
+        [ExpectedException(typeof(ItemNullException))]
+        public void DeleteAllConnectionWithItem_WhenItemIsNull_ReturnsItemNullException()
         {
             StartFunction();
             CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, null);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteAllConnectionWithItem_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteAllConnectionWithItem_WhenBookIsNull_ReturnsBookNullException()
         {
             StartFunction();
             CategoryInItem.DeleteAllConnectionWithItem(null, SecondItem);

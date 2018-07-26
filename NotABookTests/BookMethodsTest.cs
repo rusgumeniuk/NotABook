@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NotABook.Models;
 using System.Collections.ObjectModel;
+using NotABook.Models.Exceptions;
 namespace NotABookTests
 {
     [TestClass]
@@ -51,15 +52,15 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void IsBooksContainsThisBook_WhenThisBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void IsBooksContainsThisBook_WhenThisBookIsNull_ReturnsBookNullException()
         {
             Book.IsBooksContainsThisBook(CurrentBook);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void IsBooksContainsThisBook_WhenGuidISEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void IsBooksContainsThisBook_WhenGuidISEmpty_ReturnsEmptyGuidException()
         {
             Book.IsBooksContainsThisBook(Guid.Empty);
         }
@@ -80,8 +81,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void AddBookToCollection_WhenAlreadyInCollection_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementAlreadyExistException))]
+        public void AddBookToCollection_WhenAlreadyInCollection_ReturnsElementAlreadyExistException()
         {
             StartFunction();
 
@@ -89,8 +90,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AddBookToCollection_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void AddBookToCollection_WhenBookIsNull_ReturnsBookNullException()
         {
             Book.AddBookToCollection(CurrentBook);
         }
@@ -118,22 +119,22 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void DeleteBook_WhenThisBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteBook_WhenThisBookIsNull_ReturnsBookNullException()
         {
             CurrentBook.DeleteBook();
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteBook_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteBook_WhenBookIsNull_ReturnsBookNullException()
         {
             Book.DeleteBook(CurrentBook);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteBook_WhenBooksNotContainsTheseBooks_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteBook_WhenBooksNotContainsTheseBooks_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             CurrentBook.DeleteBook();
@@ -141,8 +142,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteBook_WhenStaticMethodAndBooksNotContainsTheseBooks_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteBook_WhenStaticMethodAndBooksNotContainsTheseBooks_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             Book.DeleteBook(CurrentBook);
@@ -164,8 +165,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetIndeOfItemById_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void GetIndeOfItemById_WhenBookIsNull_ReturnsBookNullException()
         {
             Book.GetIndexOfItemByID(CurrentBook, new Item(CurrentBook).Id);
         }
@@ -179,8 +180,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetIndeOfItemById_WhenItemIdIsEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void GetIndeOfItemById_WhenItemIdIsEmpty_ReturnsEmptyGuidException()
         {
             StartFunction();
             Book.GetIndexOfItemByID(CurrentBook, Guid.Empty);
@@ -200,8 +201,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetIndexOfCategoryById_WhenBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void GetIndexOfCategoryById_WhenBookIsNull_ReturnsBookNullException()
         {
             Book.GetIndexOfCategoryByID(CurrentBook, new Category(CurrentBook).Id);
         }
@@ -215,8 +216,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetIndexOfCategoryById_WhenCategoryIdIsEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void GetIndexOfCategoryById_WhenCategoryIdIsEmpty_ReturnsEmptyGuidException()
         {
             StartFunction();
             Book.GetIndexOfCategoryByID(CurrentBook, Guid.Empty);
@@ -293,7 +294,7 @@ namespace NotABookTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteItem_WhenItemIsNull_ReturnsArgumentNullException()
+        public void DeleteItem_WhenItemIsNull_ReturnsItemNullException()
         {
             StartFunction();
             FirstItem = null;
@@ -301,16 +302,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteItem_WhenGuidIsEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void DeleteItem_WhenGuidIsEmpty_ReturnsEmptyGuidException()
         {
             StartFunction();
             CurrentBook.DeleteItem(Guid.Empty);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteItem_WhenBookHasNotThisItem_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteItem_WhenBookHasNotThisItem_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             Item newItem = new Item(new Book());
@@ -320,15 +321,15 @@ namespace NotABookTests
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteItem_WhenStaticMethodAndBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteItem_WhenStaticMethodAndBookIsNull_ReturnsBookNullException()
         {                    
             Book.DeleteItem(CurrentBook, FirstItem);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteItem_WhenStaticMethodAndItemIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(ItemNullException))]
+        public void DeleteItem_WhenStaticMethodAndItemIsNull_ReturnsItemNullException()
         {
             StartFunction();
             FirstItem = null;
@@ -336,16 +337,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteItem_WhenStaticMethodAndGuidIsEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void DeleteItem_WhenStaticMethodAndGuidIsEmpty_ReturnsEmptyGuidException()
         {
             StartFunction();
             Book.DeleteItem(CurrentBook, Guid.Empty);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteItem_WhenStaticMethodAndBookHasNotThisItem_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteItem_WhenStaticMethodAndBookHasNotThisItem_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             Item newItem = new Item(new Book());
@@ -371,8 +372,8 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteCategory_WhenItemIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteCategory_WhenItemIsNull_ReturnsBookNullException()
         {
             StartFunction();
             FirstCategory = null;
@@ -380,16 +381,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteCategory_WhenGuidIsEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void DeleteCategory_WhenGuidIsEmpty_ReturnsEmptyGuidException()
         {
             StartFunction();
             CurrentBook.DeleteCategory(Guid.Empty);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteCategory_WhenBookHasNotThisCategory_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteCategory_WhenBookHasNotThisCategory_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             Category newCategory = new Category(new Book());
@@ -399,15 +400,15 @@ namespace NotABookTests
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteCategory_WhenStaticMethodAndBookIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(BookNullException))]
+        public void DeleteCategory_WhenStaticMethodAndBookIsNull_ReturnsBookNullException()
         {
             Book.DeleteCategory(CurrentBook, FirstCategory);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteCategory_WhenStaticMethodAndCategoryIsNull_ReturnsArgumentNullException()
+        [ExpectedException(typeof(CategoryNullException))]
+        public void DeleteCategory_WhenStaticMethodAndCategoryIsNull_ReturnsCategoryNullException()
         {
             StartFunction();
             FirstCategory = null;
@@ -415,16 +416,16 @@ namespace NotABookTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteCategory_WhenStaticMethodAndGuidIsEmpty_ReturnsArgumentException()
+        [ExpectedException(typeof(EmptyGuidException))]
+        public void DeleteCategory_WhenStaticMethodAndGuidIsEmpty_ReturnsEmptyGuidException()
         {
             StartFunction();
             Book.DeleteCategory(CurrentBook, Guid.Empty);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void DeleteCategory_WhenStaticMethodAndBookHasNotThisCategory_ReturnsArgumentException()
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
+        public void DeleteCategory_WhenStaticMethodAndBookHasNotThisCategory_ReturnsElementIsNotInCollectionException()
         {
             StartFunction();
             Category newCategory = new Category(new Book());
