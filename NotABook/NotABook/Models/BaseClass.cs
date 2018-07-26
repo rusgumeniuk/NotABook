@@ -8,7 +8,7 @@ namespace NotABook.Models
         #region Fields
 
         protected bool IsTestingOff = false; //To start tests project set "false". 
-        private string title;
+        protected string title;
 
         #endregion
 
@@ -64,8 +64,21 @@ namespace NotABook.Models
                 this.DateOfLastChanging = DateTime.Now;
                 if(App.currentBook != null)
                     App.currentBook.DateOfLastChanging = DateTime.Now;
+            }                
+        }
+
+        public void OnPropertyChanged(Book book, string prop = "")
+        {
+            if (PropertyChanged != null)
+            {
+                if (book == null)
+                    throw new Exceptions.BookNullException();
+
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                DateOfLastChanging = DateTime.Now;
+                book.DateOfLastChanging = DateTime.Now;
             }
-                
+
         }
 
         #endregion

@@ -4,11 +4,9 @@ using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
-    public class CategoryInItem : BaseClass
+    public class CategoryInItem : ElementOfTheBook
     {
-        #region Fields
-        public Book CurrentBook { get; private set; }
-
+        #region Fields        
         private Guid categoryId;
 
         private Guid itemId;
@@ -35,12 +33,11 @@ namespace NotABook.Models
 
         #region Constr
 
-        public CategoryInItem(Book curBook)
-        {
-            CurrentBook = curBook ?? throw new BookNullException();
+        public CategoryInItem(Book curBook) : base(curBook)
+        {            
             CurrentBook.CategoryInItemsOfBook.Add(this);
         }
-        public CategoryInItem(Book curBook, Category category, Item item) 
+        public CategoryInItem(Book curBook, Category category, Item item) : base(curBook)
         {
             if(IsContainsThisPair(curBook, category, item))
                 throw new ElementAlreadyExistException();

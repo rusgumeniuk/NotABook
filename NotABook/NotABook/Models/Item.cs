@@ -7,13 +7,13 @@ using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
-    public class Item : BaseClass 
+    public class Item : ElementOfTheBook 
     {
         #region Fields
 
         private string description;
         
-        public Book CurrentBook { get; private set; }
+        //public Book CurrentBook { get; private set; }
 
         #endregion
 
@@ -67,9 +67,8 @@ namespace NotABook.Models
 
         #region Constr
         //
-        public Item(Book curBook) : base()
-        {
-            CurrentBook = curBook ?? throw new BookNullException();
+        public Item(Book curBook) : base(curBook)
+        {            
             curBook.ItemsOfBook.Add(this);
         }
 

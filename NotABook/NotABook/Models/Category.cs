@@ -4,9 +4,8 @@ using NotABook.Models.Exceptions;
 
 namespace NotABook.Models
 {
-    public class Category : BaseClass
-    {
-        public Book CurrentBook { get; private set; }
+    public class Category : ElementOfTheBook
+    {        
 
         #region Prop
 
@@ -38,9 +37,8 @@ namespace NotABook.Models
         #endregion
 
         #region Constr
-        public Category(Book curBook) : base()
-        {
-            CurrentBook = curBook ?? throw new BookNullException();
+        public Category(Book curBook) : base(curBook)
+        {            
             CurrentBook.CategoriesOfBook.Add(this);
         }
 
