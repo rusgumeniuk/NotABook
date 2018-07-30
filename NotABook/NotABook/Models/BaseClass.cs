@@ -7,7 +7,7 @@ namespace NotABook.Models
     {
         #region Fields
 
-        protected bool IsTestingOff = true; //To start testing project set "false". 
+        protected static bool IsTestingOff = true; //To start testing project set "false". 
         protected string title;
 
         #endregion

@@ -4,6 +4,7 @@
              x:Class="NotABook.Pages.MainPages.StartPage"
                    xmlns:masterPage="clr-namespace:NotABook.Pages.MainPages"
                   xmlns:detailPages="clr-namespace:NotABook.Pages.DetailPages"
+                  xmlns:helpedPages="clr-namespace:NotABook.Pages.DetailPages.HelpedPages"
                   Title="Prog">
     <MasterDetailPage.Master>
         <masterPage:MasterPage x:Name="masterPage"/>

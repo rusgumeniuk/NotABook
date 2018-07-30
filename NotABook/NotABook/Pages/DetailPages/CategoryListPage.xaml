@@ -2,49 +2,48 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NotABook.Pages.DetailPages.CategoryListPage"
-             xmlns:app="clr-namespace:NotABook"
-             Title="{Binding curBook.Title}">
+             xmlns:app ="clr-namespace:NotABook">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{x:Binding curBook.Title}"/>
-            <ListView 
-                x:Name="CategoriesList"
+            <Label Text="Categories of current book:"/>
+            <ListView
+                x:Name="ListOfCategories"
+                ItemTapped="ListOfCategories_ItemTapped"
                 ItemsSource="{Static app:App.CategoriesList}"
-                HasUnevenRows="True"
-                ItemSelected="CategoriesList_ItemSelected"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem
-                                    Text="Edit"
+                                <MenuItem 
                                     x:Name="OnEdit"
+                                    Text="Edit"
                                     Clicked="OnEdit_Clicked"
                                     CommandParameter="{Binding .}"
                                     IsDestructive="True"/>
-                                <MenuItem 
-                                    Text="Delete"
+                                <MenuItem
                                     x:Name="OnDelete"
-                                    Clicked ="OnDelete_Clicked"
+                                    Text="Delete"
+                                    Clicked="OnDelete_Clicked"                                    
                                     CommandParameter="{Binding .}"
                                     IsDestructive="True"/>
                                 <MenuItem
-                                    Text="Delete all connections"
                                     x:Name="OnDeleteConnections"
+                                    Text="Delete con"
                                     Clicked="OnDeleteConnections_Clicked"
                                     CommandParameter="{Binding .}"
                                     IsDestructive="True"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout>
-                                    <Label Text="{Binding Title}" FontSize="Medium"/>
-                                    <StackLayout Orientation="Horizontal" >
-                                        <Label Text="Count of items with this category: " FontAttributes="Italic"/>
-                                        <Label Text="{Binding CountOfItemsWithThisCategory}" FontAttributes="Italic"/>
+                                    <Label x:Name="LblNameOfCategory" Text="{Binding Title}" FontAttributes="Bold" FontSize="Medium"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Count of items with this category:" FontAttributes="Italic"/>
+                                        <Label x:Name="LblCountOfItems" Text="{Binding GetStringCountOfItemsWithCategory}" FontAttributes="Italic"/>
                                     </StackLayout>
-                                </StackLayout>                                
-                            </ViewCell.View>
+                                    <Label x:Name="LblDateOfLastChange" Text="{Binding DateOfLastChanging}"/>
+                                </StackLayout>
+                            </ViewCell.View>                            
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

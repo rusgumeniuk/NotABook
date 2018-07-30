@@ -28,31 +28,39 @@ namespace NotABook.Pages.DetailPages.HelpedPages
 
         async private void BtnSave_Clicked(object sender, EventArgs e)
         {
+            if (String.IsNullOrWhiteSpace(entryTitle.Text))
+            {
+                await DisplayAlert("WTF", "Please, enter some name for category", "ok");
+                return;
+            }
+
             if (curCategory != null)
             {
                 curCategory.Title = entryTitle.Text;
             }
             else
             {
-                Models.Category category = new Models.Category(NotABook.App.currentBook)
+                Models.Category category = new Models.Category(App.currentBook)
                 {
                     Title = entryTitle.Text
                 };
             }
-            await Navigation.PopAsync(true);
-        }
-
-        //private void BtnTest_Clicked(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        DisplayAlert("title", curCategory.Title, "OK");
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        DisplayAlert("title", ex.Message, "OK");
-        //    }
+            await Navigation.PopAsync();
+            //try
+            //{
+                            
+            //}
+            //catch(IndexOutOfRangeException ex)
+            //{
+            //    await DisplayAlert("", ex.StackTrace, "OK");
+            //    DependencyService.Get<Interfaces.IClosingApp>()?.CloseApplication();
+            //    //await DisplayAlert("", ex.Message, "OK");
+            //}
+            //catch(Exception ex)
+            //{
+            //    await DisplayAlert("", ex.Message, "OK");
+            //}
             
-        //}
+        }
     }
 }

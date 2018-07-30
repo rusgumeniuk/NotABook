@@ -44,17 +44,17 @@ namespace NotABook.Pages.ItemPages
 
        async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-            try
-            {
-                await DisplayAlert("", Book.GetIndexOfItemByID(App.currentBook, (((Button)sender).CommandParameter as Item).Id).ToString(), "OK");
-                (((Button)sender).CommandParameter as Item).DeleteItem();
-                await Navigation.PopAsync();
-            }
-            catch(IndexOutOfRangeException ex)
-            {
-               await DisplayAlert("EXC", ex.Message + "\n\n" + ex.StackTrace, "OK");
-            }
-                       
+            await DisplayAlert("Deletin item", (((Button)sender).CommandParameter as Item).DeleteItemStr(), "ok");
+            await Navigation.PopAsync();
+            //try
+            //{
+            //    //await DisplayAlert("", Book.GetIndexOfItemByID(App.currentBook, (((Button)sender).CommandParameter as Item).Id).ToString(), "OK");
+               
+            //}
+            //catch(IndexOutOfRangeException ex)
+            //{
+            //   await DisplayAlert("EXC", ex.Message + "\n\n" + ex.StackTrace, "OK");
+            //}                       
         }
     }
 }

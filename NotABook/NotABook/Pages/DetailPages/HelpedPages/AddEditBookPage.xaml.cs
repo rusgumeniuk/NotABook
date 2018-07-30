@@ -26,9 +26,15 @@ namespace NotABook.Pages.DetailPages.HelpedPages
             this.BindingContext = curBook;
         }
 
-       async private void BtnSave_Clicked(object sender, EventArgs e)
+        async private void BtnSave_Clicked(object sender, EventArgs e)
         {
-            if(curBook != null)
+            if (!IsRequiredFieldsIsFillIn())
+            {
+                await DisplayAlert("Error", "This item want to has Title", "ok");
+                return;
+            }
+
+            if (curBook != null)
             {
                 curBook.Title = entryTitle.Text;
             }
@@ -40,6 +46,11 @@ namespace NotABook.Pages.DetailPages.HelpedPages
                 };
             }
             await Navigation.PopAsync(true);
+        }
+
+        private bool IsRequiredFieldsIsFillIn()
+        {
+            return !String.IsNullOrWhiteSpace(entryTitle.Text);
         }
     }
 }

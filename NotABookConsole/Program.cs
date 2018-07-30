@@ -22,8 +22,11 @@ namespace NotABookConsole
             StartFunction();
             try
             {
-                StartFunction();
-               
+                Category category = new Category(CurrentBook);
+                
+                string text = category.GetStringCountOfItemsWithCategory;
+                Console.WriteLine(text);
+
             }
             catch (Exception ex)
             {
@@ -31,7 +34,7 @@ namespace NotABookConsole
                 Console.WriteLine(ex.StackTrace);
             }
 
-            
+            Console.WriteLine("end");
 
             Console.ReadKey();
         }

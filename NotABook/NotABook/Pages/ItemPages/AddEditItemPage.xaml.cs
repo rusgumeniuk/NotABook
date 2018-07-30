@@ -28,6 +28,7 @@ namespace NotABook.Pages.ItemPages
             InitializeComponent();
             currentItem = item;
             BindingContext = item;
+            SelectedCategories = item.Categories ?? new ObservableCollection<Category>();
             CreatePickers(item);
         }
 
@@ -50,48 +51,58 @@ namespace NotABook.Pages.ItemPages
             if (PickerOfSelectedCategories.SelectedIndex != -1)
             {
                 Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
+                int selectedIndex = PickerOfSelectedCategories.SelectedIndex;
+                PickerOfSelectedCategories.SelectedIndex = -1;
                 try
                 {
-                    SelectedCategories.Remove(selectedCategory);
+                    SelectedCategories.RemoveAt(selectedIndex);
                 }
-                catch(Exception /*ex*/)
+                catch (Exception ex)
                 {
-                    //DisplayAlert("", ex.Message, "ok");
-                }                               
-                DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
-                PickerOfSelectedCategories.SelectedIndex = -1;
+                    DisplayAlert("Title", ex.Message, "OK");
+                    return;
+                    //return;
+                }
+                //DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
+                
             }            
         }
 
 
         private async void BtnSave_Clicked(object sender, EventArgs e)
-        {            
+        {
+            if (!IsRequiredFieldsIsFillIn())
+            {
+                await DisplayAlert("Error", "This item want to has Title", "ok");
+                return;
+            }
+
             if (currentItem != null)
             {
-                try
-                {
-                    CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
-                }
-                catch(Exception ex)
-                {
-                   await DisplayAlert("btn", ex.Message, "ok");
-                }
-                
+                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
+                //try
+                //{
+                //    //CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
+                //}
+                //catch (Exception ex)
+                //{
+                //    await DisplayAlert("btn", ex.Message, "ok");
+                //}
+
                 currentItem.Title = entryTitle.Text;
                 currentItem.Categories = SelectedCategories;
                 currentItem.Description = editorDescript.Text;
             }
             else
             {
-                Item newItem = new Item(NotABook.App.currentBook)
+                Item newItem = new Item(App.currentBook)
                 {
                     Title = entryTitle.Text,
                     Description = editorDescript.Text,
                     Categories = SelectedCategories
                 };
-            }
-            //DisplayAlert("STRING", text, "ok");
-            await Navigation.PopAsync(true);                  
+            }            
+            await Navigation.PopAsync();                  
         }        
 
         private void CreatePickers()
@@ -108,9 +119,14 @@ namespace NotABook.Pages.ItemPages
             PickerOfAllCategories.ItemsSource = App.CategoriesList;
             PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
 
-            SelectedCategories = item.Categories;
+            SelectedCategories = item.Categories ?? new ObservableCollection<Category>();
             PickerOfSelectedCategories.ItemsSource = SelectedCategories;
             PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
+        }
+
+        private bool IsRequiredFieldsIsFillIn()
+        {
+            return !String.IsNullOrWhiteSpace(entryTitle.Text);
         }
     }
 }

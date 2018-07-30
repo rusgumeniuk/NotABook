@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NotABook.Models;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using NotABook.Models;
+using NotABook.Pages;
+using System.Collections.ObjectModel;
 
 namespace NotABook.Pages.DetailPages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CategoryListPage : ContentPage
 	{
-        public CategoryListPage()
-        {
-            InitializeComponent();
-            Models.Category[] categories = NotABook.App.currentBook.CategoriesOfBook.ToArray();
-            Models.Book curBook = NotABook.App.currentBook;
+		public CategoryListPage ()
+		{
+			InitializeComponent ();            
+		}
 
-            BindingContext = this;
-        }
-
-        private async void CategoriesList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async private void ListOfCategories_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.SelectedItem is Models.Category selectedCategory)
+            if(e.Item is Category selectedCategory)
             {
                 await Navigation.PushAsync(new ItemsOfBookPage(selectedCategory));
             }
@@ -31,25 +30,36 @@ namespace NotABook.Pages.DetailPages
 
         async private void OnEdit_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new HelpedPages.AddEditCategoryPage(((MenuItem)sender).CommandParameter as Models.Category));
+            await Navigation.PushAsync(new HelpedPages.AddEditCategoryPage(((MenuItem)sender).CommandParameter as Category));
         }
 
         async private void OnDelete_Clicked(object sender, EventArgs e)
-        {            
-            if (await DisplayAlert("Delete category", "Do u want to delete this category?", "Yes", "No"))
-                (((MenuItem)sender).CommandParameter as Models.Category).DeleteCategory();            
+        {
+            if(await DisplayAlert("Delete category",
+                "Do u want to delete category?",
+                "Yes", "NO"))
+            {
+                await DisplayAlert("Deleting of category", 
+                                    (((MenuItem)sender).CommandParameter as Category).DeleteCategoryStr(),
+                                     "OK");
+            }
         }
+
         async private void OnDeleteConnections_Clicked(object sender, EventArgs e)
         {
-            if (await DisplayAlert("Delete all connections", "Do u want to delete all connections?", "Yes", "No"))
-                CategoryInItem.DeleteAllConnectionWithCategory(App.currentBook, (((MenuItem)sender).CommandParameter as Models.Category));
+            if (await DisplayAlert("Delete connections with category",
+                "Do u want to delete all connections?",
+                "Yes", "NO"))
+            {
+                await DisplayAlert("Deleting connections",
+                    (((MenuItem)sender).CommandParameter as Category).RemoveCategoryFromAllItemsStr(),
+                    "OK");
+            }
         }
 
         async private void BtnAddNewCategory_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new HelpedPages.AddEditCategoryPage());
         }
-
-      
     }
 }

@@ -22,6 +22,18 @@ namespace NotABookTests
          * RemoveCtegoryFromAllItems
          * DeleteCategory         
          */
+         [TestMethod]
+         //[ExpectedException(typeof(ElementIsNotInCollectionException))]
+         public void GetStringCountOfItemsWithCategory_WhenHasNotConnections_ReturnsElementIsNotInThisCollection()
+        {
+            StartFunction();
+
+            Category category = new Category(CurrentBook);
+            //Assert.IsFalse(CategoryInItem.IsCategoryHasConnection(CurrentBook, category));
+            string text = category.GetStringCountOfItemsWithCategory;
+            
+        }
+
 
 
         [TestMethod]

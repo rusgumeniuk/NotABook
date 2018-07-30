@@ -12,7 +12,6 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Deb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\DetailPages\ItemsOfBookPage.xaml.g.cs
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\ItemPages\AddEditItemPage.xaml.g.cs
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\ItemPages\ItemCarouselPage.xaml.g.cs
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\ItemPages\ItemPage.xaml.g.cs
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\MainPages\MasterPage.xaml.g.cs
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\MainPages\StartPage.xaml.g.cs
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.csproj.CoreCompileInputs.cache
@@ -21,3 +20,4 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Deb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\XamlC.stamp
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.pdb
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.csprojAssemblyReference.cache

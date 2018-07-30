@@ -22,7 +22,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ViewCell.ContextActions>                                                                
+                            <ViewCell.ContextActions>
+                                <MenuItem x:Name="OnEdit" Clicked="OnEdit_Clicked" CommandParameter="{Binding .}" IsDestructive="True" Text="Edit"/>
                                 <MenuItem Clicked ="OnDelete_Clicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True"/>
                                 <MenuItem Clicked="OnDeleteConnetions_Clicked" CommandParameter="{Binding .}" Text="Delete Con" IsDestructive="True"/>
                             </ViewCell.ContextActions>

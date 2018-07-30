@@ -15,24 +15,7 @@ namespace NotABook.Pages.DetailPages
 		public AllBooksPage ()
 		{
 			InitializeComponent ();
-		}
-
-        //private void BtnCount_Clicked(object sender, EventArgs e)
-        //{
-        //    DisplayAlert("Count", NotABook.App.Books.Count.ToString(), "hmmm");
-        //}
-
-        //void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        //{
-        //    //if(e.SelectedItem is Models.Book book)
-        //    //{
-        //    //    if(book != NotABook.App.currentBook)
-        //    //    {
-        //    //        NotABook.App.currentBook = book;
-        //    //        Navigation.PushAsync(new ItemsOfBookPage());
-        //    //    }
-        //    //}
-        //}
+		}            
 
         public async void BookList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -50,7 +33,7 @@ namespace NotABook.Pages.DetailPages
                   "Do u want to delete item's list?\nAllItems and categories will be deleted too",
                   "Okey",
                   "Cancel"))
-                (((MenuItem)sender).CommandParameter as Models.Book).DeleteBook();
+                    await DisplayAlert("Deletin book", (((MenuItem)sender).CommandParameter as Models.Book).DeleteBook().ToString(), "ok");
         }
 
         async private void OnClearBook_Clicked(object sender, EventArgs e)

@@ -103,13 +103,15 @@ namespace NotABook.Pages.DetailPages
                "Delete item",
                "Do u want to delete all connections with item?",
                "Yes", "NO"))
-            {
-                //Item item = ((MenuItem)sender).CommandParameter as Item;
-                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item);
-
-                //DisplayAlert("", $"{item.Title} deleted from selected list", "ok");
+            {                
+                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item);             
             }               
            
+        }
+
+        async private void OnEdit_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AddEditItemPage(((MenuItem)sender).CommandParameter as Item));
         }
     }
 }

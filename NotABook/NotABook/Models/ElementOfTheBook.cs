@@ -13,7 +13,8 @@ namespace NotABook.Models
             set
             {
                 currentBook = value;
-                OnPropertyChanged(currentBook, "CurrentBook");
+                if(IsTestingOff)
+                    OnPropertyChanged(currentBook, "CurrentBook");
             }
         }
 
@@ -30,11 +31,17 @@ namespace NotABook.Models
 
         public ElementOfTheBook(Book book) : base()
         {
-            CurrentBook = book ?? throw new Exceptions.BookNullException();
+            if (IsTestingOff)
+                CurrentBook = book ?? new Book("NULL BOOK");
+            else
+                CurrentBook = book ?? throw new Exceptions.BookNullException();
         }
         public ElementOfTheBook(Book book, string title) : base(title)
         {
-            CurrentBook = book ?? throw new Exceptions.BookNullException();
+            if (IsTestingOff)
+                CurrentBook = book ?? new Book("NULL BOOK");
+            else
+                CurrentBook = book ?? throw new Exceptions.BookNullException();
         }
 
         public new void OnPropertyChanged(string prop = "")
