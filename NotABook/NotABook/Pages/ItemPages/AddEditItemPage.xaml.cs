@@ -50,21 +50,24 @@ namespace NotABook.Pages.ItemPages
         {
             if (PickerOfSelectedCategories.SelectedIndex != -1)
             {
-                Category selectedCategory = PickerOfSelectedCategories.SelectedItem as Category;
-                int selectedIndex = PickerOfSelectedCategories.SelectedIndex;
-                PickerOfSelectedCategories.SelectedIndex = -1;
+                Category selectedCategory = (Category)(PickerOfSelectedCategories.SelectedItem as Category);
+                //int selectedIndex = (int)(PickerOfSelectedCategories.SelectedIndex);
+                
                 try
                 {
-                    SelectedCategories.RemoveAt(selectedIndex);
+                    SelectedCategories.Remove(selectedCategory);
+                    //SelectedCategories.RemoveAt(selectedIndex);
+                    //PickerOfSelectedCategories.
                 }
                 catch (Exception ex)
                 {
-                    DisplayAlert("Title", ex.Message, "OK");
-                    return;
+                    //DisplayAlert("Title", ex.Message, "OK");
+                    //return;
+                    
                     //return;
                 }
                 //DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
-                
+               // PickerOfSelectedCategories.SelectedIndex = -1;
             }            
         }
 
@@ -110,8 +113,8 @@ namespace NotABook.Pages.ItemPages
             PickerOfAllCategories.ItemsSource = App.CategoriesList;
             PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
 
-            PickerOfSelectedCategories.ItemsSource = SelectedCategories;
-            PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
+            PickerOfSelectedCategories.SetBinding(Picker.ItemsSourceProperty, new Binding() { Source = SelectedCategories, Mode = BindingMode.TwoWay });//,  BindingMode.TwoWay, null,null);
+            PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;            
         }
 
         private void CreatePickers(Item item)
@@ -120,7 +123,9 @@ namespace NotABook.Pages.ItemPages
             PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
 
             SelectedCategories = item.Categories ?? new ObservableCollection<Category>();
-            PickerOfSelectedCategories.ItemsSource = SelectedCategories;
+            //PickerOfSelectedCategories.ItemsSource = SelectedCategories;
+            //Binding 
+            PickerOfSelectedCategories.SetBinding(Picker.ItemsSourceProperty, new Binding() {Source=SelectedCategories , Mode = BindingMode.TwoWay});//,  BindingMode.TwoWay, null,null);
             PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
         }
 
