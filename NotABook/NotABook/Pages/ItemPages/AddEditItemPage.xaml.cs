@@ -49,24 +49,30 @@ namespace NotABook.Pages.ItemPages
         private void PickerOfSelectedCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (PickerOfSelectedCategories.SelectedIndex != -1)
-            {
-                Category selectedCategory = (Category)(PickerOfSelectedCategories.SelectedItem as Category);
-                //int selectedIndex = (int)(PickerOfSelectedCategories.SelectedIndex);
-                
-                try
+            {                
+                int selectedIndex = (int)(PickerOfSelectedCategories.SelectedIndex);
+                if (SelectedCategories.Count >= selectedIndex + 1 && SelectedCategories[selectedIndex].ToString() == PickerOfSelectedCategories.Items[selectedIndex])
                 {
-                    SelectedCategories.Remove(selectedCategory);
-                    //SelectedCategories.RemoveAt(selectedIndex);
-                    //PickerOfSelectedCategories.
+                 //   LblTest.Text = selectedCategory.Title;
+                   // return;
+                    try
+                    {
+                        SelectedCategories.RemoveAt(selectedIndex);
+                        PickerOfSelectedCategories.SelectedIndex = -1;
+                        //SelectedCategories.RemoveAt(selectedIndex);
+                        //PickerOfSelectedCategories.
+                    }
+                    catch (Exception ex)
+                    {
+                        //DisplayAlert("Title", ex.Message, "OK");
+                        //return;
+
+                        //return;
+                    }
+                    //
                 }
-                catch (Exception ex)
-                {
-                    //DisplayAlert("Title", ex.Message, "OK");
-                    //return;
-                    
-                    //return;
-                }
-                //DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
+                else DisplayAlert("t", "LOL", "asd");
+               // DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
                // PickerOfSelectedCategories.SelectedIndex = -1;
             }            
         }
@@ -125,7 +131,7 @@ namespace NotABook.Pages.ItemPages
             SelectedCategories = item.Categories ?? new ObservableCollection<Category>();
             //PickerOfSelectedCategories.ItemsSource = SelectedCategories;
             //Binding 
-            PickerOfSelectedCategories.SetBinding(Picker.ItemsSourceProperty, new Binding() {Source=SelectedCategories , Mode = BindingMode.TwoWay});//,  BindingMode.TwoWay, null,null);
+            PickerOfSelectedCategories.SetBinding(Picker.ItemsSourceProperty, new Binding() {Source=SelectedCategories,  Mode = BindingMode.TwoWay});//,  BindingMode.TwoWay, null,null);
             PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
         }
 
