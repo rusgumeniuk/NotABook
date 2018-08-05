@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using NotABook.Models;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,130 +14,80 @@ namespace NotABook.Pages.ItemPages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AddEditItemPage : ContentPage
 	{
-        Models.Item currentItem = null;
-        ObservableCollection<Category> SelectedCategories = new ObservableCollection<Category>();      
+        Item CurrentItem = null;
+        ObservableCollection<Category> SelectedCategories { get; set; } = new ObservableCollection<Category>();
 
-        public AddEditItemPage ()
+		public AddEditItemPage ()
 		{
 			InitializeComponent ();
-            CreatePickers();       
+
+            PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+            PickerSelectedCategories.ItemsSource = SelectedCategories;
         }
 
-        public AddEditItemPage(Models.Item item)
+        public AddEditItemPage(Item item)
         {
             InitializeComponent();
-            currentItem = item;
-            BindingContext = item;
-            SelectedCategories = item.Categories ?? new ObservableCollection<Category>();
-            CreatePickers(item);
+            CurrentItem = item;
+            BindingContext = CurrentItem;
+            SelectedCategories = item.Categories;
+
+            PickerAllCategories.ItemsSource = item?.CurrentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+            PickerSelectedCategories.ItemsSource = SelectedCategories;
         }
 
 
-        private void PickerOfAllCategories_SelectedIndexChanged(object sender, EventArgs e)
+        private void PickerAllCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (PickerOfAllCategories.SelectedIndex != -1)
+            if (PickerAllCategories.SelectedIndex != -1)
             {
-                if (!SelectedCategories.Contains(PickerOfAllCategories.SelectedItem as Category))
+                if (!SelectedCategories.Contains(PickerAllCategories.SelectedItem as Category))
                 {
-                    SelectedCategories.Add(PickerOfAllCategories.SelectedItem as Category);
-                    PickerOfAllCategories.SelectedIndex = -1;
+                    SelectedCategories.Add(PickerAllCategories.SelectedItem as Category);
+                    PickerAllCategories.SelectedIndex = -1;
                 }
-                else DisplayAlert("Ooops", "You have already added this category", "Okey");
+                else DisplayAlert("Oh no", "u have already added this category", "ok");
             }
         }
 
-        private void PickerOfSelectedCategories_SelectedIndexChanged(object sender, EventArgs e)
+        async private void PickerSelectedCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (PickerOfSelectedCategories.SelectedIndex != -1)
-            {                
-                int selectedIndex = (int)(PickerOfSelectedCategories.SelectedIndex);
-                if (SelectedCategories.Count >= selectedIndex + 1 && SelectedCategories[selectedIndex].ToString() == PickerOfSelectedCategories.Items[selectedIndex])
+            if (PickerSelectedCategories.SelectedIndex != -1)
+            {
+                try
                 {
-                 //   LblTest.Text = selectedCategory.Title;
-                   // return;
-                    try
+                    if (SelectedCategories.Contains(PickerSelectedCategories.SelectedItem as Category))
                     {
-                        SelectedCategories.RemoveAt(selectedIndex);
-                        PickerOfSelectedCategories.SelectedIndex = -1;
-                        //SelectedCategories.RemoveAt(selectedIndex);
-                        //PickerOfSelectedCategories.
+                        Category selectedCategory = PickerSelectedCategories.SelectedItem as Category;
+                        SelectedCategories.Remove(selectedCategory);
+                        PickerSelectedCategories.SelectedIndex = -1;
                     }
-                    catch (Exception ex)
-                    {
-                        //DisplayAlert("Title", ex.Message, "OK");
-                        //return;
-
-                        //return;
-                    }
-                    //
+                    else await DisplayAlert("hmm", "error select", "oops");
                 }
-                else DisplayAlert("t", "LOL", "asd");
-               // DisplayAlert("Category removed", selectedCategory.Title + " was removed from list", "ok");
-               // PickerOfSelectedCategories.SelectedIndex = -1;
-            }            
+                catch (Exception) { }            
+            }
         }
 
-
-        private async void BtnSave_Clicked(object sender, EventArgs e)
+        async private void BtnSave_Clicked(object sender, EventArgs e)
         {
-            if (!IsRequiredFieldsIsFillIn())
+            if (String.IsNullOrWhiteSpace(EntryTitle.Text))
             {
-                await DisplayAlert("Error", "This item want to has Title", "ok");
+                await DisplayAlert("No way", "Your item need some title", "thx");
                 return;
             }
-
-            if (currentItem != null)
+                
+            if(CurrentItem == null)
             {
-                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
-                //try
-                //{
-                //    //CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, currentItem);
-                //}
-                //catch (Exception ex)
-                //{
-                //    await DisplayAlert("btn", ex.Message, "ok");
-                //}
-
-                currentItem.Title = entryTitle.Text;
-                currentItem.Categories = SelectedCategories;
-                currentItem.Description = editorDescript.Text;
+                Item newItem = new Item(App.currentBook, EntryTitle.Text, EntryDescription.Text, SelectedCategories);
             }
             else
             {
-                Item newItem = new Item(App.currentBook)
-                {
-                    Title = entryTitle.Text,
-                    Description = editorDescript.Text,
-                    Categories = SelectedCategories
-                };
-            }            
-            await Navigation.PopAsync();                  
-        }        
+                CurrentItem.Title = EntryTitle.Text;
+                CurrentItem.Description = EntryDescription.Text;
+                CurrentItem.Categories = SelectedCategories;                
+            }
 
-        private void CreatePickers()
-        {
-            PickerOfAllCategories.ItemsSource = App.CategoriesList;
-            PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
-
-            PickerOfSelectedCategories.SetBinding(Picker.ItemsSourceProperty, new Binding() { Source = SelectedCategories, Mode = BindingMode.TwoWay });//,  BindingMode.TwoWay, null,null);
-            PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;            
-        }
-
-        private void CreatePickers(Item item)
-        {
-            PickerOfAllCategories.ItemsSource = App.CategoriesList;
-            PickerOfAllCategories.SelectedIndexChanged += PickerOfAllCategories_SelectedIndexChanged; ;
-
-            SelectedCategories = item.Categories ?? new ObservableCollection<Category>();
-            //PickerOfSelectedCategories.ItemsSource = SelectedCategories;
-            //Binding 
-            PickerOfSelectedCategories.SetBinding(Picker.ItemsSourceProperty, new Binding() {Source=SelectedCategories,  Mode = BindingMode.TwoWay});//,  BindingMode.TwoWay, null,null);
-            PickerOfSelectedCategories.SelectedIndexChanged += PickerOfSelectedCategories_SelectedIndexChanged;
-        }
-
-        private bool IsRequiredFieldsIsFillIn()
-        {
-            return !String.IsNullOrWhiteSpace(entryTitle.Text);
+            await Navigation.PopAsync();
         }
     }
 }

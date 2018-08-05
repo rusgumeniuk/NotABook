@@ -9,7 +9,7 @@
             <ListView
                 x:Name="ListOfCategories"
                 ItemTapped="ListOfCategories_ItemTapped"
-                ItemsSource="{Static app:App.CategoriesList}"
+                ItemsSource="{Binding Categories}"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>

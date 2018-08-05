@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NotABook.Pages.ItemPages.AddEditItemPage"
-             xmlns:app="clr-namespace:NotABook">
+             x:Class="NotABook.Pages.ItemPages.AddEditItemPage">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Title: " FontSize="Medium"/>
-                <Entry HorizontalOptions="FillAndExpand" x:Name="entryTitle" Text="{Binding Title}"/>
+                <Entry x:Name="EntryTitle" Text="{Binding Title}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
 
-            <Label x:Name="LblTest" Text="Select Categories:" FontAttributes="Italic" FontSize="Medium"/>
-            <Picker x:Name="PickerOfAllCategories"/>
-            <Label Text="Selected Categories:" FontAttributes="Italic" FontSize="Medium"/>
-            <Picker x:Name="PickerOfSelectedCategories"/>
+            <Label x:Name="LblSelectCategories" Text="Select categories" FontAttributes="Italic" FontSize="Medium"/>
+            <Picker x:Name="PickerAllCategories" SelectedIndexChanged="PickerAllCategories_SelectedIndexChanged"/>
+
+            <Label x:Name="LblSelectedCategories" Text="Selected categories:" FontAttributes="Italic" FontSize="Medium"/>
+            <Picker x:Name="PickerSelectedCategories" SelectedIndexChanged="PickerSelectedCategories_SelectedIndexChanged" />
 
             <Label Text="Description:" FontSize="Medium"/>
-            <Editor x:Name="editorDescript" Text="{Binding Description}"/>
+            <Editor x:Name="EntryDescription" Text="{Binding Description}"/>
             <Button x:Name="BtnSave" Clicked="BtnSave_Clicked" Text="Save" HorizontalOptions="EndAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
