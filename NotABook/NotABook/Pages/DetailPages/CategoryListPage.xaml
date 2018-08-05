@@ -8,8 +8,7 @@
             <Label Text="Categories of current book:"/>
             <ListView
                 x:Name="ListOfCategories"
-                ItemTapped="ListOfCategories_ItemTapped"
-                ItemsSource="{Binding Categories}"
+                ItemTapped="ListOfCategories_ItemTapped"                
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>

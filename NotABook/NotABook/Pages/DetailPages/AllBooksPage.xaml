@@ -27,11 +27,23 @@
                                     CommandParameter="{Binding .}"
                                     IsDestructive="True"/>
                                 <MenuItem 
-                                    Text="Clear book"
+                                    Text="Delete items"
                                     x:Name="OnClearBook"
                                     Clicked="OnClearBook_Clicked"
                                     CommandParameter="{Binding .}"
-                                    IsDestructive="True"/>                                
+                                    IsDestructive="True"/>
+                                <MenuItem 
+                                    x:Name="OnClearCategoriesList"
+                                    Text="Delete categories"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="OnClearCategoriesList_Clicked"
+                                    IsDestructive="True"/>
+                                <MenuItem
+                                    x:Name="OnDeleteAllElements"
+                                    Clicked="OnDeleteAllElements_Clicked"
+                                    Text="Delete all elements"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"/>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <StackLayout>

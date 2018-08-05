@@ -26,6 +26,11 @@ namespace NotABook.Pages.DetailPages
             }
         }
 
+        async private void OnEdit_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Pages.DetailPages.HelpedPages.AddEditBookPage(((MenuItem)sender).CommandParameter as Models.Book));
+        }
+
         async private void OnDelete_Clicked(object sender, EventArgs e)
         {
             if (await DisplayAlert(
@@ -44,18 +49,39 @@ namespace NotABook.Pages.DetailPages
                 "Okey",
                 "Cancel"))
             {
-                (((MenuItem)sender).CommandParameter as Models.Book).ItemsOfBook.Clear();                
+                Models.Book.ClearItemsList(((MenuItem)sender).CommandParameter as Models.Book);
             }   
         }
 
-        async private void OnEdit_Clicked(object sender, EventArgs e)
+        async private void OnClearCategoriesList_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Pages.DetailPages.HelpedPages.AddEditBookPage(((MenuItem)sender).CommandParameter as Models.Book)); 
+            if (await DisplayAlert(
+               "Clear all categories of the book",
+               "Do u want to clear categories's list?\nAll categories will be deleted",
+               "Okey",
+               "Cancel"))
+            {
+                Models.Book.ClearCaregoriesList(((MenuItem)sender).CommandParameter as Models.Book);
+            }
+        }
+
+        async private void OnDeleteAllElements_Clicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert(
+               "Delete all elements of the book",
+               "Do u want to delete all elements?\nAll elements will be deleted",
+               "Okey",
+               "Cancel"))
+            {
+                Models.Book.RemoveAllElementsOfBook(((MenuItem)sender).CommandParameter as Models.Book);
+            }
         }
 
         async private void BtnAddNewBook_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Pages.DetailPages.HelpedPages.AddEditBookPage());
         }
+
+       
     }
 }

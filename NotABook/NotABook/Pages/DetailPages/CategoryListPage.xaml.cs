@@ -15,12 +15,14 @@ namespace NotABook.Pages.DetailPages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CategoryListPage : ContentPage
 	{
-        ObservableCollection<Category> Categories => App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+        //ObservableCollection<Category> Categories => App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+
         public CategoryListPage ()
 		{
 			InitializeComponent ();
-            BindingContext = this;
-		}
+            //BindingContext = this;
+            ListOfCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+        }
 
         async private void ListOfCategories_ItemTapped(object sender, ItemTappedEventArgs e)
         {

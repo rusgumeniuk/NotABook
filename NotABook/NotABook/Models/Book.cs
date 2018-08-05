@@ -347,6 +347,7 @@ namespace NotABook.Models
             return -1;
         }
         
+
         public bool DeleteItem(Item item)
         {
             if (BaseClass.IsTestingOff)
@@ -510,6 +511,65 @@ namespace NotABook.Models
             book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].DeleteCategory();
             return !IsBookContainsCategory(book, categoryId);
         }        
+
+
+        public static bool ClearItemsList(Book book)
+        {
+            if (IsTestingOff)
+            {
+                if (book == null)
+                    return false;                             
+            }
+            else
+            {
+                if (book == null)
+                    throw new BookNullException();
+            }
+
+            while (book.ItemsOfBook.Count > 0)
+            {
+                if (!book.ItemsOfBook[0].DeleteItem())
+                    return false;
+            }
+            return book.ItemsOfBook.Count == 0;
+        }
+        public static bool ClearCaregoriesList(Book book)
+        {
+            if (IsTestingOff)
+            {
+                if (book == null)
+                    return false;
+            }
+            else
+            {
+                if (book == null)
+                    throw new BookNullException();
+            }
+
+            while(book.CategoriesOfBook.Count > 0)
+            {
+                if (!book.CategoriesOfBook[0].DeleteCategory())
+                    return false;
+            }            
+            return book.CategoriesOfBook.Count == 0;
+        }
+
+        public static bool RemoveAllElementsOfBook(Book book)
+        {
+            if (IsTestingOff)
+            {
+                if (book == null)
+                    return false;
+            }
+            else
+            {
+                if (book == null)
+                    throw new BookNullException();
+            }
+
+            return ClearItemsList(book) && ClearCaregoriesList(book);
+
+        }
         #endregion
     }
 }
