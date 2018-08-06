@@ -15,12 +15,11 @@ namespace NotABook.Pages.ItemPages
 	public partial class AddEditItemPage : ContentPage
 	{
         Item CurrentItem = null;
-        ObservableCollection<Category> SelectedCategories { get; set; } = new ObservableCollection<Category>();
-
+        ObservableCollection<Category> SelectedCategories { get; set; } = new ObservableCollection<Category>();               
+        
 		public AddEditItemPage ()
 		{
-			InitializeComponent ();
-
+			InitializeComponent ();                        
             PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
             PickerSelectedCategories.ItemsSource = SelectedCategories;
         }
@@ -31,7 +30,7 @@ namespace NotABook.Pages.ItemPages
             CurrentItem = item;
             BindingContext = CurrentItem;
             SelectedCategories = item.Categories;
-
+            
             PickerAllCategories.ItemsSource = item?.CurrentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
             PickerSelectedCategories.ItemsSource = SelectedCategories;
         }

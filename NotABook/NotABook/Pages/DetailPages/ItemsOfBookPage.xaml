@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NotABook.Pages.DetailPages.ItemsOfBookPage"
-             xmlns:app="clr-namespace:NotABook">
+             xmlns:app="clr-namespace:NotABook"
+             Title="Items of book">
     
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Items of book" HorizontalOptions="Start"/>
+        <StackLayout>            
             <Label x:Name="LblIsEmpty"/>
             <ListView 
                 x:Name="ListOfItems"
@@ -15,10 +15,6 @@
                 ItemTapped="ListOfItems_ItemTapped"
                 HasUnevenRows="True"                
                 >
-                <!--IsPullToRefreshEnabled="True"
-                RefreshCommand="{Binding RefreshCommand}"
-                IsRefreshing="{Binding IsRefreshing}"-->
-                
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

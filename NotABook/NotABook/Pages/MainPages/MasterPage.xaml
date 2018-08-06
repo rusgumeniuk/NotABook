@@ -4,7 +4,7 @@
              xmlns:localPages1="clr-namespace:NotABook.Pages.MainPages"
              xmlns:detailPages="clr-namespace:NotABook.Pages.DetailPages"             
              xmlns:helpedPages="clr-namespace:NotABook.Pages.DetailPages.HelpedPages"
-             Title="Hello here">
+             Title="Main Page">
     <ContentPage.Content>
         <StackLayout>
             <ListView x:Name="upList" x:FieldModifier="public">

@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NotABook.Pages.DetailPages.CategoryListPage"
-             xmlns:app ="clr-namespace:NotABook">
+             xmlns:app ="clr-namespace:NotABook"
+             Title="Categories of the book">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Categories of current book:"/>
+        <StackLayout>            
             <ListView
                 x:Name="ListOfCategories"
                 ItemTapped="ListOfCategories_ItemTapped"                

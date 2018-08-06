@@ -4,7 +4,7 @@
               x:Class="NotABook.Pages.ItemPages.ItemCarouselPage"
               xmlns:book ="clr-namespace:NotABook.Models"
               xmlns:app="clr-namespace:NotABook"
-              Title="{Binding curBook.Title}">   
+              Title="Carousel of items">   
     <CarouselPage.ItemTemplate>
         <DataTemplate x:Name="aaaaaa" x:FieldModifier="public">
             <ContentPage x:Name="ccccc" x:FieldModifier="public">

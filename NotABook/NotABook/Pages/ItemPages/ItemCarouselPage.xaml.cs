@@ -13,11 +13,12 @@ namespace NotABook.Pages.ItemPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ItemCarouselPage : CarouselPage
     {
+        Models.Book CurBook { get; set; }
         public ItemCarouselPage(Models.Book currentBook)
         {
             InitializeComponent();
             ItemsSource = App.ItemsList;
-            Models.Book curBook = NotABook.App.currentBook;
+            CurBook = NotABook.App.currentBook;
             this.BindingContext = this;                                
         }
 
@@ -25,7 +26,7 @@ namespace NotABook.Pages.ItemPages
         {
             InitializeComponent();
             ItemsSource = category.ItemsWithThisCategory;
-            Models.Book curBook = NotABook.App.currentBook;
+            CurBook = category.CurrentBook;
             this.BindingContext = this;            
         }
 
@@ -33,7 +34,7 @@ namespace NotABook.Pages.ItemPages
         {
             InitializeComponent();
             ItemsSource = NotABook.App.ItemsList;
-            Models.Book curBook = NotABook.App.currentBook;
+            CurBook = item.CurrentBook;
             this.BindingContext = this;                      
         }
 
