@@ -16,7 +16,7 @@
             <Picker x:Name="PickerSelectedCategories" SelectedIndexChanged="PickerSelectedCategories_SelectedIndexChanged" />
 
             <Label Text="Description:" FontSize="Medium"/>
-            <Editor x:Name="EntryDescription" Text="{Binding Description}"/>
+            <Editor x:Name="EntryDescription" Text="{Binding Description.Text}"/>
             <Button x:Name="BtnSave" Clicked="BtnSave_Clicked" Text="Save" HorizontalOptions="EndAndExpand"/>
         </StackLayout>
     </ContentPage.Content>

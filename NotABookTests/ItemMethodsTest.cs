@@ -23,8 +23,8 @@ namespace NotABookTests
             StartFunction();
             Book newBook = new Book();
 
-            Assert.AreEqual(FirstItem.CurrentBook, CurrentBook);           
-            Assert.AreEqual(newBook, new Item(newBook, "Title", " desk").CurrentBook);
+            Assert.AreEqual(FirstItem.CurrentBook, CurrentBook);
+            Assert.AreEqual(newBook, new Item(newBook, "Title", Description.CreateDescription("desk")).CurrentBook);
         }
 
         [TestMethod]
@@ -125,8 +125,8 @@ namespace NotABookTests
             FirstCategory = new Category(CurrentBook, "Sweet");
             SecondCategory = new Category(CurrentBook, "Salt");
 
-            FirstItem = new Item(CurrentBook, "1 item", "desc1", new ObservableCollection<Category>() { FirstCategory });
-            SecondItem = new Item(CurrentBook, "2 item", "descript 2", new ObservableCollection<Category>() { SecondCategory, FirstCategory });
+            FirstItem = new Item(CurrentBook, "1 item", Description.CreateDescription("desc1"), new ObservableCollection<Category>() { FirstCategory });
+            SecondItem = new Item(CurrentBook, "2 item", Description.CreateDescription("descript 2"), new ObservableCollection<Category>() { SecondCategory, FirstCategory });
         }
     }
 }

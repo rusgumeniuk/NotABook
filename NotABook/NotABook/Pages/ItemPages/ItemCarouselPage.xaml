@@ -18,7 +18,7 @@
                         <Label x:FieldModifier="public" x:Name="lblCategories" Text="{Binding CategoriesStr}" HorizontalOptions="EndAndExpand"/>
                     </StackLayout>
                     <StackLayout>
-                        <Label x:FieldModifier="public" x:Name="lblDescript" Text="{Binding Description}"/>                        
+                        <Label x:FieldModifier="public" x:Name="lblDescript" Text="{Binding Description.Text}"/>                        
                     </StackLayout>
                     <Button x:Name="BtnEdit" Text="Edit item" Clicked="BtnEdit_Clicked"/>
                     <Button x:Name="BtnDelete" Text="Delete item" Clicked="BtnDelete_Clicked" CommandParameter="{Binding .}"/>

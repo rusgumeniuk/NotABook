@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NotABook.Models.Exceptions;
+//using System.IO;
 
 namespace NotABook.Models
 {
@@ -11,13 +12,13 @@ namespace NotABook.Models
     {
         #region Fields
 
-        private string description;
+        private Description description;
 
         #endregion
 
         #region Prop        
 
-        public string Description
+        public Description Description
         {
             get => description;
             set
@@ -107,12 +108,12 @@ namespace NotABook.Models
             Title = title;
         }
 
-        public Item(Book curBook, string title, string descriprion) : this(curBook, title)
+        public Item(Book curBook, string title, Description description) : this(curBook, title)
         {
-            Description = descriprion;
+            Description = description;
         }
 
-        public Item(Book curBook, string title, string descriprion, ObservableCollection<Category> categories) : this(curBook, title, descriprion)
+        public Item(Book curBook, string title, Description description, ObservableCollection<Category> categories) : this(curBook, title, description)
         {
             Categories = categories;
         }
@@ -257,5 +258,30 @@ namespace NotABook.Models
         }
 
         #endregion
+    }
+
+    public class Description : BaseClass
+    {
+        public string Text { get; set; }
+        public List<Object> Files { get; set; }
+
+        private Description(string text)
+        {
+            Text = text;
+        }
+        private Description(string text, List<Object> list) : this(text)
+        {
+            Files = list;
+        }
+
+        public static Description CreateDescription(string text)
+        {
+            return new Description(text);
+        }
+        public static Description CreateDescription(string text, List<Object> list)
+        {
+            return new Description(text, list);
+        }
+
     }
 }

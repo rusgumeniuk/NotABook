@@ -78,12 +78,12 @@ namespace NotABook.Pages.ItemPages
                 
             if(CurrentItem == null)
             {
-                Item newItem = new Item(App.currentBook, EntryTitle.Text, EntryDescription.Text, SelectedCategories);
+                Item newItem = new Item(App.currentBook, EntryTitle.Text, Description.CreateDescription(EntryDescription.Text), SelectedCategories);
             }
             else
             {
                 CurrentItem.Title = EntryTitle.Text;
-                CurrentItem.Description = EntryDescription.Text;
+                CurrentItem.Description = Description.CreateDescription(EntryDescription.Text);
                 CurrentItem.Categories = SelectedCategories;                
             }
 

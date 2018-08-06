@@ -31,7 +31,7 @@
                                 <StackLayout Orientation="Horizontal">
                                     <StackLayout>
                                         <Label Text="{Binding Title}" FontSize="Medium"/>
-                                        <Label Text="{Binding Description}"/>
+                                        <Label Text="{Binding Description.Text}"/>
                                         <Label  Text="{Binding DateOfLastChanging}"/>                                        
                                     </StackLayout>
                                 </StackLayout>                                                              
