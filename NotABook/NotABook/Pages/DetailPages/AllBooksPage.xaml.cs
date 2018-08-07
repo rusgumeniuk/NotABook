@@ -14,7 +14,10 @@ namespace NotABook.Pages.DetailPages
 	{
 		public AllBooksPage ()
 		{
-			InitializeComponent ();
+			InitializeComponent();
+            //LBLTEst.Text = ModelsLibrary.Class1.Method();
+            //LBLTEst.Text = 
+            
 		}            
 
         public async void BookList_ItemTapped(object sender, ItemTappedEventArgs e)

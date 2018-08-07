@@ -23,11 +23,15 @@ namespace NotABookWPF
         public MainWindow()
         {
             InitializeComponent();
+            LeftListView.ItemsSource = new List<int>() { 10, 0, 2 };
+            CBStack.ItemsSource = new List<string>() { "first", "second", "third" };
+            //Book book = new Book("This book");
+            //ItemsListView.ItemsSource = new System.Collections.ObjectModel.ObservableCollection<Item>() { new Item(book, "First"), new Item(book, "Second") };
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BtnText_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("HIIII");
+            BtnText.Content = ModelsLibrary.Class1.Method();
         }
     }
 }
