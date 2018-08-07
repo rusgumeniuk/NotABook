@@ -31,7 +31,7 @@ namespace NotABookWPF
 
         private void BtnText_Click(object sender, RoutedEventArgs e)
         {
-            BtnText.Content = ModelsLibrary.Class1.Method();
+            //BtnText.Content = ModelsLibrary.Class1.Method();
         }
     }
 }

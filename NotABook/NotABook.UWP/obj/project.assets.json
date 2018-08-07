@@ -308,11 +308,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -804,11 +826,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -1301,11 +1345,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -1622,11 +1688,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -2118,11 +2206,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -2615,11 +2725,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -3111,11 +3243,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -3608,11 +3762,33 @@
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
       },
+      "ClassLibrary1/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClassLibrary1.dll": {}
+        }
+      },
+      "ModelsLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ModelsLibrary.dll": {}
+        }
+      },
       "NotABook/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Xamarin.Forms": "3.1.0.637273"
+          "ClassLibrary1": "1.0.0",
+          "ModelsLibrary": "1.0.0",
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
           "bin/placeholder/NotABook.dll": {}
@@ -7436,6 +7612,16 @@
         "xamarin.forms.nuspec"
       ]
     },
+    "ClassLibrary1/1.0.0": {
+      "type": "project",
+      "path": "../../ClassLibrary1/ClassLibrary1.csproj",
+      "msbuildProject": "../../ClassLibrary1/ClassLibrary1.csproj"
+    },
+    "ModelsLibrary/1.0.0": {
+      "type": "project",
+      "path": "../../ModelsLibrary/ModelsLibrary.csproj",
+      "msbuildProject": "../../ModelsLibrary/ModelsLibrary.csproj"
+    },
     "NotABook/1.0.0": {
       "type": "project",
       "path": "../NotABook/NotABook.csproj",
@@ -7530,5 +7716,24 @@
         "#import": []
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Forms from 3.1.0.697729 to 3.1.0.637273. Reference the package directly from the project to select a different version. \r\n NotABook.UWP -> NotABook -> Xamarin.Forms (>= 3.1.0.697729) \r\n NotABook.UWP -> Xamarin.Forms (>= 3.1.0.637273)",
+      "libraryId": "Xamarin.Forms",
+      "targetGraphs": [
+        "UAP,Version=v10.0.16299",
+        "UAP,Version=v10.0.16299/win10-arm",
+        "UAP,Version=v10.0.16299/win10-arm-aot",
+        "UAP,Version=v10.0.16299/win10-arm64-aot",
+        "UAP,Version=v10.0.16299/win10-x64",
+        "UAP,Version=v10.0.16299/win10-x64-aot",
+        "UAP,Version=v10.0.16299/win10-x86",
+        "UAP,Version=v10.0.16299/win10-x86-aot"
+      ]
+    }
+  ]
 }

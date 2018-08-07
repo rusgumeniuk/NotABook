@@ -42,26 +42,6 @@
           "build/netstandard2.0/Xamarin.Forms.props": {},
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
-      },
-      "ClassLibrary1/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/ClassLibrary1.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ClassLibrary1.dll": {}
-        }
-      },
-      "ModelsLibrary/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/ModelsLibrary.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ModelsLibrary.dll": {}
-        }
       }
     }
   },
@@ -354,22 +334,10 @@
         "xamarin.forms.3.1.0.697729.nupkg.sha512",
         "xamarin.forms.nuspec"
       ]
-    },
-    "ClassLibrary1/1.0.0": {
-      "type": "project",
-      "path": "../../ClassLibrary1/ClassLibrary1.csproj",
-      "msbuildProject": "../../ClassLibrary1/ClassLibrary1.csproj"
-    },
-    "ModelsLibrary/1.0.0": {
-      "type": "project",
-      "path": "../../ModelsLibrary/ModelsLibrary.csproj",
-      "msbuildProject": "../../ModelsLibrary/ModelsLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "ClassLibrary1 >= 1.0.0",
-      "ModelsLibrary >= 1.0.0",
       "NETStandard.Library >= 2.0.3",
       "Xamarin.Forms >= 3.1.0.697729"
     ]
@@ -404,14 +372,7 @@
       },
       "frameworks": {
         "netstandard2.0": {
-          "projectReferences": {
-            "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\ClassLibrary1\\ClassLibrary1.csproj": {
-              "projectPath": "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\ClassLibrary1\\ClassLibrary1.csproj"
-            },
-            "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\ModelsLibrary\\ModelsLibrary.csproj": {
-              "projectPath": "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\ModelsLibrary\\ModelsLibrary.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
