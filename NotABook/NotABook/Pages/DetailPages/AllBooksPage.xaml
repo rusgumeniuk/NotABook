@@ -6,7 +6,7 @@
              Title="List of books">
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="LBLTEst"/>
+            <Label x:Name="LBLTEst" Text="Master branch"/>
             <ListView
                 x:Name="bookList"
                 ItemsSource="{Static local:App.Books}"
