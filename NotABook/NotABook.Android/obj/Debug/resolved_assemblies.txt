@@ -4,6 +4,7 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\Mono.Android.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\mscorlib.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\NotABook.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\NotABookLibraryStandart.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\System.Core.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\System.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.Android\obj\Debug\android\assets\System.Xml.dll

@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NotABook.Models;
 using System.Collections.ObjectModel;
-using NotABook.Models.Exceptions;
+using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Exceptions;
 
 namespace NotABookTests
 {

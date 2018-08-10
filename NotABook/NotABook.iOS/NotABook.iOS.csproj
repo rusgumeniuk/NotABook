@@ -148,10 +148,14 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\..\NotABookLibraryStandart\NotABookLibraryStandart.csproj">
+      <Project>{56e5237a-fe7b-4499-8c4c-462471766ad2}</Project>
+      <Name>NotABookLibraryStandart</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NotABook\NotABook.csproj">
       <Project>{E39FB7A5-2BE8-4C5C-9ACE-7F671E7C4662}</Project>
       <Name>NotABook</Name>

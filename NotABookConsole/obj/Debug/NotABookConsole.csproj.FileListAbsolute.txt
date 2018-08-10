@@ -21,3 +21,5 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookConsole\obj\Debug
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookConsole\obj\Debug\NotABookConsole.csproj.CopyComplete
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookConsole\obj\Debug\NotABookConsole.exe
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookConsole\obj\Debug\NotABookConsole.pdb
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookConsole\bin\Debug\NotABookLibraryStandart.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookConsole\bin\Debug\NotABookLibraryStandart.pdb

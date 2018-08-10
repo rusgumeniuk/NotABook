@@ -93,5 +93,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NotABookLibraryStandart\NotABookLibraryStandart.csproj">
+      <Project>{56e5237a-fe7b-4499-8c4c-462471766ad2}</Project>
+      <Name>NotABookLibraryStandart</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

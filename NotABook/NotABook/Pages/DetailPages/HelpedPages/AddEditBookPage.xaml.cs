@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using NotABookLibraryStandart.Models;
+
 namespace NotABook.Pages.DetailPages.HelpedPages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AddEditBookPage : ContentPage
 	{
-        Models.Book curBook = null;
+        Book curBook = null;
 
 		public AddEditBookPage ()
 		{
 			InitializeComponent ();
 		}
 
-        public AddEditBookPage(Models.Book book)
+        public AddEditBookPage(Book book)
         {
             InitializeComponent();
             curBook = book;
@@ -40,7 +42,7 @@ namespace NotABook.Pages.DetailPages.HelpedPages
             }
             else
             {
-                Models.Book book = new Models.Book()
+                Book book = new Book()
                 {
                     Title = entryTitle.Text
                 };

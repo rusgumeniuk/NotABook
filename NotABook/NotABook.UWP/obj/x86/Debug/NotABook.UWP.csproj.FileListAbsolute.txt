@@ -294,3 +294,5 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\obj
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\obj\x86\Debug\Xamarin.Forms.Platform.UAP.pri.xml
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\obj\x86\Debug\ProjectArchitectures.txt
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\bin\x86\Debug\NotABookLibraryStandart.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.UWP\bin\x86\Debug\NotABookLibraryStandart.pdb

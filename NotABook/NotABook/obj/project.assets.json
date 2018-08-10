@@ -42,6 +42,16 @@
           "build/netstandard2.0/Xamarin.Forms.props": {},
           "build/netstandard2.0/Xamarin.Forms.targets": {}
         }
+      },
+      "NotABookLibraryStandart/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/NotABookLibraryStandart.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NotABookLibraryStandart.dll": {}
+        }
       }
     }
   },
@@ -334,11 +344,17 @@
         "xamarin.forms.3.1.0.697729.nupkg.sha512",
         "xamarin.forms.nuspec"
       ]
+    },
+    "NotABookLibraryStandart/1.0.0": {
+      "type": "project",
+      "path": "../../NotABookLibraryStandart/NotABookLibraryStandart.csproj",
+      "msbuildProject": "../../NotABookLibraryStandart/NotABookLibraryStandart.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
       "NETStandard.Library >= 2.0.3",
+      "NotABookLibraryStandart >= 1.0.0",
       "Xamarin.Forms >= 3.1.0.697729"
     ]
   },
@@ -372,7 +388,11 @@
       },
       "frameworks": {
         "netstandard2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\NotABookLibraryStandart\\NotABookLibraryStandart.csproj": {
+              "projectPath": "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\NotABookLibraryStandart\\NotABookLibraryStandart.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

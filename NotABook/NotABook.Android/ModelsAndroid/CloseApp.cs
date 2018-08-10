@@ -12,10 +12,12 @@ using Android.Widget;
 using NotABook;
 using Xamarin.Forms;
 
+using NotABookLibraryStandart.Interfaces;
+
 [assembly: Dependency(typeof(NotABook.Droid.ModelsAndroid.CloseApp))]
 namespace NotABook.Droid.ModelsAndroid
 {
-    public class CloseApp : Interfaces.IClosingApp
+    public class CloseApp : IClosingApp
     {        
         public void CloseApplication()
         {

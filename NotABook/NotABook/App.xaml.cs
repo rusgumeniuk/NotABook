@@ -4,9 +4,10 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Collections;
 using System.Linq;
-
-using NotABook.Models;
 using System.Collections.ObjectModel;
+
+using NotABookLibraryStandart.Models;
+
 
 [assembly: XamlCompilation (XamlCompilationOptions.Compile)]
 namespace NotABook

@@ -1,5 +1,4 @@
-﻿using NotABook.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +7,15 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using NotABookLibraryStandart.Models;
+
 namespace NotABook.Pages.ItemPages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ItemCarouselPage : CarouselPage
     {
-        Models.Book CurBook { get; set; }
-        public ItemCarouselPage(Models.Book currentBook)
+        Book CurBook { get; set; }
+        public ItemCarouselPage(Book currentBook)
         {
             InitializeComponent();
             ItemsSource = App.ItemsList;

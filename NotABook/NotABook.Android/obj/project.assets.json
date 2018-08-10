@@ -345,6 +345,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "NotABookLibraryStandart": "1.0.0",
           "Xamarin.Forms": "3.1.0.697729"
         },
         "compile": {
@@ -352,6 +353,16 @@
         },
         "runtime": {
           "bin/placeholder/NotABook.dll": {}
+        }
+      },
+      "NotABookLibraryStandart/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/NotABookLibraryStandart.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NotABookLibraryStandart.dll": {}
         }
       }
     }
@@ -765,11 +776,17 @@
       "type": "project",
       "path": "../NotABook/NotABook.csproj",
       "msbuildProject": "../NotABook/NotABook.csproj"
+    },
+    "NotABookLibraryStandart/1.0.0": {
+      "type": "project",
+      "path": "../../NotABookLibraryStandart/NotABookLibraryStandart.csproj",
+      "msbuildProject": "../../NotABookLibraryStandart/NotABookLibraryStandart.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "MonoAndroid,Version=v8.1": [
       "NotABook >= 1.0.0",
+      "NotABookLibraryStandart >= 1.0.0",
       "Xamarin.Android.Support.Design >= 27.0.2.1",
       "Xamarin.Android.Support.v4 >= 27.0.2.1",
       "Xamarin.Android.Support.v7.AppCompat >= 27.0.2.1",
@@ -806,6 +823,9 @@
       "frameworks": {
         "monoandroid81": {
           "projectReferences": {
+            "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\NotABookLibraryStandart\\NotABookLibraryStandart.csproj": {
+              "projectPath": "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\NotABookLibraryStandart\\NotABookLibraryStandart.csproj"
+            },
             "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\NotABook\\NotABook\\NotABook.csproj": {
               "projectPath": "C:\\Users\\Omman\\Desktop\\Development\\VSProjects\\NotABook\\NotABook\\NotABook\\NotABook.csproj"
             }

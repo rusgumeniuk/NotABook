@@ -17,8 +17,8 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\S
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\System.Xml.XPath.XDocument.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\NotABook.dll
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\NotABook.pdb
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\NotABookLibraryStandart.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\NotABookLibraryStandart.pdb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABookTests\obj\Debug\NotABookTests.csprojAssemblyReference.cache

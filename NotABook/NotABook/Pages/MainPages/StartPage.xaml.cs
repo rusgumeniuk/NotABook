@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using NotABookLibraryStandart.Interfaces;
+
 namespace NotABook.Pages.MainPages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
@@ -45,7 +47,7 @@ namespace NotABook.Pages.MainPages
 
         private void BtnExit_Clicked(object sender, EventArgs e)
         {
-            DependencyService.Get<Interfaces.IClosingApp>()?.CloseApplication();
+            DependencyService.Get<IClosingApp>()?.CloseApplication();
         }
     }
 }

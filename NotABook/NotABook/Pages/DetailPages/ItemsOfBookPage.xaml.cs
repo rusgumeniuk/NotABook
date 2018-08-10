@@ -1,10 +1,11 @@
-﻿using NotABook.Models;
-using NotABook.Pages.ItemPages;
+﻿using NotABook.Pages.ItemPages;
 using System;
 using System.Collections.ObjectModel;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+
+using NotABookLibraryStandart.Models;
 
 namespace NotABook.Pages.DetailPages
 {
@@ -36,7 +37,7 @@ namespace NotABook.Pages.DetailPages
             this.BindingContext = this;
         }
 
-        public ItemsOfBookPage(Models.Book currentBook)
+        public ItemsOfBookPage(Book currentBook)
         {
             InitializeComponent();
 
@@ -48,7 +49,7 @@ namespace NotABook.Pages.DetailPages
             this.BindingContext = this;
         }
 
-        public ItemsOfBookPage(Models.Category currentCategory)
+        public ItemsOfBookPage(Category currentCategory)
         {
             InitializeComponent();
 
@@ -67,7 +68,7 @@ namespace NotABook.Pages.DetailPages
 
         async private void ListOfItems_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.Item is Models.Item item)
+            if (e.Item is  Item item)
             {
                 ListOfItems.SelectedItem = null;
 

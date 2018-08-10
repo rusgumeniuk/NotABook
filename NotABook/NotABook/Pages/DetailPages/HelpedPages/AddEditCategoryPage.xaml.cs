@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using NotABookLibraryStandart.Models;
+
 namespace NotABook.Pages.DetailPages.HelpedPages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AddEditCategoryPage : ContentPage
 	{
-        Models.Category curCategory = null;
+        Category curCategory = null;
 
 		public AddEditCategoryPage ()
 		{
 			InitializeComponent ();
 		}
 
-        public AddEditCategoryPage(Models.Category category)
+        public AddEditCategoryPage(Category category)
         {
             InitializeComponent();
             curCategory = category;
@@ -40,7 +42,7 @@ namespace NotABook.Pages.DetailPages.HelpedPages
             }
             else
             {
-                Models.Category category = new Models.Category(App.currentBook)
+                Category category = new Category(App.currentBook)
                 {
                     Title = entryTitle.Text
                 };

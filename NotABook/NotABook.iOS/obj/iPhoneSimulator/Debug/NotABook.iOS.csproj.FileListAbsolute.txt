@@ -55,3 +55,5 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.iOS\obj
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.iOS\obj\iPhoneSimulator\Debug\NotABook.iOS.csproj.CopyComplete
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.iOS\obj\iPhoneSimulator\Debug\NotABook.iOS.exe
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.iOS\obj\iPhoneSimulator\Debug\NotABook.iOS.pdb
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.iOS\bin\iPhoneSimulator\Debug\NotABookLibraryStandart.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook.iOS\bin\iPhoneSimulator\Debug\NotABookLibraryStandart.pdb

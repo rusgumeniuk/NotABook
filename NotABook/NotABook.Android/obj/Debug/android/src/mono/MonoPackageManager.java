@@ -109,6 +109,7 @@ class MonoPackageManager_Resources {
 		"NotABook.Android.dll",
 		"FormsViewGroup.dll",
 		"NotABook.dll",
+		"NotABookLibraryStandart.dll",
 		"Xamarin.Android.Arch.Core.Common.dll",
 		"Xamarin.Android.Arch.Lifecycle.Common.dll",
 		"Xamarin.Android.Arch.Lifecycle.Runtime.dll",
