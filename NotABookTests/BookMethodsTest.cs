@@ -20,7 +20,7 @@ namespace NotABookTests
         [TestMethod]
          public void Books_WhenAddAndDeleteBooks_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Book secondBook = new Book("sec");
             Book thirdBook = new Book("third");
@@ -36,7 +36,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsBooksContainsThisBook_WhenExistsBooks_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(Book.IsBooksContainsThisBook(CurrentBook));
             Assert.IsTrue(Book.IsBooksContainsThisBook(CurrentBook.Id));
@@ -46,7 +46,7 @@ namespace NotABookTests
         [TestMethod] 
         public void IsBooksContainsThisBook_WhenDeleteBook_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             CurrentBook.DeleteBook();
             Assert.IsFalse(Book.IsBooksContainsThisBook(CurrentBook.Id));
@@ -71,7 +71,7 @@ namespace NotABookTests
         [TestMethod]
         public void AddBookToCollection_WhenClearCollectionAndAfterAddBook_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
             Assert.AreEqual(Book.Books.Count, 1);
 
             Book.Books.Clear();
@@ -85,7 +85,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementAlreadyExistException))]
         public void AddBookToCollection_WhenAlreadyInCollection_ReturnsElementAlreadyExistException()
         {
-            StartFunction();
+            SetUp();
 
             Book.AddBookToCollection(CurrentBook);
         }
@@ -102,7 +102,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteBook_WhenNonStaticMethodAndNotNullBook_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(CurrentBook.DeleteBook());
             Assert.IsFalse(Book.IsBooksContainsThisBook(CurrentBook));
@@ -112,7 +112,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteBook_WhenStaticMethodAndNotNullBook_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(Book.DeleteBook(CurrentBook));
             Assert.IsFalse(Book.IsBooksContainsThisBook(CurrentBook.Id));
@@ -137,7 +137,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteBook_WhenBooksNotContainsTheseBooks_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
+            SetUp();
             CurrentBook.DeleteBook();
             CurrentBook.DeleteBook();
         }
@@ -146,7 +146,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteBook_WhenStaticMethodAndBooksNotContainsTheseBooks_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
+            SetUp();
             Book.DeleteBook(CurrentBook);
             Book.DeleteBook(CurrentBook);
         }
@@ -156,7 +156,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetIndexOfItemById_WhenRealItems_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(Book.GetIndexOfItemByID(CurrentBook, FirstItem.Id), 0);
             Assert.AreEqual(CurrentBook.GetIndexOfItemByID(SecondItem.Id), 1);
@@ -176,7 +176,7 @@ namespace NotABookTests
         [ExpectedException(typeof(NullReferenceException))]
         public void GetIndeOfItemById_WhenItemIsNull_ReturnsNullReferenceException()
         {
-            StartFunction();
+            SetUp();
             Book.GetIndexOfItemByID(CurrentBook, (null as Item).Id);
         }
 
@@ -184,7 +184,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyGuidException))]
         public void GetIndeOfItemById_WhenItemIdIsEmpty_ReturnsEmptyGuidException()
         {
-            StartFunction();
+            SetUp();
             Book.GetIndexOfItemByID(CurrentBook, Guid.Empty);
         }
 
@@ -192,7 +192,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetIndexOfCategoryById_WhenRealCategory_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(Book.GetIndexOfCategoryByID(CurrentBook, FirstCategory.Id), 0);
             Assert.AreEqual(CurrentBook.GetIndexOfCategoryByID(SecondCategory.Id), 1);
@@ -205,7 +205,7 @@ namespace NotABookTests
         [ExpectedException(typeof(BookNullException))]
         public void GetIndexOfCategoryById_WhenBookIsNull_ReturnsBookNullException()
         {
-            StartFunction();
+            SetUp();
             Book.GetIndexOfCategoryByID(CurrentBook, new Category(null).Id);
         }
 
@@ -213,7 +213,7 @@ namespace NotABookTests
         [ExpectedException(typeof(NullReferenceException))]
         public void GetIndexOfCategoryById_WhenItemIsNull_ReturnsNullReferenceException()
         {
-            StartFunction();
+            SetUp();
             Book.GetIndexOfCategoryByID(CurrentBook, (null as Category).Id);
         }
 
@@ -221,7 +221,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyGuidException))]
         public void GetIndexOfCategoryById_WhenCategoryIdIsEmpty_ReturnsEmptyGuidException()
         {
-            StartFunction();
+            SetUp();
             Book.GetIndexOfCategoryByID(CurrentBook, Guid.Empty);
         }
         #endregion
@@ -231,7 +231,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsBookContainsItem_WhenExistingItems_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(Book.IsBookContainsItem(CurrentBook, FirstItem));
             Assert.IsTrue(Book.IsBookContainsItem(CurrentBook, SecondItem.Id));
@@ -241,7 +241,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsBookContainsCategory_WhenExistingCategories_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(Book.IsBookContainsCategory(CurrentBook, FirstCategory));
             Assert.IsTrue(Book.IsBookContainsCategory(CurrentBook, SecondCategory.Id));
@@ -252,8 +252,8 @@ namespace NotABookTests
         [TestMethod]
         public void IsBookContainsItem_WhenItemFromOtherBook_ReturnsFalse()
         {
-            StartFunction();
-            Book newBook = new Book();
+            SetUp();
+            Book newBook = new Book("Buuk");
 
             Assert.IsFalse(Book.IsBookContainsItem(newBook, FirstItem));
             Assert.IsFalse(Book.IsBookContainsItem(newBook, SecondItem.Id));
@@ -265,9 +265,8 @@ namespace NotABookTests
         [TestMethod]
         public void IsBookContainsCategories_WhenCategoriesromOtherBook_ReturnsFalse()
         {
-            StartFunction();
-            Book newBook = new Book();
-
+            SetUp();
+            Book newBook = new Book("Buuk");
             Assert.IsFalse(Book.IsBookContainsCategory(newBook, FirstCategory));
             Assert.IsFalse(Book.IsBookContainsCategory(newBook, SecondCategory.Id));
             Assert.IsFalse(Book.IsBookContainsCategory(newBook, new Category(CurrentBook)));
@@ -281,7 +280,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteItem_WhenRealItems_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(CurrentBook.DeleteItem(FirstItem));
             Assert.IsTrue(Book.DeleteItem(CurrentBook, SecondItem));
@@ -298,7 +297,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ItemNullException))]
         public void DeleteItem_WhenItemIsNull_ReturnsItemNullException()
         {
-            StartFunction();
+            SetUp();
             FirstItem = null;
             CurrentBook.DeleteItem(FirstItem);
         }
@@ -307,7 +306,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyGuidException))]
         public void DeleteItem_WhenGuidIsEmpty_ReturnsEmptyGuidException()
         {
-            StartFunction();
+            SetUp();
             CurrentBook.DeleteItem(Guid.Empty);
         }
 
@@ -315,8 +314,8 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteItem_WhenBookHasNotThisItem_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
-            Item newItem = new Item(new Book());
+            SetUp();
+            Item newItem = new Item(new Book("Buuk"));
             CurrentBook.DeleteItem(newItem);
         }
 
@@ -333,7 +332,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ItemNullException))]
         public void DeleteItem_WhenStaticMethodAndItemIsNull_ReturnsItemNullException()
         {
-            StartFunction();
+            SetUp();
             FirstItem = null;
             Book.DeleteItem(CurrentBook, FirstItem);
         }
@@ -342,7 +341,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyGuidException))]
         public void DeleteItem_WhenStaticMethodAndGuidIsEmpty_ReturnsEmptyGuidException()
         {
-            StartFunction();
+            SetUp();
             Book.DeleteItem(CurrentBook, Guid.Empty);
         }
 
@@ -350,8 +349,8 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteItem_WhenStaticMethodAndBookHasNotThisItem_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
-            Item newItem = new Item(new Book());
+            SetUp();
+            Item newItem = new Item(new Book("asd"));
             Book.DeleteItem(CurrentBook, newItem);
         }
         #endregion
@@ -360,7 +359,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteCategory_WhenRealCategories_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(CurrentBook.DeleteCategory(FirstCategory));
             Assert.IsTrue(Book.DeleteCategory(CurrentBook, SecondCategory));
@@ -377,7 +376,7 @@ namespace NotABookTests
         [ExpectedException(typeof(CategoryNullException))]
         public void DeleteCategory_WhenCategoryIsNull_ReturnsCategoryNullException()
         {
-            StartFunction();
+            SetUp();
             FirstCategory = null;
             CurrentBook.DeleteCategory(FirstCategory);
         }
@@ -386,7 +385,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyGuidException))]
         public void DeleteCategory_WhenGuidIsEmpty_ReturnsEmptyGuidException()
         {
-            StartFunction();
+            SetUp();
             CurrentBook.DeleteCategory(Guid.Empty);
         }
 
@@ -394,8 +393,8 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteCategory_WhenBookHasNotThisCategory_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
-            Category newCategory = new Category(new Book());
+            SetUp();
+            Category newCategory = new Category(new Book("sd"));
             CurrentBook.DeleteCategory(newCategory);
         }
 
@@ -412,7 +411,7 @@ namespace NotABookTests
         [ExpectedException(typeof(CategoryNullException))]
         public void DeleteCategory_WhenStaticMethodAndCategoryIsNull_ReturnsCategoryNullException()
         {
-            StartFunction();
+            SetUp();
             FirstCategory = null;
             Book.DeleteCategory(CurrentBook, FirstCategory);
         }
@@ -421,7 +420,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyGuidException))]
         public void DeleteCategory_WhenStaticMethodAndGuidIsEmpty_ReturnsEmptyGuidException()
         {
-            StartFunction();
+            SetUp();
             Book.DeleteCategory(CurrentBook, Guid.Empty);
         }
 
@@ -429,13 +428,88 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteCategory_WhenStaticMethodAndBookHasNotThisCategory_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
-            Category newCategory = new Category(new Book());
+            SetUp();
+            Category newCategory = new Category(new Book("fd"));
             Book.DeleteCategory(CurrentBook, newCategory);
         }
         #endregion
 
-        private void StartFunction()
+        #region Clear item's\category's lists \\ Remove all elements
+
+        [TestMethod]
+        public void ClearItems_WhenAllIsAlright_ReturnsTrue()
+        {
+            SetUp();
+
+            Assert.IsTrue(Book.ClearItemsList(CurrentBook));
+            Assert.AreEqual(CurrentBook.ItemsOfBook.Count, 0);
+        }
+
+        [TestMethod]
+        public void ClearItems_WhenNewBook_ReturnsTrue()
+        {
+            Assert.IsTrue(Book.ClearItemsList(new Book("sds")));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(BookNullException))]
+        public void ClearItems_WhenBookIsNull_ReturnsBookNullExceptions()
+        {
+            SetUp();
+
+            Book.ClearItemsList(null);
+        }
+
+
+        [TestMethod]
+        public void ClearCategories_WhenArgumentIsAllright_ReturnsTrue()
+        {
+            SetUp();
+            Assert.IsTrue(Book.ClearCaregoriesList(CurrentBook));
+            Assert.AreEqual(CurrentBook.CategoriesOfBook.Count, 0);
+        }
+
+        [TestMethod]
+        public void ClearCategories_WhenNewBook_ReturnsTrue()
+        {
+            Assert.IsTrue(Book.ClearCaregoriesList(new Book("asd")));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(BookNullException))]
+        public void ClearCategories_WhenBookIsNull_ReturnsBookNullException()
+        {
+            Book.ClearCaregoriesList(null);
+        }
+
+
+
+        [TestMethod]
+        public void RemoveAllElements_WhenArgIsAllright_ReturnsTrue()
+        {
+            SetUp();
+            Assert.IsTrue(Book.RemoveAllElementsOfBook(CurrentBook));
+            Assert.AreEqual(CurrentBook.ItemsOfBook.Count, 0);
+            Assert.AreEqual(CurrentBook.CategoriesOfBook.Count, 0);
+            Assert.AreEqual(CurrentBook.CategoryInItemsOfBook.Count, 0);
+        }
+
+        [TestMethod]
+        public void RemoveAllElements_WhenNewBook_ReturnsTrue()
+        {
+            Assert.IsTrue(Book.RemoveAllElementsOfBook(new Book("sd")));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(BookNullException))]
+        public void RemoveAllElements_WhenBookIsNull_ReturnsBookNullExceptions()
+        {
+            Book.RemoveAllElementsOfBook(null);
+        }
+
+        #endregion
+
+        private void SetUp()
         {
             Book.Books.Clear();
             CurrentBook = new Book("CurBook");

@@ -21,7 +21,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsItemHasConnection_WhenHas_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(CategoryInItem.IsItemHasConnection(CurrentBook, FirstItem));
             Assert.IsTrue(CategoryInItem.IsItemHasConnection(CurrentBook, SecondItem));
@@ -30,7 +30,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsItemHasConnection_WhenHasNot_ReturnsFalse()
         {
-            StartFunction();
+            SetUp();
 
             CategoryInItem.DeleteConnection(CurrentBook, FirstCategory, FirstItem);
 
@@ -42,7 +42,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ItemNullException))]
         public void IsItemHasConnection_WhenItemIsNull_ReturnsItemNullException()
         {
-            StartFunction();
+            SetUp();
 
             CategoryInItem.IsItemHasConnection(CurrentBook, null);
         }
@@ -59,7 +59,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetGuidOfPairTest_WhenNotNull_ReturnsRealGuid()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreNotEqual(CategoryInItem.GetGuidOfPair(CurrentBook, FirstCategory, FirstItem), Guid.Empty);
             Assert.AreNotEqual(CategoryInItem.GetGuidOfPair(CurrentBook, SecondCategory.Id, SecondItem.Id), Guid.Empty);
@@ -68,7 +68,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetGuidOfPairTest_WhenNull_ReturnsEmptyGuid()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(CategoryInItem.GetGuidOfPair(CurrentBook, FirstCategory, new Item(CurrentBook)), Guid.Empty);
             Assert.AreEqual(CategoryInItem.GetGuidOfPair(CurrentBook, SecondCategory.Id, FirstItem.Id), Guid.Empty);
@@ -79,7 +79,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsBookContains_WhenNotNull_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsTrue(CategoryInItem.IsContainsThisPair(CurrentBook, SecondCategory, SecondItem));
             Assert.IsTrue(CategoryInItem.IsContainsThisPair(CurrentBook, FirstCategory.Id, FirstItem.Id));
@@ -88,7 +88,7 @@ namespace NotABookTests
         [TestMethod]
         public void IsBookContains_WhenNull_ReturnsFalse()
         {
-            StartFunction();
+            SetUp();
 
             Assert.IsFalse(CategoryInItem.IsContainsThisPair(CurrentBook, SecondCategory, FirstItem));
             Assert.IsFalse(CategoryInItem.IsContainsThisPair(CurrentBook, new Category(CurrentBook).Id, FirstItem.Id));
@@ -99,7 +99,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetIndexOfPairTest_WhenRealObj_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(CategoryInItem.GetIndexOfPair(CurrentBook, CategoryInItem.GetGuidOfPair(CurrentBook, FirstCategory, FirstItem)), 0);
             Assert.AreEqual(CategoryInItem.GetIndexOfPair(CurrentBook, CategoryInItem.CreateCategoryInItem(CurrentBook, SecondCategory, FirstItem).Id), 3);
@@ -109,7 +109,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetIndexOfPairTest_WhenNullObj_ReturnsFalse()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(CategoryInItem.GetIndexOfPair(CurrentBook, CategoryInItem.GetGuidOfPair(CurrentBook, new Category(CurrentBook), SecondItem)), -1);
             Assert.AreEqual(CategoryInItem.GetIndexOfPair(CurrentBook, CategoryInItem.GetGuidOfPair(CurrentBook, SecondCategory, FirstItem)), -1);
@@ -120,7 +120,7 @@ namespace NotABookTests
         [TestMethod]
         public void CreateCategoryInItemTest_WhenGoodArguments_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Item third = new Item(CurrentBook);
             CategoryInItem newPair = CategoryInItem.CreateCategoryInItem(CurrentBook, SecondCategory, third);
@@ -133,7 +133,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementAlreadyExistException))]
         public void CreateCategoryInItemTest_WhenIPairAlreadyInList_ReturnsElementAlreadyExistException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.CreateCategoryInItem(CurrentBook, FirstCategory, FirstItem);
         }
 
@@ -141,7 +141,7 @@ namespace NotABookTests
         [ExpectedException(typeof(BookNullException))]
         public void CreateCategoryInItemTest_WhenBookIsNull_ReturnsBookNullException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.CreateCategoryInItem(null, new Category(CurrentBook), FirstItem);
         }
         #endregion
@@ -150,7 +150,7 @@ namespace NotABookTests
         [TestMethod]
         public void GetPairListByCategory_WhenRealArg_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(CategoryInItem.GetCIIListByCategory(CurrentBook, FirstCategory).Count, 2);
             Assert.AreEqual(CategoryInItem.GetCIIListByCategory(CurrentBook, SecondCategory).Count, 1);
@@ -161,7 +161,7 @@ namespace NotABookTests
         [ExpectedException(typeof(CategoryNullException))]
         public void GetPairListByCategory_WhenCategoryIsNull_ReturnsCategoryNullException()
         {
-            StartFunction();
+            SetUp();
 
             CategoryInItem.GetCIIListByCategory(CurrentBook, null);
         }
@@ -170,7 +170,7 @@ namespace NotABookTests
         [ExpectedException(typeof(BookNullException))]
         public void GetPairListByCategory_WhenBookIsNull_ReturnsBookNullException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.GetCIIListByCategory(null, SecondCategory);
         }
         #endregion
@@ -179,7 +179,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteConnection_WhenDeletePair_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Item newItem = new Item(CurrentBook);
             Category newCategory = new Category(CurrentBook);
@@ -191,7 +191,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteConnection_WhenAfterDeletingTryToDeleteAgain_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
+            SetUp();
 
             Item newItem = new Item(CurrentBook);
             Category newCategory = new Category(CurrentBook);
@@ -206,7 +206,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteConnectionWithArgs_WhenSetRealArg_Returns1()
         {
-            StartFunction();
+            SetUp();
             Assert.AreEqual(CategoryInItem.DeleteConnection(CurrentBook, SecondCategory, SecondItem), 1);
             Assert.AreEqual(CategoryInItem.DeleteConnection(CurrentBook, FirstCategory, FirstItem), 1);
             Assert.AreEqual(CategoryInItem.DeleteConnection(CurrentBook, FirstCategory, SecondItem), 1);
@@ -216,7 +216,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteConnectionWithArgs_WhenPairAlreadyDeleted_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.DeleteConnection(CurrentBook, SecondCategory, SecondItem);
             CategoryInItem.DeleteConnection(CurrentBook, SecondCategory, SecondItem);
         }
@@ -225,7 +225,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void DeleteConnectionWithArgs_WhenPairHasWrongArguments_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.DeleteConnection(CurrentBook, SecondCategory, new Item(CurrentBook));
         }
 
@@ -241,7 +241,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteAllConnectionWithItem_WhenArgGood_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, SecondItem), true);
             Assert.IsFalse(CategoryInItem.IsCategoryHasConnection(CurrentBook, SecondCategory));
@@ -252,7 +252,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteAllConnectionWithItem_WhenConnectionAlreadyDeleted_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
             Assert.IsTrue(CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, new Item(CurrentBook)));
         }
 
@@ -260,7 +260,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ItemNullException))]
         public void DeleteAllConnectionWithItem_WhenItemIsNull_ReturnsItemNullException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, null);
         }
 
@@ -268,7 +268,7 @@ namespace NotABookTests
         [ExpectedException(typeof(BookNullException))]
         public void DeleteAllConnectionWithItem_WhenBookIsNull_ReturnsBookNullException()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.DeleteAllConnectionWithItem(null, SecondItem);
         }
         #endregion
@@ -277,7 +277,7 @@ namespace NotABookTests
         [TestMethod]
         public void CategoryInItem_WhenGettingFromProp_ReturnTrue()
         {
-            StartFunction();
+            SetUp();
             CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, SecondItem);
 
             CategoryInItem pair = CategoryInItem.CreateCategoryInItem(CurrentBook, FirstCategory, SecondItem);
@@ -289,7 +289,7 @@ namespace NotABookTests
         }
         #endregion
 
-        private void StartFunction()
+        private void SetUp()
         {
             CurrentBook = new Book("CurBook");
 

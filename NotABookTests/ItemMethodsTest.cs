@@ -21,8 +21,8 @@ namespace NotABookTests
         [TestMethod]
          public void ItemConstr_WhenNotNullBook_ReturnsTrue()
         {
-            StartFunction();
-            Book newBook = new Book();
+            SetUp();
+            Book newBook = new Book("jk");
 
             Assert.AreEqual(FirstItem.CurrentBook, CurrentBook);
             Assert.AreEqual(newBook, new Item(newBook, "Title", Description.CreateDescription("desk")).CurrentBook);
@@ -40,7 +40,7 @@ namespace NotABookTests
         [TestMethod]
         public void Categories_WhenRealItem_ReturnTrue()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(SecondItem.Categories.Count, 2);
             Assert.AreEqual(FirstItem.Categories.Count, 1);
@@ -49,7 +49,7 @@ namespace NotABookTests
         [TestMethod]
         public void Categories_WhenSetNewNotNullValue_ReturnTrue()
         {
-            StartFunction();
+            SetUp();
             SecondItem.Categories = new ObservableCollection<Category>()
             {
                 new Category(CurrentBook, "new1"),
@@ -64,7 +64,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Categories_WhenSetNull_ReturnsArgumentNullException()
         {
-            StartFunction();
+            SetUp();
             FirstItem.Categories = null;            
         }        
         #endregion
@@ -73,7 +73,7 @@ namespace NotABookTests
         [TestMethod]
         public void ChangeBook_WhenRealBook_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
             Book newBook = new Book("NEW");
 
             Assert.IsTrue(FirstItem.ChangeBook(newBook));
@@ -87,7 +87,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ItemNullException))]
         public void ChangeBook_WhenItemIsNull_ReturnsItemNullException()
         {
-            StartFunction();
+            SetUp();
             Item.ChangeBook(CurrentBook, null);
         }
 
@@ -95,7 +95,7 @@ namespace NotABookTests
         [ExpectedException(typeof(BookNullException))]
         public void ChangeBook_WhenBookIsNull_ReturnsBookNullException()
         {
-            StartFunction();
+            SetUp();
             FirstItem.ChangeBook(null);
         }
         #endregion
@@ -104,7 +104,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteItem_WhenRealItem_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
             Assert.IsTrue(FirstItem.DeleteItem());
             Assert.IsTrue(Item.DeleteItem(SecondItem));
             Assert.AreEqual(CurrentBook.ItemsOfBook.Count, 0);
@@ -119,7 +119,7 @@ namespace NotABookTests
         }
         #endregion
 
-        private void StartFunction()
+        private void SetUp()
         {
             CurrentBook = new Book("CurBook");
 

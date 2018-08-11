@@ -27,7 +27,7 @@ namespace NotABookTests
          //[ExpectedException(typeof(ElementIsNotInCollectionException))]
          public void GetStringCountOfItemsWithCategory_WhenHasNotConnections_ReturnsElementIsNotInThisCollection()
         {
-            StartFunction();
+            SetUp();
 
             Category category = new Category(CurrentBook);
             //Assert.IsFalse(CategoryInItem.IsCategoryHasConnection(CurrentBook, category));
@@ -40,7 +40,7 @@ namespace NotABookTests
         [TestMethod]
         public void ItemsWithCategory_WhenNotEmptyList_ReturnsTrueCount()
         {
-            StartFunction();
+            SetUp();
 
             Assert.AreEqual(FirstCategory.ItemsWithThisCategory.Count, 2);
             Assert.AreEqual(FirstCategory.CountOfItemsWithThisCategory, 2);
@@ -52,7 +52,7 @@ namespace NotABookTests
         [TestMethod]
         public void ItemsWithCategory_WhenAddNewConnections_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
 
             CategoryInItem.CreateCategoryInItem(CurrentBook, SecondCategory, FirstItem);
             Assert.AreEqual(SecondCategory.ItemsWithThisCategory[1], FirstItem);
@@ -63,7 +63,7 @@ namespace NotABookTests
         [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void ItemsWithCategory_WhenDeleteItem_ReturnsElementIsNotInCollectionException()
         {
-            StartFunction();
+            SetUp();
 
             SecondItem.DeleteItem();
 
@@ -75,7 +75,7 @@ namespace NotABookTests
         [ExpectedException(typeof(EmptyCollectionException))]
         public void ItemsWithCategory_WhenCategoryInItemListIsEmpty_ReturnsEmptyCollectionException()
         {
-            StartFunction();
+            SetUp();
 
             CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, SecondItem);
             CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, FirstCategory);
@@ -87,7 +87,7 @@ namespace NotABookTests
         [TestMethod]
         public void RemoveCategoryFromAllItems_WhenRealCategory_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
             Assert.IsTrue(FirstCategory.DeleteCategory());
             Assert.IsTrue(Category.DeleteCategory(SecondCategory));
             Assert.AreEqual(CurrentBook.CategoriesOfBook.Count, 0);
@@ -104,7 +104,7 @@ namespace NotABookTests
         [TestMethod]
         public void DeleteCategory_WhenRealCategory_ReturnsTrue()
         {
-            StartFunction();
+            SetUp();
             Assert.IsTrue(FirstCategory.DeleteCategory());
             Assert.IsTrue(Category.DeleteCategory(SecondCategory));
             Assert.AreEqual(CurrentBook.CategoriesOfBook.Count, 0);
@@ -118,7 +118,7 @@ namespace NotABookTests
         }
 
 
-        private void StartFunction()
+        private void SetUp()
         {
             CurrentBook = new Book("CurBook");
 

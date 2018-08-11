@@ -59,7 +59,7 @@ namespace NotABookLibraryStandart.Models
 
         #region Constr
 
-        public Book() : base()
+        private Book() : base()
         {
             Books.Add(this);
         }
