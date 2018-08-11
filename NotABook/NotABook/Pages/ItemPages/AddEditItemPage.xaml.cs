@@ -39,7 +39,7 @@ namespace NotABook.Pages.ItemPages
 
         private void PickerAllCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (PickerAllCategories.SelectedIndex != -1)
+            if (PickerAllCategories.SelectedIndex != -1)//!!!///???///
             {
                 if (!SelectedCategories.Contains(PickerAllCategories.SelectedItem as Category))
                 {

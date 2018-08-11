@@ -39,11 +39,24 @@ namespace NotABookLibraryStandart.Models
         {
             CurrentBook.CategoryInItemsOfBook.Add(this);
         }
-        public CategoryInItem(Book curBook, Category category, Item item) : base(curBook)
+        public CategoryInItem(Category category, Item item) : base(category.CurrentBook)
         {
-            if (IsContainsThisPair(curBook, category, item))
-                throw new ElementAlreadyExistException();
-            CurrentBook = curBook;
+            if (IsTestingOff)
+            {
+                if (category.CurrentBook != item.CurrentBook)
+                    return;
+                if (IsContainsThisPair(category, item))
+                    return;
+            }
+            else
+            {                
+                if (category.CurrentBook != item.CurrentBook)
+                    throw new ElementsFromDifferentBooksException();
+                if (IsContainsThisPair(category, item))
+                    throw new ElementAlreadyExistException();
+            }
+
+            CurrentBook = category.CurrentBook;
             categoryId = category.Id;
             itemId = item.Id;
             CurrentBook.CategoryInItemsOfBook.Add(this);
@@ -52,71 +65,70 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-
-
-        public static CategoryInItem CreateCategoryInItem(Book curBook, Category category, Item item)
+        public static CategoryInItem CreateCategoryInItem(Category category, Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (curBook == null)
+                if (category.CurrentBook == null || item.CurrentBook == null)
                     return null;
-                if (CategoryInItem.IsContainsThisPair(curBook, category, item))
-                    return curBook.CategoryInItemsOfBook[CategoryInItem.GetIndexOfPair(curBook, CategoryInItem.GetGuidOfPair(curBook, category, item))];
+                if (category.CurrentBook != item.CurrentBook)
+                    return null;
+                if (CategoryInItem.IsContainsThisPair(category, item))
+                    return category.CurrentBook.CategoryInItemsOfBook[CategoryInItem.GetIndexOfPair(category.CurrentBook, CategoryInItem.GetGuidOfPair(category, item))];
             }
             else
             {
-                if (curBook == null)
+                if (category.CurrentBook == null || item.CurrentBook == null)
                     throw new BookNullException();
-                if (CategoryInItem.IsContainsThisPair(curBook, category, item))
+                if (category.CurrentBook != item.CurrentBook)
+                    throw new ElementsFromDifferentBooksException();
+                if (CategoryInItem.IsContainsThisPair(category, item))
                     throw new ElementAlreadyExistException();
             }
 
-            return new CategoryInItem(curBook, category, item);
+            return new CategoryInItem(category, item);
         }
 
-
-        public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Book book, Category category)
+        public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Category category)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || category == null)
+                if (category == null || category.CurrentBook == null)
                     return null;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (category == null)
                     throw new CategoryNullException();
+                if (category.CurrentBook == null)
+                    throw new BookNullException();               
             }
 
 
             ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
-            foreach (var pair in book.CategoryInItemsOfBook)
+            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
             {
                 if (pair.categoryId == category.Id) list.Add(pair);
             }
             return list;
         }
-        public static ObservableCollection<CategoryInItem> GetCIIListByItem(Book book, Item item)
+        public static ObservableCollection<CategoryInItem> GetCIIListByItem(Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || item == null)
+                if (item == null || item.CurrentBook == null)
                     return null;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (item == null)
                     throw new ItemNullException();
+                if (item.CurrentBook == null)
+                    throw new BookNullException();
             }
 
-
-
             ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
-            foreach (var pair in book.CategoryInItemsOfBook)
+            foreach (var pair in item.CurrentBook.CategoryInItemsOfBook)
             {
                 if (pair.itemId == item.Id) list.Add(pair);
             }
@@ -124,14 +136,14 @@ namespace NotABookLibraryStandart.Models
         }
 
 
-        public static string IsItemHasConnectionStr(Book book, Item item)
+        public static string IsItemHasConnectionStr(Item item)
         {
-            if (book == null)
-                return "Book is null";
             if (item == null)
                 return "Item is null";
+            if (item.CurrentBook == null)
+                return "Book is null";
 
-            return $"{IsItemHasConnection(book, item).ToString()}";
+            return $"{IsItemHasConnection(item).ToString()}";
         }
         public static string IsCategoryHasConnectionStr(Book book, Category category)
         {
@@ -140,74 +152,75 @@ namespace NotABookLibraryStandart.Models
             if (category == null)
                 return "Category is null";
 
-            return $"{IsCategoryHasConnection(book, category).ToString()}";
+            return $"{IsCategoryHasConnection(category).ToString()}";
         }
 
-        public static bool IsItemHasConnection(Book book, Item item)
+        public static bool IsItemHasConnection(Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || item == null)
+                if (item == null || item.CurrentBook == null)
                     return false;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (item == null)
                     throw new ItemNullException();
+                if (item.CurrentBook == null)
+                    throw new BookNullException();
             }
 
 
-            foreach (var pair in book.CategoryInItemsOfBook)
+            foreach (var pair in item.CurrentBook.CategoryInItemsOfBook)
             {
                 if (pair.GetItemId == item.Id) return true;
             }
             return false;
         }
-        public static bool IsCategoryHasConnection(Book book, Category category)
+        public static bool IsCategoryHasConnection(Category category)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || category == null)
+                if (category == null || category.CurrentBook == null)
                     return false;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (category == null)
                     throw new CategoryNullException();
+                if (category.CurrentBook == null)
+                    throw new BookNullException();
             }
 
-            foreach (var pair in book.CategoryInItemsOfBook)
+            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
             {
-                if (pair.GetCategoryId == category.Id) return true;
+                if (pair.GetCategoryId == category.Id)
+                    return true;
             }
             return false;
         }
 
 
-
-        public static bool IsContainsThisPair(Book book, Category category, Item item)
+        public static bool IsContainsThisPair(Category category, Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || category == null || item == null)
+                if (category == null || item == null)
+                    return false;
+                if (category.CurrentBook != item.CurrentBook)
                     return false;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (category == null)
                     throw new CategoryNullException();
                 if (item == null)
                     throw new ItemNullException();
+                if (category.CurrentBook != item.CurrentBook)
+                    throw new ElementsFromDifferentBooksException();
             }
 
-
-            return GetGuidOfPair(book, category, item) != Guid.Empty;
+            return GetGuidOfPair(category, item) != Guid.Empty;
         }
         public static bool IsContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
@@ -220,31 +233,33 @@ namespace NotABookLibraryStandart.Models
             {
                 if (book == null)
                     throw new BookNullException();
-                if (categoryId == null || itemId == null)
+                if (categoryId == Guid.Empty || itemId == Guid.Empty)
                     throw new EmptyGuidException();
             }
             return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty;
         }
 
 
-        public static Guid GetGuidOfPair(Book book, Category category, Item item)
+        public static Guid GetGuidOfPair(Category category, Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || category == null || item == null)
+                if (category == null || item == null)
+                    return Guid.Empty;
+                if (category.CurrentBook != item.CurrentBook)
                     return Guid.Empty;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (category == null)
                     throw new CategoryNullException();
                 if (item == null)
                     throw new ItemNullException();
+                if (category.CurrentBook != item.CurrentBook)
+                    throw new ElementsFromDifferentBooksException();
             }
 
-            foreach (var pair in book.CategoryInItemsOfBook)
+            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
             {
                 if (pair.categoryId == category.Id && pair.itemId == item.Id) return pair.Id;
             }
@@ -261,7 +276,7 @@ namespace NotABookLibraryStandart.Models
             {
                 if (book == null)
                     throw new BookNullException();
-                if (currentCategoryId == null || currentItemId == null)
+                if (currentCategoryId == Guid.Empty || currentItemId == Guid.Empty)
                     throw new EmptyGuidException();
             }
 
@@ -295,28 +310,35 @@ namespace NotABookLibraryStandart.Models
         }
 
 
-        public static int DeleteConnection(Book book, Category category, Item item)
+        public static int DeleteConnection(Category category, Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null)
+                if (category == null || item == null)
+                    return -1;
+                if (category.CurrentBook != item.CurrentBook)
                     return -2;
-                if (!IsContainsThisPair(book, category, item))
+                if (!IsContainsThisPair(category, item))
                     return -3;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
-                if (!IsContainsThisPair(book, category, item))
+                if (category == null)
+                    throw new CategoryNullException();
+                if (item == null)
+                    throw new ItemNullException();
+                if (category.CurrentBook != item.CurrentBook)
+                    throw new ElementsFromDifferentBooksException();
+                if (!IsContainsThisPair(category, item))
                     throw new ElementIsNotInCollectionException();
             }
 
-            Guid guid = CategoryInItem.GetGuidOfPair(book, category, item);
-            if (guid == Guid.Empty) return -4;
-            book.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(book, guid));
+            Guid guid = CategoryInItem.GetGuidOfPair(category, item);
+            if (guid == Guid.Empty)
+                return -4;
+            category.CurrentBook.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(category.CurrentBook, guid));
 
-            return !IsContainsThisPair(book, category, item) == true ? 1 : -1;
+            return !IsContainsThisPair(category, item) == true ? 1 : -1;
         }
         public static int DeleteConnection(Book book, Guid categoryId, Guid itemId)
         {
@@ -324,6 +346,8 @@ namespace NotABookLibraryStandart.Models
             {
                 if (book == null)
                     return -2;
+                if (categoryId == Guid.Empty || itemId == Guid.Empty)
+                    return -1;
                 if (!IsContainsThisPair(book, categoryId, itemId))
                     return -3;
             }
@@ -331,13 +355,16 @@ namespace NotABookLibraryStandart.Models
             {
                 if (book == null)
                     throw new BookNullException();
-                if (!IsContainsThisPair(book, categoryId, itemId))
+                if (categoryId == Guid.Empty || itemId == Guid.Empty)
+                    throw new EmptyGuidException();
+                    if (!IsContainsThisPair(book, categoryId, itemId))
                     throw new ElementIsNotInCollectionException();
             }
 
 
             Guid guid = CategoryInItem.GetGuidOfPair(book, categoryId, itemId);
-            if (guid == Guid.Empty) return -4;
+            if (guid == Guid.Empty)
+                return -4;
             book.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(book, guid));
 
             return !IsContainsThisPair(book, categoryId, itemId) == true ? 1 : -1;
@@ -364,55 +391,54 @@ namespace NotABookLibraryStandart.Models
         }
 
 
-        public static bool DeleteAllConnectionWithItem(Book book, Item item)
+        public static bool DeleteAllConnectionWithItem(Item item)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || item == null)
+                if (item == null || item.CurrentBook == null)
                     return false;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (item == null)
                     throw new ItemNullException();
+                if (item.CurrentBook == null)
+                    throw new BookNullException();               
             }
 
-            if (!CategoryInItem.IsItemHasConnection(book, item))
+            if (!CategoryInItem.IsItemHasConnection(item))
                 return true;
 
-            foreach (var pair in CategoryInItem.GetCIIListByItem(book, item))
+            foreach (var pair in CategoryInItem.GetCIIListByItem(item))
             {
                 if (!pair.DeleteConnection())
                 {
                     if (!BaseClass.IsTestingOff)
                         throw new InvalidOperationException();
                 }
-
             }
 
-            return !IsItemHasConnection(book, item);
+            return !IsItemHasConnection(item);
         }
-        public static bool DeleteAllConnectionWithCategory(Book book, Category category)
+        public static bool DeleteAllConnectionWithCategory(Category category)
         {
             if (BaseClass.IsTestingOff)
             {
-                if (book == null || category == null)
+                if (category == null || category.CurrentBook == null)
                     return false;
             }
             else
             {
-                if (book == null)
-                    throw new BookNullException();
                 if (category == null)
                     throw new CategoryNullException();
+                if (category.CurrentBook == null)
+                    throw new BookNullException();
             }
 
-            if (!CategoryInItem.IsCategoryHasConnection(book, category))
+            if (!CategoryInItem.IsCategoryHasConnection(category))
                 return true;
 
-            foreach (var pair in CategoryInItem.GetCIIListByCategory(book, category))
+            foreach (var pair in CategoryInItem.GetCIIListByCategory(category))
             {
                 if (!pair.DeleteConnection())
                 {
@@ -421,7 +447,7 @@ namespace NotABookLibraryStandart.Models
                 }
             }
 
-            return !IsCategoryHasConnection(book, category);
+            return !IsCategoryHasConnection(category);
         }
 
         public override bool Equals(object obj)

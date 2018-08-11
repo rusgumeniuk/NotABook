@@ -45,7 +45,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (CurrentBook == null ||
                       CurrentBook.CategoryInItemsOfBook.Count < 1 ||
-                      !CategoryInItem.IsCategoryHasConnection(CurrentBook, this))
+                      !CategoryInItem.IsCategoryHasConnection(this))
                         return null;
                 }
                 else
@@ -54,7 +54,7 @@ namespace NotABookLibraryStandart.Models
                         throw new BookNullException();
                     if (CurrentBook.CategoryInItemsOfBook.Count < 1)
                         throw new EmptyCollectionException();
-                    if (!CategoryInItem.IsCategoryHasConnection(CurrentBook, this))
+                    if (!CategoryInItem.IsCategoryHasConnection(this))
                         throw new ElementIsNotInCollectionException();
                 }
 
@@ -125,7 +125,7 @@ namespace NotABookLibraryStandart.Models
             if (IsTestingOff)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
-            return !CurrentBook.CategoriesOfBook.Contains(this) && !CategoryInItem.IsCategoryHasConnection(CurrentBook, this);
+            return !CurrentBook.CategoriesOfBook.Contains(this) && !CategoryInItem.IsCategoryHasConnection(this);
         }
         public static bool DeleteCategory(Category category)
         {
@@ -148,7 +148,7 @@ namespace NotABookLibraryStandart.Models
             if (BaseClass.IsTestingOff)
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
-            return !category.CurrentBook.CategoriesOfBook.Contains(category) && !CategoryInItem.IsCategoryHasConnection(category.CurrentBook, category);
+            return !category.CurrentBook.CategoriesOfBook.Contains(category) && !CategoryInItem.IsCategoryHasConnection(category);
         }
 
         public string RemoveCategoryFromAllItemsStr()
@@ -181,12 +181,12 @@ namespace NotABookLibraryStandart.Models
             }
 
 
-            CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, this);
+            CategoryInItem.DeleteAllConnectionWithCategory(this);
 
             if (IsTestingOff)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
-            return !CategoryInItem.IsCategoryHasConnection(CurrentBook, this);
+            return !CategoryInItem.IsCategoryHasConnection(this);
         }
         public static bool RemoveCategoryFromAllItems(Category category)
         {
@@ -203,12 +203,12 @@ namespace NotABookLibraryStandart.Models
                     throw new BookNullException();
             }
 
-            CategoryInItem.DeleteAllConnectionWithCategory(category.CurrentBook, category);
+            CategoryInItem.DeleteAllConnectionWithCategory(category);
 
             if (BaseClass.IsTestingOff)
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
-            return !CategoryInItem.IsCategoryHasConnection(category.CurrentBook, category);
+            return !CategoryInItem.IsCategoryHasConnection(category);
         }
         #endregion
     }

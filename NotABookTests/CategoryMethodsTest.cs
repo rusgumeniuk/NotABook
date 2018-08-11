@@ -54,7 +54,7 @@ namespace NotABookTests
         {
             SetUp();
 
-            CategoryInItem.CreateCategoryInItem(CurrentBook, SecondCategory, FirstItem);
+            CategoryInItem.CreateCategoryInItem(SecondCategory, FirstItem);
             Assert.AreEqual(SecondCategory.ItemsWithThisCategory[1], FirstItem);
             Assert.AreEqual(SecondCategory.ItemsWithThisCategory.Count, 2);
         }
@@ -77,8 +77,8 @@ namespace NotABookTests
         {
             SetUp();
 
-            CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, SecondItem);
-            CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, FirstCategory);
+            CategoryInItem.DeleteAllConnectionWithItem(SecondItem);
+            CategoryInItem.DeleteAllConnectionWithCategory(FirstCategory);
 
             int x = FirstCategory.ItemsWithThisCategory.Count;
         }

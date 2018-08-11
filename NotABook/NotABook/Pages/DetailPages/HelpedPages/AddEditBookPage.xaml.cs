@@ -42,10 +42,7 @@ namespace NotABook.Pages.DetailPages.HelpedPages
             }
             else
             {
-                Book book = new Book()
-                {
-                    Title = entryTitle.Text
-                };
+                Book book = new Book(entryTitle.Text);
             }
             await Navigation.PopAsync(true);
         }

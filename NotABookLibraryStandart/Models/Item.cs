@@ -35,31 +35,26 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (CurrentBook == null)
                         return null;
-
-                    ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                    foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
-                    {
-                        if (pair.GetItemId == Id)
-                        {
-                            categories.Add(pair.Category);
-                        }
-                    }
-                    return categories;
+                    if (!CategoryInItem.IsItemHasConnection(this))
+                        return null;
                 }
                 else
                 {
                     if (CurrentBook == null)
                         throw new BookNullException();
-                    ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                    foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
-                    {
-                        if (pair.GetItemId == Id)
-                        {
-                            categories.Add(pair.Category);
-                        }
-                    }
-                    return categories;
+                    if (!CategoryInItem.IsItemHasConnection(this))
+                        throw new ElementIsNotInCollectionException();
                 }
+
+                ObservableCollection<Category> categories = new ObservableCollection<Category>();
+                foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
+                {
+                    if (pair.GetItemId == Id)
+                    {
+                        categories.Add(pair.Category);
+                    }
+                }
+                return categories;
             }
             set
             {
@@ -67,27 +62,23 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (CurrentBook == null || value == null)
                         return;
-
-                    CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
-                    foreach (var category in value)
-                    {
-                        CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
-                    }
-
-                    if (IsTestingOff)
-                        OnPropertyChanged("Categories");
                 }
                 else
                 {
                     if (CurrentBook == null)
                         throw new BookNullException();
-
-                    CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
-                    foreach (var category in value ?? throw new ArgumentNullException())
-                    {
-                        CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
-                    }
+                    if (value == null)
+                        throw new ArgumentNullException();
                 }
+
+                CategoryInItem.DeleteAllConnectionWithItem(this);
+                foreach (var category in value ?? throw new ArgumentNullException())
+                {
+                    CategoryInItem.CreateCategoryInItem(category, this);
+                }
+
+                if (IsTestingOff)
+                    OnPropertyChanged("Categories");
             }
         }
 
@@ -185,8 +176,8 @@ namespace NotABookLibraryStandart.Models
 
         public string GetCategoriesInString()
         {
-            if (Categories == null) return "null";
-            if (Categories.Count < 1) return "No one categories";
+            if (Categories == null || Categories.Count < 1) return "No one categories";
+            
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Category categories in Categories)
             {
@@ -224,12 +215,12 @@ namespace NotABookLibraryStandart.Models
             }
 
             CurrentBook.ItemsOfBook.Remove(this);
-            CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
+            CategoryInItem.DeleteAllConnectionWithItem(this);
 
             if (IsTestingOff)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
-            return !CurrentBook.ItemsOfBook.Contains(this) && !CategoryInItem.IsItemHasConnection(CurrentBook, this);
+            return !CurrentBook.ItemsOfBook.Contains(this) && !CategoryInItem.IsItemHasConnection(this);
         }
         public static bool DeleteItem(Item item)
         {
@@ -247,12 +238,12 @@ namespace NotABookLibraryStandart.Models
             }
 
             item.CurrentBook.ItemsOfBook.Remove(item);
-            CategoryInItem.DeleteAllConnectionWithItem(item.CurrentBook, item);
+            CategoryInItem.DeleteAllConnectionWithItem(item);
 
             if (BaseClass.IsTestingOff)
                 item.CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
-            return !item.CurrentBook.ItemsOfBook.Contains(item) && !CategoryInItem.IsItemHasConnection(item.CurrentBook, item);
+            return !item.CurrentBook.ItemsOfBook.Contains(item) && !CategoryInItem.IsItemHasConnection(item);
         }
 
         #endregion

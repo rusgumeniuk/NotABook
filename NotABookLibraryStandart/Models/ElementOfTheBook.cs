@@ -11,7 +11,7 @@ namespace NotABookLibraryStandart.Models
         public Book CurrentBook
         {
             get => currentBook;
-            set
+            protected set
             {
                 currentBook = value;
                 if (IsTestingOff)
@@ -35,7 +35,7 @@ namespace NotABookLibraryStandart.Models
             if (IsTestingOff)
                 CurrentBook = book ?? new Book("NULL BOOK");
             else
-                CurrentBook = book ?? throw new Exceptions.BookNullException();
+                CurrentBook = book ?? throw new BookNullException();
         }
         public ElementOfTheBook(Book book, string title) : base(title)
         {

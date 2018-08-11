@@ -105,7 +105,7 @@ namespace NotABook.Pages.DetailPages
                "Do u want to delete all connections with item?",
                "Yes", "NO"))
             {                
-                CategoryInItem.DeleteAllConnectionWithItem(NotABook.App.currentBook, ((MenuItem)sender).CommandParameter as Item);             
+                CategoryInItem.DeleteAllConnectionWithItem(((MenuItem)sender).CommandParameter as Item);             
             }               
            
         }

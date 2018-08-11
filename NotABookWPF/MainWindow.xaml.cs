@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+
+using NotABookLibraryStandart.Models;
 
 namespace NotABookWPF
 {
@@ -25,8 +28,8 @@ namespace NotABookWPF
             InitializeComponent();
             LeftListView.ItemsSource = new List<int>() { 10, 0, 2 };
             CBStack.ItemsSource = new List<string>() { "first", "second", "third" };
-            //Book book = new Book("This book");
-            //ItemsListView.ItemsSource = new System.Collections.ObjectModel.ObservableCollection<Item>() { new Item(book, "First"), new Item(book, "Second") };
+            Book book = new Book("This book");
+            ItemsListView.ItemsSource = new ObservableCollection<Item>() { new Item(book, "First"), new Item(book, "Second") };
         }
 
         private void BtnText_Click(object sender, RoutedEventArgs e)
