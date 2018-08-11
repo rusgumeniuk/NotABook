@@ -32,25 +32,29 @@ namespace NotABook
         public App ()
 		{
             InitializeComponent();
-            {
-                currentBook = new Book("My first book");
-                Book secondBook = new Book("Second book");
-                Book thirdBook = new Book("Third book");
 
-                Category chocolateCategory = new Category(currentBook, "Chocolate");
-                Category flourCategory = new Category(currentBook, "Flour");
-                Category eggsCategory = new Category(currentBook, "Eggs");
-                Category potatoCategory = new Category(currentBook, "Potato");
-                Category tomatoCategory = new Category(currentBook, "Tomato");
-                Category chickenCategory = new Category(currentBook, "Chicken");
-
-                Item chocolateBiscuit = new Item(currentBook, "Chocolate biscuit", Description.CreateDescription("The best chocolate cake ever"), new ObservableCollection<Category>() { chocolateCategory, flourCategory, eggsCategory });
-                Item salatWithPotatoAndTomato = new Item(currentBook, "Salat with potat, tomatos and eggs", Description.CreateDescription("Very healthy salat"), new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
-                Item chicken = new Item(currentBook, "Chicken", Description.CreateDescription("Chicken like in KFC"), new ObservableCollection<Category>() { chickenCategory, eggsCategory });
-            }                      
+            SetUp();                     
 
 			MainPage = new Pages.MainPages.StartPage();                                  
 		}
+
+        private void SetUp()
+        {
+            currentBook = new Book("My first book");
+            Book secondBook = new Book("Second book");
+            Book thirdBook = new Book("Third book");
+
+            Category chocolateCategory = new Category(currentBook, "Chocolate");
+            Category flourCategory = new Category(currentBook, "Flour");
+            Category eggsCategory = new Category(currentBook, "Eggs");
+            Category potatoCategory = new Category(currentBook, "Potato");
+            Category tomatoCategory = new Category(currentBook, "Tomato");
+            Category chickenCategory = new Category(currentBook, "Chicken");
+
+            Item chocolateBiscuit = new Item(currentBook, "Chocolate biscuit", Description.CreateDescription("The best chocolate cake ever"), new ObservableCollection<Category>() { chocolateCategory, flourCategory, eggsCategory });
+            Item salatWithPotatoAndTomato = new Item(currentBook, "Salat with potat, tomatos and eggs", Description.CreateDescription("Very healthy salat"), new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
+            Item chicken = new Item(currentBook, "Chicken", Description.CreateDescription("Chicken like in KFC"), new ObservableCollection<Category>() { chickenCategory, eggsCategory });
+        }
 
         #region StandartFunctions
         protected override void OnStart ()

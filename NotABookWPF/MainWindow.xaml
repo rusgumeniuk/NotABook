@@ -9,18 +9,43 @@
     <StackPanel  Margin="0,0,-0.4,0">
 
         <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0">
-            <TextBox Text="MENU"/>
-            <TextBox Text="MENU2"/>
+            <MenuItem Header="Hello" Name="MenuItemHello" Click="MenuItemHello_Click"/>
+            <MenuItem Header="File">
+                <MenuItem Header="New element">
+                    <MenuItem Header="New book"/>
+                    <MenuItem Header="New item"/>
+                    <MenuItem Header="New category"/>
+                </MenuItem>
+                <MenuItem Header="Syncronize"/>
+                <Separator/>
+                <MenuItem Header="Exit" Name="MenuItemExit" Click="MenuItemExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo"/>
+            </MenuItem>
+            <MenuItem>
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Height="10" Width="10" Fill="Blue"/>
+                        <TextBlock>About</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
         </Menu>
 
         <ToolBar Height="Auto">
-            <TextBox Text="ToolBar"/>
-            <TextBox Text="ToolBar2"/>
+            <ToggleButton>
+                <Ellipse Width="10" Height="10" Fill="Yellow"/>
+            </ToggleButton>
+            <Separator/>
+            <Button Content="toool"/>
+            <Separator/>
+            <TextBox Foreground="LightGray" Width="100" Text="Find me..."/>
         </ToolBar>
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="0.4*"/>
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
@@ -41,23 +66,19 @@
 
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="1">
-                
-                <StackPanel Orientation="Horizontal" Margin="0,0,-0.2,0" HorizontalAlignment="Stretch">
-                    <ComboBox x:Name="CBStack" Text="Select smt" HorizontalAlignment="Left"/>
-                    <TextBox Height="23" Text="Find smt" Width="95" HorizontalContentAlignment="Right" HorizontalAlignment="Right"/>
-                </StackPanel>
-                
-                <Expander Header="Expander" Height="100" Background="#FFE5E5E5">                    
-                    <Expander.Content>
-                        <TextBox Text="asdasd"/>
-                    </Expander.Content>                    
-                </Expander>
-                
+            <StackPanel Grid.Row="0" Grid.Column="1">                              
                 <ListView
                     x:Name="ItemsListView"
-                    Height="Auto"
+                    Height="Auto"                    
+                    MouseDoubleClick="ItemsListView_MouseDoubleClick"
                     >
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Copy" CommandParameter="{Binding .}"/>
+                            <MenuItem Header="Paste" CommandParameter="{Binding .}"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    
                     <ListView.View>
                         <GridView>
                             <GridViewColumn/>
@@ -68,7 +89,7 @@
             </StackPanel>     
 
             <StackPanel Grid.Row="0" Grid.Column="2">
-                <Button  Content="TEXT" x:Name="BtnText" Click="BtnText_Click"/>
+                <TextBlock Name="TBItem"/>
             </StackPanel>
         </Grid>
     </StackPanel>
