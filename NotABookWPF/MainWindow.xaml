@@ -57,7 +57,8 @@
             <StackPanel Grid.Row="0" Grid.Column="0">
                 <ListView
                     x:Name="LeftListView"
-                    Height="Auto">
+                    Height="Auto" 
+                    SelectionChanged="LeftListView_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn/>
@@ -69,6 +70,16 @@
 
             <StackPanel Grid.Row="0" Grid.Column="1">
                 <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,-0.4,0" TextChanged="TextBoxFindItem_TextChanged"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Count of items: "/>
+                    <TextBlock FontStyle="Oblique" Name="TextBlockCountOfItems"/>
+                    <TextBlock Text=" from"/>
+                </StackPanel>
+                <ComboBox
+                    Name="ComboBoxCurrentBook"                    
+                    SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
+                    IsEditable="True"
+                    StaysOpenOnEdit="True"/>
                 <ListView
                     x:Name="ItemsListView"
                     Height="Auto"                    

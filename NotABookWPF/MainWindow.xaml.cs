@@ -41,12 +41,16 @@ namespace NotABookWPF
         public MainWindow()
         {
             InitializeComponent();
-            SetUp();
-            LeftListView.ItemsSource = Books;            
-            ItemsListView.ItemsSource = ItemsList;
+
+            SetUpModels();
+
+            LeftListView.ItemsSource = Books;
+            ComboBoxCurrentBook.ItemsSource = Books;
+
+            UpdateCurrentBook();
         }
 
-        private void SetUp()
+        private void SetUpModels()
         {
             currentBook = new Book("My first book");
             Book secondBook = new Book("Second book");
@@ -89,13 +93,11 @@ namespace NotABookWPF
         {            
             TextBoxFindItem.Text = String.Empty;         
         }
-
         private void TextBoxFindItem_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBoxFindItem.Text = "Find item";
-            ItemsListView.ItemsSource = MainWindow.currentBook.ItemsOfBook;
+            UpdateCurrentBook();
         }
-
         private void TextBoxFindItem_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TextBoxFindItem.IsFocused)
@@ -104,9 +106,39 @@ namespace NotABookWPF
                     ItemsListView.ItemsSource = MainWindow.currentBook.ItemsOfBook;
                 else
                 {
-                    ItemsListView.ItemsSource = MainWindow.currentBook?.FindItems(TextBoxFindItem.Text) ?? null;
+                    ObservableCollection<Item> items = MainWindow.currentBook?.FindItems(TextBoxFindItem.Text);
+                    TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString();
+                    ItemsListView.ItemsSource = items;
                 }
             }                   
+        }
+
+        private void ComboBoxCurrentBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ComboBoxCurrentBook.SelectedItem != null && ComboBoxCurrentBook.SelectedItem as Book != currentBook)
+            {
+                MainWindow.currentBook = ComboBoxCurrentBook.SelectedItem as Book;
+                UpdateCurrentBook();
+            }
+        }
+
+        private void UpdateCurrentBook()
+        {            
+            ItemsListView.ItemsSource = ItemsList;
+
+            
+            ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
+
+            TextBlockCountOfItems.Text = MainWindow.currentBook.ItemsOfBook.Count.ToString();
+        }
+
+        private void LeftListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(LeftListView.SelectedItem != null && LeftListView.SelectedItem as Book != currentBook)
+            {
+                currentBook = LeftListView.SelectedItem as Book;
+                UpdateCurrentBook();
+            }            
         }
     }
 }
