@@ -44,7 +44,7 @@ namespace NotABookWPF
 
             SetUpModels();
 
-            LeftListView.ItemsSource = Books;
+            ListViewBooks.ItemsSource = Books;
             ComboBoxCurrentBook.ItemsSource = Books;
 
             UpdateCurrentBook();
@@ -68,6 +68,15 @@ namespace NotABookWPF
             Item chicken = new Item(currentBook, "Chicken", Description.CreateDescription("Chicken like in KFC"), new ObservableCollection<Category>() { chickenCategory, eggsCategory });
         }
 
+        private void UpdateCurrentBook()
+        {
+            ItemsListView.ItemsSource = currentBook?.ItemsOfBook;
+            ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
+            ListViewBooks.SelectedItem = MainWindow.currentBook;
+            TextBlockCountOfItems.Text = MainWindow.currentBook?.ItemsOfBook.Count.ToString();
+            TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
+        }
+
         private void BtnText_Click(object sender, RoutedEventArgs e)
         {
             //BtnText.Content = ModelsLibrary.Class1.Method();
@@ -85,9 +94,7 @@ namespace NotABookWPF
         private void ItemsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TBItem.Text = (ItemsListView.SelectedItem as Item).Title;
-        }
-
-      
+        }      
 
         private void TextBoxFindItem_GotFocus(object sender, RoutedEventArgs e)
         {            
@@ -120,23 +127,12 @@ namespace NotABookWPF
                 MainWindow.currentBook = ComboBoxCurrentBook.SelectedItem as Book;
                 UpdateCurrentBook();
             }
-        }
-
-        private void UpdateCurrentBook()
-        {            
-            ItemsListView.ItemsSource = ItemsList;
-
-            
-            ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
-
-            TextBlockCountOfItems.Text = MainWindow.currentBook.ItemsOfBook.Count.ToString();
-        }
-
+        }       
         private void LeftListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(LeftListView.SelectedItem != null && LeftListView.SelectedItem as Book != currentBook)
+            if(ListViewBooks.SelectedItem != null && ListViewBooks.SelectedItem as Book != currentBook)
             {
-                currentBook = LeftListView.SelectedItem as Book;
+                currentBook = ListViewBooks.SelectedItem as Book;
                 UpdateCurrentBook();
             }            
         }

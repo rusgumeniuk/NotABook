@@ -32,7 +32,6 @@
                 </MenuItem.Header>
             </MenuItem>
         </Menu>
-
         <ToolBar Height="Auto">
             <Button Content="New Item"/>
             <ToggleButton>
@@ -55,9 +54,10 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0">
+                <TextBlock Text="Current book is:"/>
+                <TextBlock Name="TBCurrentBook" FontStretch="Expanded" FontStyle="Normal" FontWeight="ExtraBold"/>
                 <ListView
-                    x:Name="LeftListView"
-                    Height="Auto" 
+                    x:Name="ListViewBooks"                    
                     SelectionChanged="LeftListView_SelectionChanged">
                     <ListView.View>
                         <GridView>
@@ -65,21 +65,29 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-
             </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="1">
                 <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,-0.4,0" TextChanged="TextBoxFindItem_TextChanged"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Count of items: "/>
-                    <TextBlock FontStyle="Oblique" Name="TextBlockCountOfItems"/>
-                    <TextBlock Text=" from"/>
-                </StackPanel>
-                <ComboBox
+                <Border CornerRadius="10" BorderBrush="Yellow" BorderThickness="5"
+                        Background="LightCyan"> 
+                    <ContentControl Margin="2">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Count of items: "/>
+                                <TextBlock FontStyle="Oblique" Name="TextBlockCountOfItems"/>
+                                <TextBlock Text=" from"/>
+                            </StackPanel>
+                            <ComboBox
                     Name="ComboBoxCurrentBook"                    
                     SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
                     IsEditable="True"
                     StaysOpenOnEdit="True"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Border>
+                
+                
                 <ListView
                     x:Name="ItemsListView"
                     Height="Auto"                    
