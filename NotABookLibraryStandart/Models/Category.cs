@@ -62,7 +62,8 @@ namespace NotABookLibraryStandart.Models
                 ObservableCollection<Item> items = new ObservableCollection<Item>();
                 foreach (var pair in CurrentBook.CategoryInItemsOfBook)
                 {
-                    if (pair.GetCategoryId == Id) items.Add(pair.Item);
+                    if (pair.GetCategoryId == Id)
+                        items.Add(pair.Item);
                 }
                 return items;
             }
@@ -127,6 +128,24 @@ namespace NotABookLibraryStandart.Models
             return category.Title.Contains(word);
         }
 
+        public bool IsCategoryHasConnectionWithItem(Item item)
+        {
+            if (BaseClass.IsTestingOff)
+            {
+                if (item == null)
+                    throw new ItemNullException();                
+            }
+            else
+            {
+                if (item == null)
+                    return false;
+            }
+
+            if (ItemsWithThisCategory?.Count < 1)
+                return false;
+
+            return ItemsWithThisCategory.Contains(item);
+        }
 
         public string DeleteCategoryStr()
         {

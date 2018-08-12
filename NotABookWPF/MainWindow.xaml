@@ -42,11 +42,10 @@
             <Separator/>
             <TextBox Foreground="LightGray" Width="100" Text="Find me..."/>
         </ToolBar>
-
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.4*"/>
-                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.8*"/>
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -58,7 +57,8 @@
                 <TextBlock Name="TBCurrentBook" FontStretch="Expanded" FontStyle="Normal" FontWeight="ExtraBold"/>
                 <ListView
                     x:Name="ListViewBooks"                    
-                    SelectionChanged="LeftListView_SelectionChanged">
+                    SelectionChanged="LeftListView_SelectionChanged"
+                    SelectionMode="Single">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn/>
@@ -79,38 +79,66 @@
                                 <TextBlock Text=" from"/>
                             </StackPanel>
                             <ComboBox
-                    Name="ComboBoxCurrentBook"                    
-                    SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
-                    IsEditable="True"
-                    StaysOpenOnEdit="True"/>
+                                Name="ComboBoxCurrentBook"                    
+                                SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
+                                IsEditable="True"
+                                StaysOpenOnEdit="True"/>
                         </StackPanel>
                     </ContentControl>
-                </Border>
-                
-                
-                <ListView
-                    x:Name="ItemsListView"
+                </Border>                               
+                <ListBox                    
+                    x:Name="ListBoxItems"
                     Height="Auto"                    
-                    MouseDoubleClick="ItemsListView_MouseDoubleClick"
+                    MouseDoubleClick="ListBoxItems_MouseDoubleClick"
+                    SelectionMode="Single"
                     >
-                    <ListView.ContextMenu>
+                    <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Copy" CommandParameter="{Binding .}"/>
                             <MenuItem Header="Paste" CommandParameter="{Binding .}"/>
                         </ContextMenu>
-                    </ListView.ContextMenu>
-
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-
+                    </ListBox.ContextMenu>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Background="AntiqueWhite">
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                <StackPanel Background="Azure" >
+                                    <TextBlock Text="{Binding DateOfLastChanging}" FontStyle="Italic"/>
+                                    <TextBlock Text="{Binding Description.Text}" FontStretch="Expanded"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>                                    
+                </ListBox>
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="2">
-                <TextBlock Name="TBItem"/>
+            <StackPanel Grid.Row="0" Grid.Column="2" Name="stt">
+                <StackPanel>
+                    <TextBox Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date of last changing: "/>
+                        <TextBlock Name="TBDateOfLastChanging" Text="{Binding DateOfLastChanging}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date of creating: "/>
+                        <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
+                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal">
+                        <ListBox
+                            Name="ListBoxCategories">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Title}" IsChecked="{Binding }"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Categories: "/>
+                        <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
+                    </StackPanel>
+                    <TextBlock Name="TBDescription" Text="{Binding Description.Text}"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </StackPanel>

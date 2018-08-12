@@ -70,7 +70,7 @@ namespace NotABookWPF
 
         private void UpdateCurrentBook()
         {
-            ItemsListView.ItemsSource = currentBook?.ItemsOfBook;
+            ListBoxItems.ItemsSource = ItemsList;           
             ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
             ListViewBooks.SelectedItem = MainWindow.currentBook;
             TextBlockCountOfItems.Text = MainWindow.currentBook?.ItemsOfBook.Count.ToString();
@@ -91,9 +91,9 @@ namespace NotABookWPF
             MessageBox.Show(((MenuItem)sender).Header.ToString());
         }
 
-        private void ItemsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TBItem.Text = (ItemsListView.SelectedItem as Item).Title;
+            stt.DataContext = ListBoxItems.SelectedItem as Item;
         }      
 
         private void TextBoxFindItem_GotFocus(object sender, RoutedEventArgs e)
@@ -110,12 +110,12 @@ namespace NotABookWPF
             if (TextBoxFindItem.IsFocused)
             {
                 if (String.IsNullOrWhiteSpace(TextBoxFindItem.Text))
-                    ItemsListView.ItemsSource = MainWindow.currentBook.ItemsOfBook;
+                    ListBoxItems.ItemsSource = MainWindow.currentBook.ItemsOfBook;
                 else
                 {
                     ObservableCollection<Item> items = MainWindow.currentBook?.FindItems(TextBoxFindItem.Text);
                     TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString();
-                    ItemsListView.ItemsSource = items;
+                    ListBoxItems.ItemsSource = items;
                 }
             }                   
         }
