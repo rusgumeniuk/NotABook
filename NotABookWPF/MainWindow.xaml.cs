@@ -82,5 +82,31 @@ namespace NotABookWPF
         {
             TBItem.Text = (ItemsListView.SelectedItem as Item).Title;
         }
+
+      
+
+        private void TextBoxFindItem_GotFocus(object sender, RoutedEventArgs e)
+        {            
+            TextBoxFindItem.Text = String.Empty;         
+        }
+
+        private void TextBoxFindItem_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBoxFindItem.Text = "Find item";
+            ItemsListView.ItemsSource = MainWindow.currentBook.ItemsOfBook;
+        }
+
+        private void TextBoxFindItem_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TextBoxFindItem.IsFocused)
+            {
+                if (String.IsNullOrWhiteSpace(TextBoxFindItem.Text))
+                    ItemsListView.ItemsSource = MainWindow.currentBook.ItemsOfBook;
+                else
+                {
+                    ItemsListView.ItemsSource = MainWindow.currentBook?.FindItems(TextBoxFindItem.Text) ?? null;
+                }
+            }                   
+        }
     }
 }

@@ -174,6 +174,64 @@ namespace NotABookLibraryStandart.Models
             return !lastBook.ItemsOfBook.Contains(item) && newBook.ItemsOfBook.Contains(item);
         }
 
+        public bool IsItemContainsWord(string partOfItem)
+        {
+            if (BaseClass.IsTestingOff)
+            {
+                if (partOfItem == null)
+                    throw new ArgumentNullException();
+                if (String.IsNullOrWhiteSpace(partOfItem))
+                    throw new ArgumentException();
+            }
+            else
+            {
+                if (partOfItem == null ||
+                    String.IsNullOrWhiteSpace(partOfItem))
+                    return false;
+            }
+
+            if (Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) || this.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
+                return true;
+            foreach (Category category in this.Categories)
+            {
+                if (category.IsCategoryContainsWord(partOfItem))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsItemContainsWord(Item item, string partOfItem)
+        {
+            if (BaseClass.IsTestingOff)
+            {
+                if (item == null)
+                    throw new ItemNullException();
+                if (partOfItem == null)
+                    throw new ArgumentNullException();
+                if (String.IsNullOrWhiteSpace(partOfItem))
+                    throw new ArgumentException();
+            }
+            else
+            {
+                if (item == null ||
+                    partOfItem == null ||
+                    String.IsNullOrWhiteSpace(partOfItem))
+                    return false;
+            }
+
+            if (item.Title.Contains(partOfItem) || item.Description.Text.Contains(partOfItem))
+                    return true;
+
+            foreach(Category category in item.Categories)
+            {
+                if (category.IsCategoryContainsWord(partOfItem))
+                    return true;
+            }
+
+            return false;
+        }
+
         public string GetCategoriesInString()
         {
             if (Categories == null || Categories.Count < 1) return "No one categories";

@@ -34,6 +34,7 @@
         </Menu>
 
         <ToolBar Height="Auto">
+            <Button Content="New Item"/>
             <ToggleButton>
                 <Ellipse Width="10" Height="10" Fill="Yellow"/>
             </ToggleButton>
@@ -66,7 +67,8 @@
 
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="1">                              
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,-0.4,0" TextChanged="TextBoxFindItem_TextChanged"/>
                 <ListView
                     x:Name="ItemsListView"
                     Height="Auto"                    
@@ -78,7 +80,7 @@
                             <MenuItem Header="Paste" CommandParameter="{Binding .}"/>
                         </ContextMenu>
                     </ListView.ContextMenu>
-                    
+
                     <ListView.View>
                         <GridView>
                             <GridViewColumn/>
@@ -86,7 +88,7 @@
                     </ListView.View>
                 </ListView>
 
-            </StackPanel>     
+            </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="2">
                 <TextBlock Name="TBItem"/>

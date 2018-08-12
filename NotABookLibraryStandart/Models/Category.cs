@@ -89,6 +89,45 @@ namespace NotABookLibraryStandart.Models
 
         #region Methods
 
+        public bool IsCategoryContainsWord(string word)
+        {
+            if (BaseClass.IsTestingOff)
+            {
+                if (word == null)
+                    throw new ArgumentNullException();
+                if (String.IsNullOrWhiteSpace(word))
+                    throw new ArgumentException();
+            }
+            else
+            {
+                if (word == null ||
+                    String.IsNullOrWhiteSpace(word))
+                    return false;
+            }
+            return this.Title.ToUpperInvariant().Contains(word.ToUpperInvariant());
+        }
+        public static bool IsCategoryContainsWord(Category category, string word)
+        {
+            if (BaseClass.IsTestingOff)
+            {
+                if (category == null)
+                    throw new CategoryNullException();
+                if (word == null)
+                    throw new ArgumentNullException();
+                if (String.IsNullOrWhiteSpace(word))
+                    throw new ArgumentException();
+            }
+            else
+            {
+                if (category == null || 
+                    word == null ||
+                    String.IsNullOrWhiteSpace(word))
+                        return false;
+            }
+            return category.Title.Contains(word);
+        }
+
+
         public string DeleteCategoryStr()
         {
             if (CurrentBook == null)

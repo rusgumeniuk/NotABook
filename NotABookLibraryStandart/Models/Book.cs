@@ -200,6 +200,34 @@ namespace NotABookLibraryStandart.Models
             return GetIndexOfCategoryByID(book, categoryId) > -1;
         }
 
+        public ObservableCollection<Item> FindItems(string partOfItem)
+        {
+            if (BaseClass.IsTestingOff)
+            {
+                if (partOfItem == null)
+                    throw new ArgumentNullException();
+                if (String.IsNullOrWhiteSpace(partOfItem))
+                    throw new ArgumentException();
+                if (ItemsOfBook.Count < 1)
+                    throw new ElementIsNotInCollectionException();
+            }
+            else
+            {
+                if (partOfItem == null || 
+                    String.IsNullOrWhiteSpace(partOfItem) || 
+                    ItemsOfBook.Count < 1)
+                        return null;
+            }
+
+            List<Item> items = new List<Item>();
+            foreach(Item item in ItemsOfBook)
+            {
+                if (item.IsItemContainsWord(partOfItem))
+                    items.Add(item);
+            }
+            return new ObservableCollection<Item>(items);
+
+        }
 
         public int GetIndexOfItemByID(Guid itemId)
         {
