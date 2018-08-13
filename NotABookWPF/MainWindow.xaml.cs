@@ -70,7 +70,7 @@ namespace NotABookWPF
 
         private void UpdateCurrentBook()
         {
-            ListBoxItems.ItemsSource = ItemsList;           
+            ListBoxItems.ItemsSource =  MainWindow.currentBook?.ItemsOfBook;
             ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
             ListViewBooks.SelectedItem = MainWindow.currentBook;
             TextBlockCountOfItems.Text = MainWindow.currentBook?.ItemsOfBook.Count.ToString();
@@ -93,7 +93,7 @@ namespace NotABookWPF
 
         private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            stt.DataContext = ListBoxItems.SelectedItem as Item;
+            StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Item;
         }      
 
         private void TextBoxFindItem_GotFocus(object sender, RoutedEventArgs e)
@@ -128,13 +128,76 @@ namespace NotABookWPF
                 UpdateCurrentBook();
             }
         }       
+        
+
+      
+
+        private void TBEditItemTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (StackPanelItemPanel.DataContext != null)
+            {
+                (StackPanelItemPanel.DataContext as Item).Title = TBEditItemTitle.Text;
+
+            }
+        }
+        private void TBDescription_LayoutUpdated(object sender, EventArgs e)
+        {
+            if (StackPanelItemPanel.DataContext != null)
+            {
+                (StackPanelItemPanel.DataContext as Item).Description.Text = TBDescription.Text;
+            }
+        }
+
+        #region Book list view
         private void LeftListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ListViewBooks.SelectedItem != null && ListViewBooks.SelectedItem as Book != currentBook)
+            if (ListViewBooks.SelectedItem != null && ListViewBooks.SelectedItem as Book != currentBook)
             {
                 currentBook = ListViewBooks.SelectedItem as Book;
                 UpdateCurrentBook();
-            }            
+            }
+        }
+
+       
+
+        private void MenuItemDeleteBook_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemRemoveCategories_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemRemoveAllElements_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            (sender as TextBox).IsEnabled = false;
+            //((sender as TextBox) as Book).Title = (sender as TextBox).Text;
+            (ListViewBooks.SelectedItem as Book).Title = (sender as TextBox).Text;
+        }
+
+        #endregion
+
+        private void TBEditBookTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            (sender as TextBox).IsEnabled = true;
+            MessageBox.Show("asd");
         }
     }
 }

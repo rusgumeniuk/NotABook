@@ -24,9 +24,12 @@ namespace NotABookLibraryStandart.Models
             get => title;
             set
             {
-                title = value;
-                if (IsTestingOff)
-                    OnPropertyChanged("Title");
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    title = value;
+                    if (IsTestingOff)
+                        OnPropertyChanged("Title");
+                }                   
             }
         }
 

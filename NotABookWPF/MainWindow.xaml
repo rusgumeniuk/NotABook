@@ -59,11 +59,21 @@
                     x:Name="ListViewBooks"                    
                     SelectionChanged="LeftListView_SelectionChanged"
                     SelectionMode="Single">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <!--<MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>-->
+                            <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click"/>
+                            <MenuItem Name="MenuItemRemoveItems" Header="Remove items" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
+                            <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
+                            <MenuItem Name="MenuItemRemoveAllConnections" Header="Remove all connections" CommandParameter="{Binding .}" Click="MenuItemRemoveAllConnections_Click"/>
+                            <MenuItem Name="MenuItemRemoveAllElements" Header="Remove all elements" CommandParameter="{Binding .}" Click="MenuItemRemoveAllElements_Click"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>        
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
 
@@ -85,19 +95,13 @@
                                 StaysOpenOnEdit="True"/>
                         </StackPanel>
                     </ContentControl>
-                </Border>                               
+                </Border>
                 <ListBox                    
                     x:Name="ListBoxItems"
                     Height="Auto"                    
                     MouseDoubleClick="ListBoxItems_MouseDoubleClick"
                     SelectionMode="Single"
                     >
-                    <ListBox.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Copy" CommandParameter="{Binding .}"/>
-                            <MenuItem Header="Paste" CommandParameter="{Binding .}"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Background="AntiqueWhite">
@@ -112,9 +116,9 @@
                 </ListBox>
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="2" Name="stt">
+            <StackPanel Grid.Row="0" Grid.Column="2" x:Name="StackPanelItemPanel">
                 <StackPanel>
-                    <TextBox Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic"/>
+                    <TextBox Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic" LostFocus="TBEditItemTitle_LostFocus"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Date of last changing: "/>
                         <TextBlock Name="TBDateOfLastChanging" Text="{Binding DateOfLastChanging}"/>
@@ -137,7 +141,7 @@
                         <TextBlock Text="Categories: "/>
                         <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
                     </StackPanel>
-                    <TextBlock Name="TBDescription" Text="{Binding Description.Text}"/>
+                    <TextBox Name="TBDescription" Text="{Binding Description.Text}" LayoutUpdated="TBDescription_LayoutUpdated"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
