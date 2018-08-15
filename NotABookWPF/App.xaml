@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NotABookWPF"
-             StartupUri="MainWindow.xaml">
+             xmlns:window="clr-namespace:NotABookWPF.Windows"
+             
+             >
     <Application.Resources>
          
     </Application.Resources>

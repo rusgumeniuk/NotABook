@@ -1,0 +1,33 @@
+﻿<Window x:Class="NotABookWPF.Windows.AddEditItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NotABookWPF.Windows"
+        mc:Ignorable="d"
+        Title="NewItemWindow" Height="450" Width="800" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="*"/>            
+        </Grid.RowDefinitions>
+        
+        <TextBox Grid.Row="0" Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic" LostFocus="TBEditItemTitle_LostFocus"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Date of last changing: "/>
+            <TextBlock Name="TBDateOfLastChanging" Text="{Binding DateOfLastChanging}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <TextBlock Text="Date of creating: "/>
+            <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Text="Categories: "/>
+            <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
+        </StackPanel>
+        <TextBox Grid.Row="4" Name="TBDescription" Text="{Binding Description.Text}" LostFocus="TBDescription_LostFocus"/>
+    </Grid>
+</Window>

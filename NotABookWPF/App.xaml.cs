@@ -13,5 +13,10 @@ namespace NotABookWPF
     /// </summary>
     public partial class App : Application
     {
+       public App()
+        {
+            var window = new Windows.MainWindow();
+            window.Show();
+        }
     }
 }

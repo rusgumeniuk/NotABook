@@ -1,0 +1,149 @@
+﻿<Window x:Class="NotABookWPF.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NotABookWPF.Windows"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel  Margin="0,0,-0.4,0">
+
+        <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0">
+            <MenuItem Header="Hello" Name="MenuItemHello" Click="MenuItemHello_Click"/>
+            <MenuItem Header="File">
+                <MenuItem Header="New element">
+                    <MenuItem Header="New book"/>
+                    <MenuItem Header="New item"/>
+                    <MenuItem Header="New category"/>
+                </MenuItem>
+                <MenuItem Header="Syncronize"/>
+                <Separator/>
+                <MenuItem Header="Exit" Name="MenuItemExit" Click="MenuItemExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo"/>
+            </MenuItem>
+            <MenuItem>
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Height="10" Width="10" Fill="Blue"/>
+                        <TextBlock>About</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </Menu>
+        <ToolBar Height="Auto">
+            <Button Name="BtnNewItem" Content="New Item" Click="BtnNewItem_Click"/>
+            <ToggleButton>
+                <Ellipse Width="10" Height="10" Fill="Yellow"/>
+            </ToggleButton>
+            <Separator/>
+            <Button Content="toool"/>
+            <Separator/>
+            <TextBox Foreground="LightGray" Width="100" Text="Find me..."/>
+        </ToolBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <TextBlock Text="Current book is:"/>
+                <TextBlock Name="TBCurrentBook" FontStretch="Expanded" FontStyle="Normal" FontWeight="ExtraBold"/>
+                <ListView
+                    x:Name="ListViewBooks"                    
+                    SelectionChanged="LeftListView_SelectionChanged"
+                    SelectionMode="Single">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <!--<MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>-->
+                            <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click"/>
+                            <MenuItem Name="MenuItemRemoveItems" Header="Remove items" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
+                            <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
+                            <MenuItem Name="MenuItemRemoveAllConnections" Header="Remove all connections" CommandParameter="{Binding .}" Click="MenuItemRemoveAllConnections_Click"/>
+                            <MenuItem Name="MenuItemRemoveAllElements" Header="Remove all elements" CommandParameter="{Binding .}" Click="MenuItemRemoveAllElements_Click"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,-0.4,0" TextChanged="TextBoxFindItem_TextChanged"/>
+                <Border CornerRadius="10" BorderBrush="Yellow" BorderThickness="5"
+                        Background="LightCyan">
+                    <ContentControl Margin="2">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Count of items: "/>
+                                <TextBlock FontStyle="Oblique" Name="TextBlockCountOfItems"/>
+                                <TextBlock Text=" from"/>
+                            </StackPanel>
+                            <ComboBox
+                                Name="ComboBoxCurrentBook"                    
+                                SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
+                                IsEditable="True"
+                                StaysOpenOnEdit="True"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Border>
+                <ListBox                    
+                    x:Name="ListBoxItems"
+                    Height="Auto"                    
+                    MouseDoubleClick="ListBoxItems_MouseDoubleClick"
+                    SelectionMode="Single"
+                    >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Background="AntiqueWhite">
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                <StackPanel Background="Azure" >
+                                    <TextBlock Text="{Binding DateOfLastChanging}" FontStyle="Italic"/>
+                                    <TextBlock Text="{Binding Description.Text}" FontStretch="Expanded"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="2" x:Name="StackPanelItemPanel">
+                <StackPanel>
+                    <TextBox Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic" LostFocus="TBEditItemTitle_LostFocus"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date of last changing: "/>
+                        <TextBlock Name="TBDateOfLastChanging" Text="{Binding DateOfLastChanging}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date of creating: "/>
+                        <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
+                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal">
+                        <ListBox
+                            Name="ListBoxCategories">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Title}" IsChecked="{Binding }"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Categories: "/>
+                        <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
+                    </StackPanel>
+                    <TextBox Name="TBDescription" Text="{Binding Description.Text}" LostFocus="TBDescription_LostFocus"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>
