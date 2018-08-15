@@ -27,6 +27,17 @@ namespace NotABookLibraryStandart.Models
             }
         }
 
+        public string DescriptionText
+        {
+            get => description.Text;
+            set
+            {
+                description.Text = value;
+                if (IsTestingOff)
+                    OnPropertyChanged("Description.Text");
+            }
+        }
+
         public ObservableCollection<Category> Categories
         {
             get

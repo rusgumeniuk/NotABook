@@ -39,7 +39,7 @@ namespace NotABookWPF.Windows
 
         private void TBDescription_LostFocus(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as Item).Description.Text = TBDescription.Text;
+            (this.DataContext as Item).DescriptionText = TBDescription.Text;
         }
         private void TBEditItemTitle_LostFocus(object sender, RoutedEventArgs e)
         {

@@ -143,7 +143,7 @@ namespace NotABookWPF.Windows
         {
             if (StackPanelItemPanel.DataContext != null)
             {
-                (StackPanelItemPanel.DataContext as Item).Description.Text = TBDescription.Text;
+                (StackPanelItemPanel.DataContext as Item).DescriptionText = TBDescription.Text;
             }
         }
 
@@ -158,30 +158,26 @@ namespace NotABookWPF.Windows
         }
 
 
-
-        private void MenuItemDeleteBook_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
         {
-
+            Book.ClearItemsList(((sender as MenuItem).CommandParameter as Book));
         }
 
         private void MenuItemRemoveCategories_Click(object sender, RoutedEventArgs e)
         {
-
+            Book.ClearCaregoriesList(((sender as MenuItem).CommandParameter as Book));
         }
 
         private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void MenuItemRemoveAllElements_Click(object sender, RoutedEventArgs e)
         {
-
+            Book.RemoveAllElementsOfBook(((sender as MenuItem).CommandParameter as Book));
         }
 
         private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
@@ -204,6 +200,9 @@ namespace NotABookWPF.Windows
             (new AddEditItemWindow() { Title = "Creating of item" }).Show();
         }
 
-
+        private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
+        {
+            ((sender as MenuItem).CommandParameter as Book).DeleteBook();
+        }
     }
 }

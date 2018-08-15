@@ -44,7 +44,7 @@
         </ToolBar>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.8*"/>
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
@@ -56,22 +56,26 @@
                 <TextBlock Text="Current book is:"/>
                 <TextBlock Name="TBCurrentBook" FontStretch="Expanded" FontStyle="Normal" FontWeight="ExtraBold"/>
                 <ListView
-                    x:Name="ListViewBooks"                    
+                    x:Name="ListViewBooks"       
+                    x:FieldModifier="public"
                     SelectionChanged="LeftListView_SelectionChanged"
-                    SelectionMode="Single">
-                    <ListView.ContextMenu>
-                        <ContextMenu>
-                            <!--<MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>-->
-                            <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click"/>
-                            <MenuItem Name="MenuItemRemoveItems" Header="Remove items" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
-                            <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
-                            <MenuItem Name="MenuItemRemoveAllConnections" Header="Remove all connections" CommandParameter="{Binding .}" Click="MenuItemRemoveAllConnections_Click"/>
-                            <MenuItem Name="MenuItemRemoveAllElements" Header="Remove all elements" CommandParameter="{Binding .}" Click="MenuItemRemoveAllElements_Click"/>
-                        </ContextMenu>
-                    </ListView.ContextMenu>
-                    <ListView.ItemTemplate>
+                    SelectionMode="Single"
+                     HorizontalContentAlignment="Stretch">
+                    <ListView.ItemTemplate>                        
                         <DataTemplate>
-                            <TextBox Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
+                            <StackPanel>
+                                <TextBox  Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <!--<MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>-->
+                                        <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click_1"/>
+                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove items" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
+                                        <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
+                                        <MenuItem Name="MenuItemRemoveAllConnections" Header="Remove all connections" CommandParameter="{Binding .}" Click="MenuItemRemoveAllConnections_Click"/>
+                                        <MenuItem Name="MenuItemRemoveAllElements" Header="Remove all elements" CommandParameter="{Binding .}" Click="MenuItemRemoveAllElements_Click"/>
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -101,14 +105,16 @@
                     Height="Auto"                    
                     MouseDoubleClick="ListBoxItems_MouseDoubleClick"
                     SelectionMode="Single"
+                    HorizontalContentAlignment="Stretch"     
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Background="AntiqueWhite">
-                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
-                                <StackPanel Background="Azure" >
+                            <StackPanel Background="AntiqueWhite" CanHorizontallyScroll="False" >
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                <StackPanel Background="Azure" CanHorizontallyScroll="False">
                                     <TextBlock Text="{Binding DateOfLastChanging}" FontStyle="Italic"/>
-                                    <TextBlock Text="{Binding Description.Text}" FontStretch="Expanded"/>
+                                    <TextBlock Text="{Binding Description.Text}" FontStretch="Expanded" TextWrapping="WrapWithOverflow"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
