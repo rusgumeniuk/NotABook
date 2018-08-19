@@ -1,2 +1,2 @@
 # NotABook
-My first Xamarin project
+My first Xamarin and WPf project
