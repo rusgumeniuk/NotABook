@@ -11,7 +11,6 @@ namespace NotABookLibraryStandart.Models
     /// </summary>
     public class Category : ElementOfTheBook
     {
-
         #region Prop
         public string GetStringCountOfItemsWithCategory
         {
@@ -82,7 +81,7 @@ namespace NotABookLibraryStandart.Models
         #region Constr
         public Category(Book curBook) : base(curBook)
         {
-            curBook.CategoriesOfBook.Add(this);
+            CurrentBook.CategoriesOfBook.Add(this);
         }
 
         public Category(Book curBook, string title) : this(curBook)

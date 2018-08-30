@@ -599,7 +599,6 @@ namespace NotABookLibraryStandart.Models
             return ClearItemsList(book) && ClearCaregoriesList(book);
 
         }
-
         #endregion
     }
 }

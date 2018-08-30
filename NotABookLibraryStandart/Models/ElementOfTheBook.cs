@@ -21,16 +21,6 @@ namespace NotABookLibraryStandart.Models
             }
         }
 
-        public override string Title
-        {
-            get => title;
-            set
-            {
-                title = value;
-                OnPropertyChanged("Title");
-            }
-        }
-
         public ElementOfTheBook(Book book) : base()
         {
             CurrentBook = book ?? (IsXamarinProjectDeploying ? new Book("NULL BOOK") : throw new BookNullException());

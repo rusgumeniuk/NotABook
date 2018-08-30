@@ -39,7 +39,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     title = value;
                     OnPropertyChanged("Title");
-                }                   
+                }                
             }
         }
 
@@ -55,8 +55,7 @@ namespace NotABookLibraryStandart.Models
             Id = Guid.NewGuid();
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
-            if (IsXamarinProjectDeploying)
-                OnPropertyChanged("New element");
+            OnPropertyChanged("New element");
         }
 
         public BaseClass(string title) : this()
