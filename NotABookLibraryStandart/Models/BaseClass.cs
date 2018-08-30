@@ -19,10 +19,14 @@ namespace NotABookLibraryStandart.Models
 
         #region Prop
         /// <summary>
-        /// A field that show is project in testing mode. "True" - to start Xamarin, "False" - to start testing and WPF
+        /// A field that show is project in Xamarin mode. "True" - to block Exceptions
+        /// </summary>        
+        public static bool IsXamarinProjectDeploying { get; set; } = false;
+
+        /// <summary>
+        /// A filed tha show is project in testing mode. "True" - to block OnPropertyChange
         /// </summary>
-        //public static bool IsXamarinProjectDeploying = false; //To start testing project set "false". 
-        public static bool IsXamarinProjectDeploying { get; set; } = true;
+        public static bool IsTesingProjectRunning { get; set; } = true;
 
         public Guid Id { get; private set; }
 
@@ -34,8 +38,7 @@ namespace NotABookLibraryStandart.Models
                 if (!String.IsNullOrWhiteSpace(value))
                 {
                     title = value;
-                    if (IsXamarinProjectDeploying)
-                        OnPropertyChanged("Title");
+                    OnPropertyChanged("Title");
                 }                   
             }
         }
@@ -63,7 +66,6 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-
         /// <summary>
         /// The method that update date of last changing after any operation with object
         /// </summary>
@@ -77,7 +79,7 @@ namespace NotABookLibraryStandart.Models
         /// </summary>
         protected static void UpdateDateOfLastChanging(BaseClass obj)
         {
-            obj.UpdateDateOfLastChanging();
+            obj?.UpdateDateOfLastChanging();
         }
 
         public override string ToString()
@@ -89,27 +91,14 @@ namespace NotABookLibraryStandart.Models
 
         public virtual void OnPropertyChanged(string prop = "")
         {
-            if (PropertyChanged != null)
+            if (!IsTesingProjectRunning)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                UpdateDateOfLastChanging();
-            }
-        }
-
-        public virtual void OnPropertyChanged(Book book, string prop = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                UpdateDateOfLastChanging();
-
-
-                if (book != null)
-                    book.UpdateDateOfLastChanging();
-                else if(!IsXamarinProjectDeploying)
-                    throw new Exceptions.BookNullException();                               
-                
-            }
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                    UpdateDateOfLastChanging();
+                }
+            }           
         }
 
         #endregion

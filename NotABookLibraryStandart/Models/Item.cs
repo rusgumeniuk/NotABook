@@ -25,8 +25,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 description = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged("Description");
+                OnPropertyChanged("Description");
             }
         }
 
@@ -39,8 +38,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 description.Text = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged("Description.Text");
+                OnPropertyChanged("Description.Text");
             }
         }
 
@@ -94,8 +92,7 @@ namespace NotABookLibraryStandart.Models
                     CategoryInItem.CreateCategoryInItem(category, this);
                 }
 
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged("Categories");
+                OnPropertyChanged("Categories");
             }
         }
 

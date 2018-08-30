@@ -31,8 +31,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 itemsOfBook = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged("ItemsOfBook");
+                OnPropertyChanged("ItemsOfBook");
             }
         }
 
@@ -42,8 +41,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 categoriesOfBook = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged("CategoriesOfBook");
+                OnPropertyChanged("CategoriesOfBook");
             }
         }
 
@@ -53,8 +51,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 categoriesInItemOfBook = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged("CategoryInItemsOfBook");
+                OnPropertyChanged("CategoryInItemsOfBook");
             }
         }
 

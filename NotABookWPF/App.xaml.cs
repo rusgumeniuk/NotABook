@@ -15,7 +15,8 @@ namespace NotABookWPF
     {
        public App()
         {
-            NotABookLibraryStandart.Models.BaseClass.IsXamarinProjectDeploying = false;
+            NotABookLibraryStandart.Models.BaseClass.IsTesingProjectRunning = false;
+
             var window = new Windows.MainWindow();
             window.Show();
         }

@@ -17,8 +17,7 @@ namespace NotABookLibraryStandart.Models
             protected set
             {
                 currentBook = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged(currentBook, "CurrentBook");
+                OnPropertyChanged("CurrentBook");
             }
         }
 
@@ -28,8 +27,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 title = value;
-                if (IsXamarinProjectDeploying)
-                    OnPropertyChanged(CurrentBook, "Title");
+                OnPropertyChanged("Title");
             }
         }
 
@@ -42,16 +40,14 @@ namespace NotABookLibraryStandart.Models
             CurrentBook = book ?? (IsXamarinProjectDeploying ? new Book("NULL BOOK") : throw new BookNullException());
         }
 
-        //public override void OnPropertyChanged(string prop = "")
-        //{
-        //    if (PropertyChanged != null)
-        //    {
+        public override void OnPropertyChanged(string prop = "")
+        {
+            base.OnPropertyChanged(prop);
 
-        //    }
-        //    base.OnPropertyChanged(prop);
-        //    if (CurrentBook == null)
-        //        throw new Exceptions.BookNullException();
-        //    BaseClass.UpdateDateOfLastChanging(CurrentBook);
-        //}
+            if (currentBook != null)
+                Book.UpdateDateOfLastChanging(currentBook);
+            else if (!IsXamarinProjectDeploying)
+                throw new Exceptions.BookNullException();
+        }
     }
 }

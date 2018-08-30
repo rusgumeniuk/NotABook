@@ -31,7 +31,9 @@ namespace NotABook
 
         public App ()
 		{
-            //BaseClass.IsXamarinProjectDeploying = false;
+            BaseClass.IsXamarinProjectDeploying = true;
+            BaseClass.IsTesingProjectRunning = false;
+
             InitializeComponent();
 
             SetUp();                     
