@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 
 namespace NotABookLibraryStandart.Models
 {
+    /// <summary>
+    /// Represents a note of the book
+    /// </summary>
     public class Item : ElementOfTheBook
     {
         #region Fields
@@ -22,18 +25,21 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 description = value;
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                     OnPropertyChanged("Description");
             }
         }
 
+        /// <summary>
+        /// Represents a text of the description
+        /// </summary>
         public string DescriptionText
         {
             get => description.Text;
             set
             {
                 description.Text = value;
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                     OnPropertyChanged("Description.Text");
             }
         }
@@ -42,7 +48,7 @@ namespace NotABookLibraryStandart.Models
         {
             get
             {
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                 {
                     if (CurrentBook == null)
                         return null;
@@ -69,7 +75,7 @@ namespace NotABookLibraryStandart.Models
             }
             set
             {
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                 {
                     if (CurrentBook == null || value == null)
                         return;
@@ -88,11 +94,14 @@ namespace NotABookLibraryStandart.Models
                     CategoryInItem.CreateCategoryInItem(category, this);
                 }
 
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                     OnPropertyChanged("Categories");
             }
         }
 
+        /// <summary>
+        /// Represents a collection of Categories in string
+        /// </summary>
         public string CategoriesStr { get => this.GetCategoriesInString(); }
         #endregion
 
@@ -100,7 +109,7 @@ namespace NotABookLibraryStandart.Models
 
         public Item(Book curBook) : base(curBook)
         {
-            curBook.ItemsOfBook.Add(this);
+            CurrentBook.ItemsOfBook.Add(this);
         }
 
         public Item(Book curBook, string title) : this(curBook)
@@ -121,14 +130,26 @@ namespace NotABookLibraryStandart.Models
 
         #region Methods
 
-        public string ChangeBookStr(Book book)
+        /// <summary>
+        /// Change book of the current item to another
+        /// </summary>
+        /// <param name="newBook">The book that will contain the current item </param>
+        /// <returns>Result of changing</returns>
+        public string ChangeBookStr(Book newBook)
         {
             if (CurrentBook == null)
                 return "Current book is null";
-            if (book == null)
+            if (newBook == null)
                 return "new book is null";
-            return $"Changing {CurrentBook.Title} on {book.Title} is {ChangeBook(book)}";
+            return $"Changing {CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook)}";
         }
+
+        /// <summary>
+        /// Change book of the "item" to "newBook"
+        /// </summary>
+        /// <param name="newBook">The book that will contain the current item</param>
+        /// <param name="item">The item that will be moved from current book to "newBook"</param>
+        /// <returns>String result</returns>
         public static string ChangeBookStr(Book newBook, Item item)
         {
             if (item == null)
@@ -140,10 +161,15 @@ namespace NotABookLibraryStandart.Models
             return $"Changing {item.CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook, item)}";
         }
 
+        /// <summary>
+        /// Change book of the current item to another
+        /// </summary>
+        /// <param name="newBook">The book that will contain the current item </param>
+        /// <returns>Is moved is success</returns>
         public bool ChangeBook(Book newBook)
         {
             Book lastBook = null;
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (CurrentBook == null || newBook == null)
                     return false;
@@ -161,10 +187,17 @@ namespace NotABookLibraryStandart.Models
             CurrentBook.ItemsOfBook.Add(this);
             return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
         }
+
+        /// <summary>
+        /// Change book of the "item" to "newBook"
+        /// </summary>
+        /// <param name="newBook">The book that will contain the current item</param>
+        /// <param name="item">The item that will be moved from current book to "newBook"</param>
+        /// <returns></returns>
         public static bool ChangeBook(Book newBook, Item item)
         {
             Book lastBook = null;
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null || item.CurrentBook == null || newBook == null)
                     return false;
@@ -185,9 +218,14 @@ namespace NotABookLibraryStandart.Models
             return !lastBook.ItemsOfBook.Contains(item) && newBook.ItemsOfBook.Contains(item);
         }
 
+        /// <summary>
+        /// Returns a value indicating whether a specified substring occurs within this item.
+        /// </summary>
+        /// <param name="partOfItem">The string to seek</param>
+        /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
         public bool IsItemContainsWord(string partOfItem)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (partOfItem == null)
                     throw new ArgumentNullException();
@@ -212,9 +250,15 @@ namespace NotABookLibraryStandart.Models
             return false;
         }
 
+        /// <summary>
+        /// Returns a value indicating whether a specified substring occurs within "item".
+        /// </summary>
+        /// <param name="item">The item in that looking for</param>
+        /// <param name="partOfItem">The string to seek</param>
+        /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
         public static bool IsItemContainsWord(Item item, string partOfItem)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null)
                     throw new ItemNullException();
@@ -243,6 +287,10 @@ namespace NotABookLibraryStandart.Models
             return false;
         }
 
+        /// <summary>
+        /// Represents a collection of categories of this item in string
+        /// </summary>
+        /// <returns>String represent of the Categories</returns>
         public string GetCategoriesInString()
         {
             if (Categories == null || Categories.Count < 1) return "No one categories";
@@ -255,12 +303,22 @@ namespace NotABookLibraryStandart.Models
             return stringBuilder.Remove(stringBuilder.Length - 2, 2).ToString();
         }
 
+        /// <summary>
+        /// Delete this item
+        /// </summary>
+        /// <returns>String represent of the deleting</returns>
         public string DeleteItemStr()
         {
             if (CurrentBook == null)
                 return $"Current book of {Title} is null";
             return $"Deleting of {Title} is {DeleteItem().ToString()}";
         }
+
+        /// <summary>
+        /// Delete "item"
+        /// </summary>
+        /// <param name="item">The item to delete</param>
+        /// <returns></returns>
         public static string DeleteItemStr(Item item)
         {
             if (item == null)
@@ -270,9 +328,13 @@ namespace NotABookLibraryStandart.Models
             return $"Deleting of {item.Title} is {DeleteItem(item).ToString()}";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool DeleteItem()
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (CurrentBook == null)
                     return false;
@@ -286,14 +348,20 @@ namespace NotABookLibraryStandart.Models
             CurrentBook.ItemsOfBook.Remove(this);
             CategoryInItem.DeleteAllConnectionWithItem(this);
 
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
             return !CurrentBook.ItemsOfBook.Contains(this) && !CategoryInItem.IsItemHasConnection(this);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static bool DeleteItem(Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null || item.CurrentBook == null)
                     return false;
@@ -309,7 +377,7 @@ namespace NotABookLibraryStandart.Models
             item.CurrentBook.ItemsOfBook.Remove(item);
             CategoryInItem.DeleteAllConnectionWithItem(item);
 
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
                 item.CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
             return !item.CurrentBook.ItemsOfBook.Contains(item) && !CategoryInItem.IsItemHasConnection(item);
@@ -318,6 +386,9 @@ namespace NotABookLibraryStandart.Models
         #endregion
     }
 
+    /// <summary>
+    /// Represents a description of the item
+    /// </summary>
     public class Description : BaseClass
     {
         public string Text { get; set; }
@@ -340,6 +411,6 @@ namespace NotABookLibraryStandart.Models
         {
             return new Description(text, list);
         }
-
+       
     }
 }

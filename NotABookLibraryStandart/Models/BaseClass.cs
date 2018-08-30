@@ -6,20 +6,27 @@ using NotABookLibraryStandart.Exceptions;
 
 namespace NotABookLibraryStandart.Models
 {
+    /// <summary>
+    /// Represent a basic class for elements of the notebook
+    /// </summary>
     abstract public class BaseClass : INotifyPropertyChanged
     {
         #region Fields
-
-        protected static bool IsTestingOff = true; //To start testing project set "false". 
+       
         protected string title;
 
         #endregion
 
         #region Prop
+        /// <summary>
+        /// A field that show is project in testing mode. "True" - to start Xamarin, "False" - to start testing and WPF
+        /// </summary>
+        //public static bool IsXamarinProjectDeploying = false; //To start testing project set "false". 
+        public static bool IsXamarinProjectDeploying { get; set; } = true;
 
         public Guid Id { get; private set; }
 
-        public string Title
+        public virtual string Title
         {
             get => title;
             set
@@ -27,7 +34,7 @@ namespace NotABookLibraryStandart.Models
                 if (!String.IsNullOrWhiteSpace(value))
                 {
                     title = value;
-                    if (IsTestingOff)
+                    if (IsXamarinProjectDeploying)
                         OnPropertyChanged("Title");
                 }                   
             }
@@ -45,7 +52,7 @@ namespace NotABookLibraryStandart.Models
             Id = Guid.NewGuid();
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
                 OnPropertyChanged("New element");
         }
 
@@ -57,6 +64,22 @@ namespace NotABookLibraryStandart.Models
 
         #region Methods
 
+        /// <summary>
+        /// The method that update date of last changing after any operation with object
+        /// </summary>
+        protected void UpdateDateOfLastChanging()
+        {
+            this.DateOfLastChanging = DateTime.Now;
+        }
+
+        /// <summary>
+        /// The method that update date of last changing after any operation with obj
+        /// </summary>
+        protected static void UpdateDateOfLastChanging(BaseClass obj)
+        {
+            obj.UpdateDateOfLastChanging();
+        }
+
         public override string ToString()
         {
             return $"{ this.GetType().Name}: {Title}";
@@ -64,27 +87,29 @@ namespace NotABookLibraryStandart.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged(string prop = "")
+        public virtual void OnPropertyChanged(string prop = "")
         {
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                this.DateOfLastChanging = DateTime.Now;
+                UpdateDateOfLastChanging();
             }
         }
 
-        public void OnPropertyChanged(Book book, string prop = "")
+        public virtual void OnPropertyChanged(Book book, string prop = "")
         {
             if (PropertyChanged != null)
             {
-                if (book == null)
-                    throw new Exceptions.BookNullException();
-
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                DateOfLastChanging = DateTime.Now;
-                book.DateOfLastChanging = DateTime.Now;
-            }
+                UpdateDateOfLastChanging();
 
+
+                if (book != null)
+                    book.UpdateDateOfLastChanging();
+                else if(!IsXamarinProjectDeploying)
+                    throw new Exceptions.BookNullException();                               
+                
+            }
         }
 
         #endregion

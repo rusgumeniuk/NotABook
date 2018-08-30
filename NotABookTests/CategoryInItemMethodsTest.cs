@@ -270,6 +270,7 @@ namespace NotABookTests
 
         private void SetUp()
         {
+            BaseClass.IsXamarinProjectDeploying = false;
             CurrentBook = new Book("CurBook");
 
             FirstCategory = new Category(CurrentBook, "Sweet");

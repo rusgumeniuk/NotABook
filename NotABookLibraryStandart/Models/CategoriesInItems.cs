@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 
 namespace NotABookLibraryStandart.Models
 {
+    /// <summary>
+    /// Represents a solvable class 
+    /// </summary>
     public class CategoryInItem : ElementOfTheBook
     {
         #region Fields        
@@ -41,7 +44,7 @@ namespace NotABookLibraryStandart.Models
         }
         public CategoryInItem(Category category, Item item) : base(category.CurrentBook)
         {
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
             {
                 if (category.CurrentBook != item.CurrentBook)
                     return;
@@ -67,7 +70,7 @@ namespace NotABookLibraryStandart.Models
         #region Methods
         public static CategoryInItem CreateCategoryInItem(Category category, Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category.CurrentBook == null || item.CurrentBook == null)
                     return null;
@@ -91,7 +94,7 @@ namespace NotABookLibraryStandart.Models
 
         public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || category.CurrentBook == null)
                     return null;
@@ -114,7 +117,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static ObservableCollection<CategoryInItem> GetCIIListByItem(Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null || item.CurrentBook == null)
                     return null;
@@ -157,7 +160,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool IsItemHasConnection(Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null || item.CurrentBook == null)
                     return false;
@@ -179,7 +182,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool IsCategoryHasConnection(Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || category.CurrentBook == null)
                     return false;
@@ -203,7 +206,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool IsContainsThisPair(Category category, Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || item == null)
                     return false;
@@ -224,7 +227,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool IsContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || categoryId == null || itemId == null || categoryId == Guid.Empty || itemId == Guid.Empty)
                     return false;
@@ -242,7 +245,7 @@ namespace NotABookLibraryStandart.Models
 
         public static Guid GetGuidOfPair(Category category, Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || item == null)
                     return Guid.Empty;
@@ -267,7 +270,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static Guid GetGuidOfPair(Book book, Guid currentCategoryId, Guid currentItemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || currentCategoryId == null || currentItemId == null || currentCategoryId == Guid.Empty || currentItemId == Guid.Empty)
                     return Guid.Empty;
@@ -290,7 +293,7 @@ namespace NotABookLibraryStandart.Models
 
         public static int GetIndexOfPair(Book book, Guid guid)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return -2;
@@ -312,7 +315,7 @@ namespace NotABookLibraryStandart.Models
 
         public static int DeleteConnection(Category category, Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || item == null)
                     return -1;
@@ -342,7 +345,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static int DeleteConnection(Book book, Guid categoryId, Guid itemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return -2;
@@ -373,7 +376,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteConnection()
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (CurrentBook == null || !IsContainsThisPair(CurrentBook, categoryId, itemId))
                     return false;
@@ -393,7 +396,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool DeleteAllConnectionWithItem(Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null || item.CurrentBook == null)
                     return false;
@@ -413,7 +416,7 @@ namespace NotABookLibraryStandart.Models
             {
                 if (!pair.DeleteConnection())
                 {
-                    if (!BaseClass.IsTestingOff)
+                    if (!BaseClass.IsXamarinProjectDeploying)
                         throw new InvalidOperationException();
                 }
             }
@@ -422,7 +425,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool DeleteAllConnectionWithCategory(Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || category.CurrentBook == null)
                     return false;
@@ -442,7 +445,7 @@ namespace NotABookLibraryStandart.Models
             {
                 if (!pair.DeleteConnection())
                 {
-                    if (!BaseClass.IsTestingOff)
+                    if (!BaseClass.IsXamarinProjectDeploying)
                         throw new InvalidOperationException();
                 }
             }
@@ -461,7 +464,7 @@ namespace NotABookLibraryStandart.Models
         {
             return this.GetHashCode();
         }
-
+        
         #endregion
     }
 }

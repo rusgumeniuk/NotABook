@@ -511,6 +511,7 @@ namespace NotABookTests
 
         private void SetUp()
         {
+            BaseClass.IsXamarinProjectDeploying = false;
             Book.Books.Clear();
             CurrentBook = new Book("CurBook");
 

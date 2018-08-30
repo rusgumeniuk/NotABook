@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 
 namespace NotABookLibraryStandart.Models
 {
+    /// <summary>
+    /// Represents a category of the book
+    /// </summary>
     public class Category : ElementOfTheBook
     {
 
@@ -41,7 +44,7 @@ namespace NotABookLibraryStandart.Models
         {
             get
             {
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                 {
                     if (CurrentBook == null ||
                       CurrentBook.CategoryInItemsOfBook.Count < 1 ||
@@ -92,7 +95,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool IsCategoryContainsWord(string word)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (word == null)
                     throw new ArgumentNullException();
@@ -109,7 +112,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool IsCategoryContainsWord(Category category, string word)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null)
                     throw new CategoryNullException();
@@ -130,10 +133,10 @@ namespace NotABookLibraryStandart.Models
 
         public bool IsCategoryHasConnectionWithItem(Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null)
-                    throw new ItemNullException();                
+                    throw new ItemNullException();                     
             }
             else
             {
@@ -165,7 +168,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteCategory()
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
 
                 if (CurrentBook == null)
@@ -180,14 +183,14 @@ namespace NotABookLibraryStandart.Models
             CurrentBook.CategoriesOfBook.Remove(this);
             RemoveCategoryFromAllItems();
 
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
             return !CurrentBook.CategoriesOfBook.Contains(this) && !CategoryInItem.IsCategoryHasConnection(this);
         }
         public static bool DeleteCategory(Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || category.CurrentBook == null)
                     return false;
@@ -203,7 +206,7 @@ namespace NotABookLibraryStandart.Models
             category.CurrentBook.CategoriesOfBook.Remove(category);
             category.RemoveCategoryFromAllItems();
 
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
             return !category.CurrentBook.CategoriesOfBook.Contains(category) && !CategoryInItem.IsCategoryHasConnection(category);
@@ -227,7 +230,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool RemoveCategoryFromAllItems()
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (CurrentBook == null)
                     return false;
@@ -241,14 +244,14 @@ namespace NotABookLibraryStandart.Models
 
             CategoryInItem.DeleteAllConnectionWithCategory(this);
 
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
             return !CategoryInItem.IsCategoryHasConnection(this);
         }
         public static bool RemoveCategoryFromAllItems(Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || category.CurrentBook == null)
                     return false;
@@ -263,11 +266,12 @@ namespace NotABookLibraryStandart.Models
 
             CategoryInItem.DeleteAllConnectionWithCategory(category);
 
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
 
             return !CategoryInItem.IsCategoryHasConnection(category);
         }
+                
         #endregion
     }
 }

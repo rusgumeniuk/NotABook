@@ -4,6 +4,9 @@ using System.Text;
 
 namespace NotABookLibraryStandart.Exceptions
 {
+    /// <summary>
+    /// The exception that thrown when the collection already contains the element
+    /// </summary>
     public class ElementAlreadyExistException : ArgumentException
     {
         public ElementAlreadyExistException() : base() { }

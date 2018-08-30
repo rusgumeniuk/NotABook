@@ -6,6 +6,9 @@ using System.Collections.ObjectModel;
 
 namespace NotABookLibraryStandart.Models
 {
+    /// <summary>
+    /// Represents a book, set of that's forms a notebook
+    /// </summary>
     public class Book : BaseClass
     {
         #region Fields
@@ -28,7 +31,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 itemsOfBook = value;
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                     OnPropertyChanged("ItemsOfBook");
             }
         }
@@ -39,7 +42,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 categoriesOfBook = value;
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                     OnPropertyChanged("CategoriesOfBook");
             }
         }
@@ -50,7 +53,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 categoriesInItemOfBook = value;
-                if (IsTestingOff)
+                if (IsXamarinProjectDeploying)
                     OnPropertyChanged("CategoryInItemsOfBook");
             }
         }
@@ -75,7 +78,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteBook()
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (this == null || !IsBooksContainsThisBook(this))
                     return false;
@@ -97,7 +100,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool DeleteBook(Book book)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || !IsBooksContainsThisBook(book))
                     return false;
@@ -121,7 +124,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool AddBookToCollection(Book book)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || IsBooksContainsThisBook(book))
                     return false;
@@ -139,10 +142,9 @@ namespace NotABookLibraryStandart.Models
             return IsBooksContainsThisBook(book);
         }
 
-
         public static bool IsBooksContainsThisBook(Book book)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return false;
@@ -161,7 +163,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool IsBooksContainsThisBook(Guid bookId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (bookId == null || bookId == Guid.Empty)
                     return false;
@@ -202,7 +204,7 @@ namespace NotABookLibraryStandart.Models
 
         public ObservableCollection<Item> FindItems(string partOfItem)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (partOfItem == null)
                     throw new ArgumentNullException();
@@ -231,7 +233,7 @@ namespace NotABookLibraryStandart.Models
 
         public int GetIndexOfItemByID(Guid itemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (itemId == null || itemId == Guid.Empty)
                     return -2;
@@ -253,7 +255,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static int GetIndexOfItemByID(Book book, Guid itemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return -3;
@@ -280,7 +282,7 @@ namespace NotABookLibraryStandart.Models
 
         public int GetIndexOfCategoryByID(Guid categoryId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (categoryId == null || categoryId == Guid.Empty)
                     return -2;
@@ -302,7 +304,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static int GetIndexOfCategoryByID(Book book, Guid categoryId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return -3;
@@ -330,7 +332,7 @@ namespace NotABookLibraryStandart.Models
 
         public int GetIndexOfCatrgoryInItemyByID(Guid pairId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (pairId == null || pairId == Guid.Empty)
                     return -2;
@@ -352,7 +354,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static int GetIndexOfCategoryInItemByID(Book book, Guid pairId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return -3;
@@ -380,7 +382,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteItem(Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (item == null || !IsBookContainsItem(this, item))
                     return false;
@@ -399,7 +401,7 @@ namespace NotABookLibraryStandart.Models
         }
         public bool DeleteItem(Guid itemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (itemId == Guid.Empty || !IsBookContainsItem(this, itemId))
                     return false;
@@ -418,7 +420,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool DeleteItem(Book book, Item item)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || item == null || !IsBookContainsItem(book, item))
                     return false;
@@ -439,7 +441,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool DeleteItem(Book book, Guid itemId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || itemId == Guid.Empty || !IsBookContainsItem(book, itemId))
                     return false;
@@ -462,7 +464,7 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteCategory(Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (category == null || !IsBookContainsCategory(this, category))
                 {
@@ -482,7 +484,7 @@ namespace NotABookLibraryStandart.Models
         }
         public bool DeleteCategory(Guid categoryId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (categoryId == Guid.Empty || !IsBookContainsCategory(this, categoryId))
                     return false;
@@ -502,7 +504,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool DeleteCategory(Book book, Category category)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || category == null || !IsBookContainsCategory(book, category))
                     return false;
@@ -523,7 +525,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool DeleteCategory(Book book, Guid categoryId)
         {
-            if (BaseClass.IsTestingOff)
+            if (BaseClass.IsXamarinProjectDeploying)
             {
                 if (book == null || categoryId == Guid.Empty || !IsBookContainsCategory(book, categoryId))
                     return false;
@@ -545,7 +547,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool ClearItemsList(Book book)
         {
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return false;
@@ -565,7 +567,7 @@ namespace NotABookLibraryStandart.Models
         }
         public static bool ClearCaregoriesList(Book book)
         {
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return false;
@@ -586,7 +588,7 @@ namespace NotABookLibraryStandart.Models
 
         public static bool RemoveAllElementsOfBook(Book book)
         {
-            if (IsTestingOff)
+            if (IsXamarinProjectDeploying)
             {
                 if (book == null)
                     return false;
@@ -600,6 +602,7 @@ namespace NotABookLibraryStandart.Models
             return ClearItemsList(book) && ClearCaregoriesList(book);
 
         }
+
         #endregion
     }
 }

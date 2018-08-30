@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NotABookLibraryStandart.Exceptions
 {
+    /// <summary>
+    /// The exception that thrown when collection does not contains element
+    /// </summary>
     public class ElementIsNotInCollectionException : Exception
     {
         public ElementIsNotInCollectionException() : base() { }

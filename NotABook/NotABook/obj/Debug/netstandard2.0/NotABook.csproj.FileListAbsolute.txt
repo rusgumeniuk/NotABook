@@ -1,3 +1,8 @@
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABook.deps.json
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABook.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABook.pdb
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABookLibraryStandart.dll
+C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABookLibraryStandart.pdb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.csprojAssemblyReference.cache
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\App.xaml.g.cs
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\Pages\DetailPages\AllBooksPage.xaml.g.cs
@@ -15,11 +20,6 @@ C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Deb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.csproj.CoreCompileInputs.cache
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.AssemblyInfoInputs.cache
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.AssemblyInfo.cs
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABook.deps.json
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABook.dll
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABook.pdb
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABookLibraryStandart.dll
-C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\bin\Debug\netstandard2.0\NotABookLibraryStandart.pdb
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\XamlC.stamp
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.csproj.CopyComplete
 C:\Users\Omman\Desktop\Development\VSProjects\NotABook\NotABook\NotABook\obj\Debug\netstandard2.0\NotABook.dll
