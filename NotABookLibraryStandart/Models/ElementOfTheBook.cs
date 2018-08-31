@@ -36,7 +36,7 @@ namespace NotABookLibraryStandart.Models
 
             if (currentBook != null)
                 Book.UpdateDateOfLastChanging(currentBook);
-            else if (!IsXamarinProjectDeploying)
+            else if (!IsXamarinProjectDeploying && currentBook != null)
                 throw new Exceptions.BookNullException();
         }
     }

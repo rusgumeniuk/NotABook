@@ -407,7 +407,6 @@ namespace NotABookLibraryStandart.Models
         public static Description CreateDescription(string text, List<Object> list)
         {
             return new Description(text, list);
-        }
-       
+        }       
     }
 }

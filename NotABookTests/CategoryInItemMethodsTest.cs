@@ -15,6 +15,17 @@ namespace NotABookTests
         Item SecondItem = null;
         Category FirstCategory = null;
         Category SecondCategory = null;
+
+        private void SetUp()
+        {
+            CurrentBook = new Book("CurBook");
+
+            FirstCategory = new Category(CurrentBook, "Sweet");
+            SecondCategory = new Category(CurrentBook, "Salt");
+
+            FirstItem = new Item(CurrentBook, "1 item", Description.CreateDescription("desc1"), new ObservableCollection<Category>() { FirstCategory });
+            SecondItem = new Item(CurrentBook, "2 item", Description.CreateDescription("descript 2"), new ObservableCollection<Category>() { SecondCategory, FirstCategory });
+        }
         #endregion
 
         #region IsItemHasConnection
@@ -267,17 +278,5 @@ namespace NotABookTests
 
         }
         #endregion
-
-        private void SetUp()
-        {
-            BaseClass.IsXamarinProjectDeploying = false;
-            CurrentBook = new Book("CurBook");
-
-            FirstCategory = new Category(CurrentBook, "Sweet");
-            SecondCategory = new Category(CurrentBook, "Salt");
-
-            FirstItem = new Item(CurrentBook, "1 item", Description.CreateDescription("desc1"), new ObservableCollection<Category>() { FirstCategory });
-            SecondItem = new Item(CurrentBook, "2 item", Description.CreateDescription("descript 2"), new ObservableCollection<Category>() { SecondCategory, FirstCategory });
-        }
     }
 }
