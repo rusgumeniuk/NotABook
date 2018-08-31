@@ -1,2 +1,2 @@
 # NotABook
-My first Xamarin project
+Xamarin + WPF project
