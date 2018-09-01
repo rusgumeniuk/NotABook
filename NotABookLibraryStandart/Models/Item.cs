@@ -122,6 +122,13 @@ namespace NotABookLibraryStandart.Models
             return item != null ? true : (IsXamarinProjectDeploying ? false : throw new ItemNullException());
         }
 
+        /// <summary>
+        /// Indicates whether the item and its book is not null
+        /// </summary>
+        /// <param name="item">item to test</param>
+        /// <exception cref="ItemNullException">When item is null</exception>
+        /// <exception cref="BookNullException">When book of item is null</exception>
+        /// <returns></returns>
         public static bool IsItemAndItsBookNotNull(Item item)
         {
             return IsItemIsNotNull(item) && Book.IsBookIsNotNull(item.CurrentBook);

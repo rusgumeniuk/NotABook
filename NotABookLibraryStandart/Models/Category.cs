@@ -16,7 +16,7 @@ namespace NotABookLibraryStandart.Models
         {
             get
             {
-                return ItemsWithThisCategory?.Count.ToString() ?? "No one item";
+                return ItemsWithThisCategory?.Count.ToString() ?? "No one item. ";
             }
         }
 
@@ -25,7 +25,7 @@ namespace NotABookLibraryStandart.Models
             get
             {
                 if (Book.IsBookIsNotNull(CurrentBook) &&
-                        CurrentBook.CategoryInItemsOfBook.Count > -1 &&
+                        CurrentBook.CategoryInItemsOfBook.IsNotEmptyCollection() &&
                             CategoryInItem.IsCategoryHasConnection(this))
                 {
                     ObservableCollection<Item> items = new ObservableCollection<Item>();
@@ -42,9 +42,8 @@ namespace NotABookLibraryStandart.Models
 
         public int CountOfItemsWithThisCategory
         {
-            get => this.ItemsWithThisCategory.Count;
+            get => ItemsWithThisCategory?.Count ?? -1;
         }
-
         #endregion
 
         #region Constr
@@ -60,64 +59,63 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-
+       
+        /// <summary>
+        /// Indicates whether the CategoryInItem is null
+        /// </summary>
+        /// <param name="category">The category to test</param>
+        /// <exception cref="CategoryNullException">when category is null</exception>
+        /// <returns>true if categoryInItem is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsCategoryIsNotNull(Category category)
         {
             return category != null ? true : (IsXamarinProjectDeploying ? false : throw new CategoryNullException());
         }
+
+        /// <summary>
+        /// Indicates whether the category and its book is not null
+        /// </summary>
+        /// <param name="category">category to test</param>
+        /// <exception cref="CategoryNullException">When category is null</exception>
+        /// <exception cref="BookNullException">When book of item is null</exception>
+        /// <returns></returns>
         public static bool IsCategoryAndItsBookNotNull(Category category)
         {
             return IsCategoryIsNotNull(category) && Book.IsBookIsNotNull(category.CurrentBook);
         }
 
+        /// <summary>
+        /// Indicates whether the category contains word
+        /// </summary>
+        /// <param name="word">string to find</param>
+        /// <exception cref="ArgumentNullException">when word is null or empty</exception>
+        /// <returns></returns>
         public bool IsCategoryContainsWord(string word)
-        {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (word == null)
-                    throw new ArgumentNullException();
-                if (String.IsNullOrWhiteSpace(word))
-                    throw new ArgumentException();
-            }
-            else
-            {
-                if (word == null ||
-                    String.IsNullOrWhiteSpace(word))
-                    return false;
-            }
-            return this.Title.ToUpperInvariant().Contains(word.ToUpperInvariant());
+        {                      
+            return ExtensionClass.IsStringNotNull(word) && Title.ToUpperInvariant().Contains(word.ToUpperInvariant());
         }
+
+        /// <summary>
+        /// Indicates whether the category contains word
+        /// </summary>
+        /// /// <param name="category"> category to test</param>
+        /// <param name="word">string to find</param>
+        /// <exception cref="ArgumentNullException">when word is null or empty</exception>
+        /// <returns></returns>
         public static bool IsCategoryContainsWord(Category category, string word)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (word == null)
-                    throw new ArgumentNullException();
-                if (String.IsNullOrWhiteSpace(word))
-                    throw new ArgumentException();
-            }
-            else
-            {
-                if (category == null || 
-                    word == null ||
-                    String.IsNullOrWhiteSpace(word))
-                        return false;
-            }
-            return category.Title.Contains(word);
+            return Category.IsCategoryIsNotNull(category) && ExtensionClass.IsStringNotNull(word) && category.Title.ToUpperInvariant().Contains(word.ToUpperInvariant());
         }
 
+        /// <summary>
+        /// Indicates whether category has connection with item
+        /// </summary>
+        /// <param name="item">item with which we try to find a connection</param>
+        /// <exception cref="ItemNullException">when item is null</exception>
+        /// <exception cref="EmptyCollectionException">when category has not any connection</exception>        
+        /// <returns></returns>
         public bool IsCategoryHasConnectionWithItem(Item item)
         {
-            if (Item.IsItemIsNotNull(item))
-            {
-                if (ItemsWithThisCategory?.Count < 1)
-                    return false;
-
-                return ItemsWithThisCategory.Contains(item);
-            }
-            return false;
+            return Item.IsItemIsNotNull(item) && ItemsWithThisCategory.IsNotEmptyCollection() && ItemsWithThisCategory.Contains(item);
         }
 
         public string DeleteCategoryStr()
@@ -141,7 +139,7 @@ namespace NotABookLibraryStandart.Models
                 CurrentBook.CategoriesOfBook.Remove(this);
                 RemoveCategoryFromAllItems();
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return !CurrentBook.CategoriesOfBook.Contains(this) && !CategoryInItem.IsCategoryHasConnection(this);
+                return !CurrentBook.CategoriesOfBook.Contains(this);
             }
             return false;
         }
@@ -152,7 +150,7 @@ namespace NotABookLibraryStandart.Models
                 category.CurrentBook.CategoriesOfBook.Remove(category);
                 category.RemoveCategoryFromAllItems();
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return !category.CurrentBook.CategoriesOfBook.Contains(category) && !CategoryInItem.IsCategoryHasConnection(category);
+                return !category.CurrentBook.CategoriesOfBook.Contains(category);
             }
             return false;       
         }
@@ -174,9 +172,8 @@ namespace NotABookLibraryStandart.Models
         {
             if (Book.IsBookIsNotNull(CurrentBook))
             {
-                CategoryInItem.DeleteAllConnectionWithCategory(this);
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return !CategoryInItem.IsCategoryHasConnection(this);
+                return CategoryInItem.DeleteAllConnectionWithCategory(this);                                
             }
             return false;           
         }
@@ -184,13 +181,25 @@ namespace NotABookLibraryStandart.Models
         {
             if (Category.IsCategoryAndItsBookNotNull(category))
             {
-                CategoryInItem.DeleteAllConnectionWithCategory(category);
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return !CategoryInItem.IsCategoryHasConnection(category);
+                return CategoryInItem.DeleteAllConnectionWithCategory(category);                                
             }
             return false;           
-        }
-                
+        }               
+        
         #endregion
     }
+
+    internal static class ExtensionClass
+    {
+        public static bool IsStringNotNull(this string word)
+        {
+            return !string.IsNullOrWhiteSpace(word) ? true : (BaseClass.IsXamarinProjectDeploying? false : throw new ArgumentNullException());
+        }
+
+        public static bool IsNotEmptyCollection<T>(this IList<T> list)
+        {
+            return list.Count > 0 ? true : (BaseClass.IsXamarinProjectDeploying ? false : throw new EmptyCollectionException());
+        }
+    }    
 }
