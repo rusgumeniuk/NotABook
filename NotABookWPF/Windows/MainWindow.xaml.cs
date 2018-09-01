@@ -72,7 +72,7 @@ namespace NotABookWPF.Windows
             ListBoxItems.ItemsSource = MainWindow.currentBook?.ItemsOfBook;
             ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
             ListViewBooks.SelectedItem = MainWindow.currentBook;
-            TextBlockCountOfItems.Text = MainWindow.currentBook?.ItemsOfBook.Count.ToString();
+            TextBlockCountOfItems.Text = MainWindow.currentBook?.ItemsOfBook.Count.ToString() + " ";
             TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
         }
 
@@ -113,7 +113,7 @@ namespace NotABookWPF.Windows
                 else
                 {
                     ObservableCollection<Item> items = MainWindow.currentBook?.FindItems(TextBoxFindItem.Text);
-                    TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString();
+                    TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString() + " ";
                     ListBoxItems.ItemsSource = items;
                 }
             }
