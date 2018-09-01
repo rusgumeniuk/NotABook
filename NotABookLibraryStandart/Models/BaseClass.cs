@@ -65,6 +65,12 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
+        
+        public static bool IsGuidIsNotEmpty(Guid id)
+        {
+            return id != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new EmptyGuidException());
+        }
+
         /// <summary>
         /// The method that update date of last changing after any operation with object
         /// </summary>

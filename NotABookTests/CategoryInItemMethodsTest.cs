@@ -39,6 +39,7 @@ namespace NotABookTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void IsItemHasConnection_WhenHasNot_ReturnsFalse()
         {
             SetUp();
@@ -97,6 +98,7 @@ namespace NotABookTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void IsBookContains_WhenNull_ReturnsFalse()
         {
             SetUp();
@@ -203,9 +205,9 @@ namespace NotABookTests
         public void DeleteConnectionWithArgs_WhenSetRealArg_Returns1()
         {
             SetUp();
-            Assert.AreEqual(CategoryInItem.DeleteConnection(SecondCategory, SecondItem), 1);
-            Assert.AreEqual(CategoryInItem.DeleteConnection(FirstCategory, FirstItem), 1);
-            Assert.AreEqual(CategoryInItem.DeleteConnection(FirstCategory, SecondItem), 1);
+            Assert.IsTrue(CategoryInItem.DeleteConnection(SecondCategory, SecondItem));
+            Assert.IsTrue(CategoryInItem.DeleteConnection(FirstCategory, FirstItem));
+            Assert.IsTrue(CategoryInItem.DeleteConnection(FirstCategory, SecondItem));
         }
 
         [TestMethod]
@@ -232,9 +234,9 @@ namespace NotABookTests
         {
             SetUp();
 
-            Assert.AreEqual(CategoryInItem.DeleteAllConnectionWithItem(SecondItem), true);
-            Assert.IsFalse(CategoryInItem.IsCategoryHasConnection(SecondCategory));
-            Assert.AreEqual(CategoryInItem.DeleteAllConnectionWithItem(FirstItem), true);
+            Assert.IsTrue(CategoryInItem.DeleteAllConnectionWithItem(SecondItem));
+//            Assert.IsFalse(CategoryInItem.IsCategoryHasConnection(SecondCategory));
+            Assert.IsTrue(CategoryInItem.DeleteAllConnectionWithItem(FirstItem));
             Assert.AreEqual(CurrentBook.CategoryInItemsOfBook.Count, 0);
         }
 
@@ -258,7 +260,7 @@ namespace NotABookTests
         public void DeleteAllConnectionWithItem_WhenBookIsNull_ReturnsBookNullException()
         {
             SetUp();
-            SecondItem.ChangeBook(null);
+           SecondItem.ChangeBook(null);
             CategoryInItem.DeleteAllConnectionWithItem(SecondItem);
         }
         #endregion
@@ -268,7 +270,7 @@ namespace NotABookTests
         public void CategoryInItem_WhenGettingFromProp_ReturnTrue()
         {
             SetUp();
-            CategoryInItem.DeleteAllConnectionWithItem(SecondItem);
+            Assert.IsTrue(CategoryInItem.DeleteAllConnectionWithItem(SecondItem));
 
             CategoryInItem pair = CategoryInItem.CreateCategoryInItem(FirstCategory, SecondItem);
 

@@ -75,109 +75,75 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteBook()
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(IsBookIsNotNullAndInBooks(this))
             {
-                if (this == null || !IsBooksContainsThisBook(this))
-                    return false;
-            }
-            else
-            {
-                if (this == null)
-                    throw new BookNullException();
-                if (!IsBooksContainsThisBook(this))
-                    throw new ElementIsNotInCollectionException();
-            }
+                CategoryInItemsOfBook.Clear();
+                ItemsOfBook.Clear();
+                CategoriesOfBook.Clear();
+                Book.Books.Remove(this);
 
-            CategoryInItemsOfBook.Clear();
-            ItemsOfBook.Clear();
-            CategoriesOfBook.Clear();
-            Book.Books.Remove(this);
-
-            return !IsBooksContainsThisBook(this);
+                return !IsBooksContainsThisBook(this);
+            }
+            return false;
         }
         public static bool DeleteBook(Book book)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsBookIsNotNullAndInBooks(book))
             {
-                if (book == null || !IsBooksContainsThisBook(book))
-                    return false;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (!IsBooksContainsThisBook(book))
-                    throw new ElementIsNotInCollectionException();
-            }
+                book.CategoryInItemsOfBook.Clear();
+                book.ItemsOfBook.Clear();
+                book.CategoriesOfBook.Clear();
+                Book.Books.Remove(book);
 
-            book.CategoryInItemsOfBook.Clear();
-            book.ItemsOfBook.Clear();
-            book.CategoriesOfBook.Clear();
-            Book.Books.Remove(book);
-
-            return !IsBooksContainsThisBook(book);
+                return !IsBooksContainsThisBook(book);
+            }
+            return false;
         }
 
 
         public static bool AddBookToCollection(Book book)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsBookIsNotNullAndInBooks(book))
             {
-                if (book == null || IsBooksContainsThisBook(book))
-                    return false;
+                Books.Add(book);
+                return IsBooksContainsThisBook(book);
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (IsBooksContainsThisBook(book))
-                    throw new ElementAlreadyExistException();
-            }
+            return false;
+          
+        }
 
-            Books.Add(book);
 
-            return IsBooksContainsThisBook(book);
+        public static bool IsBookIsNotNull(Book book)
+        {
+            return book != null ? true : (IsXamarinProjectDeploying ? false : throw new BookNullException());
+        }
+
+        public static bool IsBookIsNotNullAndInBooks(Book book)
+        {
+            return IsBookIsNotNull(book) && IsBooksContainsThisBook(book);
         }
 
         public static bool IsBooksContainsThisBook(Book book)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book))
             {
-                if (book == null)
-                    return false;
+                foreach (Book boook in Book.Books)
+                {
+                    if (book.Id == boook.Id) return true;
+                }
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-            }
-
-            foreach (Book boook in Book.Books)
-            {
-                if (book.Id == boook.Id) return true;
-            }
+            
             return false;
         }
         public static bool IsBooksContainsThisBook(Guid bookId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsGuidIsNotEmpty(bookId))
             {
-                if (bookId == null || bookId == Guid.Empty)
-                    return false;
-            }
-            else
-            {
-                if (bookId == null)
-                    throw new BookNullException();
-                if (bookId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-
-            foreach (Book boook in Book.Books)
-            {
-                if (bookId == boook.Id) return true;
-            }
+                foreach (Book boook in Book.Books)
+                {
+                    if (bookId == boook.Id) return true;
+                }
+            }           
             return false;
         }
 
@@ -230,374 +196,182 @@ namespace NotABookLibraryStandart.Models
 
         public int GetIndexOfItemByID(Guid itemId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsGuidIsNotEmpty(itemId))
             {
-                if (itemId == null || itemId == Guid.Empty)
-                    return -2;
-            }
-            else
-            {
-                if (itemId == null)
-                    throw new ItemNullException();
-                if (itemId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-            for (int i = 0; i < ItemsOfBook.Count; ++i)
-            {
-                if (ItemsOfBook[i].Id == itemId) return i;
-            }
-
+                for (int i = 0; i < ItemsOfBook.Count; ++i)
+                {
+                    if (ItemsOfBook[i].Id == itemId) return i;
+                }
+            }            
             return -1;
         }
         public static int GetIndexOfItemByID(Book book, Guid itemId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(itemId))
             {
-                if (book == null)
-                    return -3;
-                if (itemId == null || itemId == Guid.Empty)
-                    return -2;
+                for (int i = 0; i < book.ItemsOfBook.Count; ++i)
+                {
+                    if (book.ItemsOfBook[i].Id == itemId) return i;
+                }
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (itemId == null)
-                    throw new ItemNullException();
-                if (itemId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-            for (int i = 0; i < book.ItemsOfBook.Count; ++i)
-            {
-                if (book.ItemsOfBook[i].Id == itemId) return i;
-            }
-
             return -1;
         }
 
         public int GetIndexOfCategoryByID(Guid categoryId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsGuidIsNotEmpty(categoryId))
             {
-                if (categoryId == null || categoryId == Guid.Empty)
-                    return -2;
+                for (int i = 0; i < CategoriesOfBook.Count; ++i)
+                {
+                    if (CategoriesOfBook[i].Id == categoryId) return i;
+                }
             }
-            else
-            {
-                if (categoryId == null)
-                    throw new CategoryNullException();
-                if (categoryId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-            for (int i = 0; i < CategoriesOfBook.Count; ++i)
-            {
-                if (CategoriesOfBook[i].Id == categoryId) return i;
-            }
-
             return -1;
         }
         public static int GetIndexOfCategoryByID(Book book, Guid categoryId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(categoryId))
             {
-                if (book == null)
-                    return -3;
-                if (categoryId == null || categoryId == Guid.Empty)
-                    return -2;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (categoryId == null)
-                    throw new CategoryNullException();
-                if (categoryId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-
-            for (int i = 0; i < book.CategoriesOfBook.Count; ++i)
-            {
-                if (book.CategoriesOfBook[i].Id == categoryId) return i;
-            }
+                for (int i = 0; i < book.CategoriesOfBook.Count; ++i)
+                {
+                    if (book.CategoriesOfBook[i].Id == categoryId) return i;
+                }
+            }            
             return -1;
         }
 
 
         public int GetIndexOfCatrgoryInItemyByID(Guid pairId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(IsGuidIsNotEmpty(pairId))
             {
-                if (pairId == null || pairId == Guid.Empty)
-                    return -2;
-            }
-            else
-            {
-                if (pairId == null)
-                    throw new CategoryNullException();
-                if (pairId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-            for (int i = 0; i < CategoryInItemsOfBook.Count; ++i)
-            {
-                if (CategoryInItemsOfBook[i].Id == pairId) return i;
+                for (int i = 0; i < CategoryInItemsOfBook.Count; ++i)
+                {
+                    if (CategoryInItemsOfBook[i].Id == pairId) return i;
+                }
             }
 
             return -1;
         }
         public static int GetIndexOfCategoryInItemByID(Book book, Guid pairId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(pairId))
             {
-                if (book == null)
-                    return -3;
-                if (pairId == null || pairId == Guid.Empty)
-                    return -2;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (pairId == null)
-                    throw new CategoryNullException();
-                if (pairId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-
-            for (int i = 0; i < book.CategoryInItemsOfBook.Count; ++i)
-            {
-                if (book.CategoryInItemsOfBook[i].Id == pairId) return i;
-            }
+                for (int i = 0; i < book.CategoryInItemsOfBook.Count; ++i)
+                {
+                    if (book.CategoryInItemsOfBook[i].Id == pairId) return i;
+                }
+            }           
             return -1;
         }
 
 
         public bool DeleteItem(Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Item.IsItemIsNotNull(item) && IsBookContainsItem(this, item))////////////////
             {
-                if (item == null || !IsBookContainsItem(this, item))
-                    return false;
+                item.DeleteItem();
+                return !IsBookContainsItem(this, item);
             }
-            else
-            {
-                if (item == null)
-                    throw new ItemNullException();
-                if (!IsBookContainsItem(this, item))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-            item.DeleteItem();
-            return !IsBookContainsItem(this, item);
-
+            return false;
         }
         public bool DeleteItem(Guid itemId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsGuidIsNotEmpty(itemId) && IsBookContainsItem(this, itemId))
             {
-                if (itemId == Guid.Empty || !IsBookContainsItem(this, itemId))
-                    return false;
+                this.ItemsOfBook[Book.GetIndexOfItemByID(this, itemId)].DeleteItem();
+                return !IsBookContainsItem(this, itemId);
             }
-            else
-            {
-                if (itemId == Guid.Empty)
-                    throw new EmptyGuidException();
-                if (!IsBookContainsItem(this, itemId))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-            this.ItemsOfBook[Book.GetIndexOfItemByID(this, itemId)].DeleteItem();
-            return !IsBookContainsItem(this, itemId);
+            return false;           
         }
 
         public static bool DeleteItem(Book book, Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(Book.IsBookIsNotNull(book) && Item.IsItemIsNotNull(item) && IsBookContainsItem(book, item))
             {
-                if (book == null || item == null || !IsBookContainsItem(book, item))
-                    return false;
+                item.DeleteItem();
+                return !IsBookContainsItem(book, item);
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (item == null)
-                    throw new ItemNullException();
-                if (!IsBookContainsItem(book, item))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-
-            item.DeleteItem();
-            return !IsBookContainsItem(book, item);
+            return false;
         }
         public static bool DeleteItem(Book book, Guid itemId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(itemId) && IsBookContainsItem(book, itemId))
             {
-                if (book == null || itemId == Guid.Empty || !IsBookContainsItem(book, itemId))
-                    return false;
+                book.ItemsOfBook[Book.GetIndexOfItemByID(book, itemId)].DeleteItem();
+                return !IsBookContainsItem(book, itemId);
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (itemId == Guid.Empty)
-                    throw new EmptyGuidException();
-                if (!IsBookContainsItem(book, itemId))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-
-            book.ItemsOfBook[Book.GetIndexOfItemByID(book, itemId)].DeleteItem();
-            return !IsBookContainsItem(book, itemId);
+            return false;           
         }
 
 
         public bool DeleteCategory(Category category)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Category.IsCategoryIsNotNull(category) && IsBookContainsCategory(this, category))
             {
-                if (category == null || !IsBookContainsCategory(this, category))
-                {
-                    return false;
-                }
+                category.DeleteCategory();
+                return !IsBookContainsCategory(this, category);
             }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (!IsBookContainsCategory(this, category))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-            category.DeleteCategory();
-            return !IsBookContainsCategory(this, category);
+            return false;
         }
         public bool DeleteCategory(Guid categoryId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsGuidIsNotEmpty(categoryId) && IsBookContainsCategory(this, categoryId))
             {
-                if (categoryId == Guid.Empty || !IsBookContainsCategory(this, categoryId))
-                    return false;
+                this.CategoriesOfBook[Book.GetIndexOfCategoryByID(this, categoryId)].DeleteCategory();
+                return !IsBookContainsCategory(this, categoryId);
             }
-            else
-            {
-                if (categoryId == Guid.Empty)
-                    throw new EmptyGuidException();
-                if (!IsBookContainsCategory(this, categoryId))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-
-            this.CategoriesOfBook[Book.GetIndexOfCategoryByID(this, categoryId)].DeleteCategory();
-            return !IsBookContainsCategory(this, categoryId);
+            return false;            
         }
 
         public static bool DeleteCategory(Book book, Category category)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book) && Category.IsCategoryIsNotNull(category) && IsBookContainsCategory(book, category))
             {
-                if (book == null || category == null || !IsBookContainsCategory(book, category))
-                    return false;
+                category.DeleteCategory();
+                return !IsBookContainsCategory(book, category);
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (category == null)
-                    throw new CategoryNullException();
-                if (!IsBookContainsCategory(book, category))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-
-            category.DeleteCategory();
-            return !IsBookContainsCategory(book, category);
+            return false;            
         }
         public static bool DeleteCategory(Book book, Guid categoryId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(categoryId) && IsBookContainsCategory(book, categoryId))
             {
-                if (book == null || categoryId == Guid.Empty || !IsBookContainsCategory(book, categoryId))
-                    return false;
+                book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].DeleteCategory();
+                return !IsBookContainsCategory(book, categoryId);
             }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (categoryId == Guid.Empty)
-                    throw new EmptyGuidException();
-                if (!IsBookContainsCategory(book, categoryId))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-            book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].DeleteCategory();
-            return !IsBookContainsCategory(book, categoryId);
+            return false;          
         }
 
 
         public static bool ClearItemsList(Book book)
         {
-            if (IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book))
             {
-                if (book == null)
-                    return false;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-            }
-
-            while (book.ItemsOfBook.Count > 0)
-            {
-                if (!book.ItemsOfBook[0].DeleteItem())
-                    return false;
-            }
+                while (book.ItemsOfBook.Count > 0)
+                {
+                    if (!book.ItemsOfBook[0].DeleteItem())
+                        return false;
+                }
+            }           
             return book.ItemsOfBook.Count == 0;
         }
         public static bool ClearCaregoriesList(Book book)
         {
-            if (IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book))
             {
-                if (book == null)
-                    return false;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-            }
-
-            while (book.CategoriesOfBook.Count > 0)
-            {
-                if (!book.CategoriesOfBook[0].DeleteCategory())
-                    return false;
-            }
+                while (book.CategoriesOfBook.Count > 0)
+                {
+                    if (!book.CategoriesOfBook[0].DeleteCategory())
+                        return false;
+                }
+            }           
             return book.CategoriesOfBook.Count == 0;
         }
 
         public static bool RemoveAllElementsOfBook(Book book)
         {
-            if (IsXamarinProjectDeploying)
-            {
-                if (book == null)
-                    return false;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-            }
-
-            return ClearItemsList(book) && ClearCaregoriesList(book);
-
+            return Book.IsBookIsNotNull(book) ? ClearItemsList(book) && ClearCaregoriesList(book) : false;
         }
         #endregion
     }

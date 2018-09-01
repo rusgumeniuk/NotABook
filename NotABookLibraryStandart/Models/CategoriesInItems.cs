@@ -44,21 +44,6 @@ namespace NotABookLibraryStandart.Models
         }
         public CategoryInItem(Category category, Item item) : base(category.CurrentBook)
         {
-            if (IsXamarinProjectDeploying)
-            {
-                if (category.CurrentBook != item.CurrentBook)
-                    return;
-                if (IsContainsThisPair(category, item))
-                    return;
-            }
-            else
-            {                
-                if (category.CurrentBook != item.CurrentBook)
-                    throw new ElementsFromDifferentBooksException();
-                if (IsContainsThisPair(category, item))
-                    throw new ElementAlreadyExistException();
-            }
-
             CurrentBook = category.CurrentBook;
             categoryId = category.Id;
             itemId = item.Id;
@@ -68,76 +53,49 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-        public static CategoryInItem CreateCategoryInItem(Category category, Item item)
-        {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (category.CurrentBook == null || item.CurrentBook == null)
-                    return null;
-                if (category.CurrentBook != item.CurrentBook)
-                    return null;
-                if (CategoryInItem.IsContainsThisPair(category, item))
-                    return category.CurrentBook.CategoryInItemsOfBook[CategoryInItem.GetIndexOfPair(category.CurrentBook, CategoryInItem.GetGuidOfPair(category, item))];
-            }
-            else
-            {
-                if (category.CurrentBook == null || item.CurrentBook == null)
-                    throw new BookNullException();
-                if (category.CurrentBook != item.CurrentBook)
-                    throw new ElementsFromDifferentBooksException();
-                if (CategoryInItem.IsContainsThisPair(category, item))
-                    throw new ElementAlreadyExistException();
-            }
 
-            return new CategoryInItem(category, item);
+        public static bool IsCategoryInItemIsNotNull(CategoryInItem categoryInItem)
+        {
+            return categoryInItem != null ? true : (IsXamarinProjectDeploying ? false : throw new CategoryInItemNullException());
         }
 
-        public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Category category)
+        public static bool IsItemHasConnection(Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(Item.IsItemIsNotNull(item))
             {
-                if (category == null || category.CurrentBook == null)
-                    return null;
-            }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (category.CurrentBook == null)
-                    throw new BookNullException();               
+                return isItemHasConnection(item) ? true : throw new ElementIsNotInCollectionException();
             }
 
-
-            ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
-            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
-            {
-                if (pair.categoryId == category.Id) list.Add(pair);
-            }
-            return list;
+            return false;
         }
-        public static ObservableCollection<CategoryInItem> GetCIIListByItem(Item item)
+        public static bool IsCategoryHasConnection(Category category)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Category.IsCategoryIsNotNull(category))
             {
-                if (item == null || item.CurrentBook == null)
-                    return null;
-            }
-            else
-            {
-                if (item == null)
-                    throw new ItemNullException();
-                if (item.CurrentBook == null)
-                    throw new BookNullException();
+                return isCategoryHasConnection(category) ? true : throw new ElementIsNotInCollectionException();
             }
 
-            ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
+            return false;
+        }
+
+        private static bool isItemHasConnection(Item item)
+        {
             foreach (var pair in item.CurrentBook.CategoryInItemsOfBook)
             {
-                if (pair.itemId == item.Id) list.Add(pair);
+                if (pair.GetItemId == item.Id)
+                    return true;
             }
-            return list;
+            return false;
         }
-
+        private static bool isCategoryHasConnection(Category category)
+        {
+            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
+            {
+                if (pair.GetCategoryId == category.Id)
+                    return true;
+            }
+            return false;
+        }
 
         public static string IsItemHasConnectionStr(Item item)
         {
@@ -158,299 +116,180 @@ namespace NotABookLibraryStandart.Models
             return $"{IsCategoryHasConnection(category).ToString()}";
         }
 
-        public static bool IsItemHasConnection(Item item)
-        {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (item == null || item.CurrentBook == null)
-                    return false;
-            }
-            else
-            {
-                if (item == null)
-                    throw new ItemNullException();
-                if (item.CurrentBook == null)
-                    throw new BookNullException();
-            }
-
-
-            foreach (var pair in item.CurrentBook.CategoryInItemsOfBook)
-            {
-                if (pair.GetItemId == item.Id) return true;
-            }
-            return false;
-        }
-        public static bool IsCategoryHasConnection(Category category)
-        {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (category == null || category.CurrentBook == null)
-                    return false;
-            }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (category.CurrentBook == null)
-                    throw new BookNullException();
-            }
-
-            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
-            {
-                if (pair.GetCategoryId == category.Id)
-                    return true;
-            }
-            return false;
-        }
-
-
         public static bool IsContainsThisPair(Category category, Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (category == null || item == null)
-                    return false;
-                if (category.CurrentBook != item.CurrentBook)
-                    return false;
-            }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (item == null)
-                    throw new ItemNullException();
-                if (category.CurrentBook != item.CurrentBook)
-                    throw new ElementsFromDifferentBooksException();
-            }
-
-            return GetGuidOfPair(category, item) != Guid.Empty;
+            return GetGuidOfPair(category, item) != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
         }
         public static bool IsContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (book == null || categoryId == null || itemId == null || categoryId == Guid.Empty || itemId == Guid.Empty)
-                    return false;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (categoryId == Guid.Empty || itemId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty;
+            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
         }
 
+        private static bool IsAlreadyContainsThisPair(Book book, Guid categoryId, Guid itemId)
+        {
+            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? (IsXamarinProjectDeploying ? true : throw new ElementAlreadyExistException()) : false;
+        }
 
         public static Guid GetGuidOfPair(Category category, Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsCategoryAndItemFromSameBook(category, item))
             {
-                if (category == null || item == null)
-                    return Guid.Empty;
-                if (category.CurrentBook != item.CurrentBook)
-                    return Guid.Empty;
-            }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (item == null)
-                    throw new ItemNullException();
-                if (category.CurrentBook != item.CurrentBook)
-                    throw new ElementsFromDifferentBooksException();
-            }
-
-            foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
-            {
-                if (pair.categoryId == category.Id && pair.itemId == item.Id) return pair.Id;
+                foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
+                {
+                    if (pair.categoryId == category.Id && pair.itemId == item.Id) return pair.Id;
+                }
             }
             return Guid.Empty;
         }
         public static Guid GetGuidOfPair(Book book, Guid currentCategoryId, Guid currentItemId)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(currentCategoryId) && IsGuidIsNotEmpty(currentItemId))
             {
-                if (book == null || currentCategoryId == null || currentItemId == null || currentCategoryId == Guid.Empty || currentItemId == Guid.Empty)
-                    return Guid.Empty;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-                if (currentCategoryId == Guid.Empty || currentItemId == Guid.Empty)
-                    throw new EmptyGuidException();
-            }
-
-            foreach (var pair in book.CategoryInItemsOfBook)
-            {
-                if (pair.categoryId == currentCategoryId && pair.itemId == currentItemId) return pair.Id;
+                foreach (var pair in book.CategoryInItemsOfBook)
+                {
+                    if (pair.categoryId == currentCategoryId && pair.itemId == currentItemId)
+                        return pair.Id;
+                }
             }
             return Guid.Empty;
-        }
+        }        
 
+        public static bool IsCategoryAndItemFromSameBook(Category category, Item item)
+        {
+            if (Category.IsCategoryIsNotNull(category) && Item.IsItemIsNotNull(item)) 
+            {
+                return category.CurrentBook == item.CurrentBook ? true : throw new ElementsFromDifferentBooksException();
+            }
+
+            return false;
+        }             
 
         public static int GetIndexOfPair(Book book, Guid guid)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Book.IsBookIsNotNull(book))
             {
-                if (book == null)
-                    return -2;
-            }
-            else
-            {
-                if (book == null)
-                    throw new BookNullException();
-            }
-
-
-            for (int i = 0; i < book.CategoryInItemsOfBook.Count; ++i)
-            {
-                if (book.CategoryInItemsOfBook[i].Id == guid) return i;
-            }
-            return -1;
+                if (guid != Guid.Empty)
+                {
+                    for (int i = 0; i < book.CategoryInItemsOfBook.Count; ++i)
+                    {
+                        if (book.CategoryInItemsOfBook[i].Id == guid)
+                            return i;
+                    }
+                }
+                return -1;
+            }           
+            return -2;
         }
 
-
-        public static int DeleteConnection(Category category, Item item)
+        public static CategoryInItem CreateCategoryInItem(Category category, Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(IsCategoryAndItemFromSameBook(category, item))
             {
-                if (category == null || item == null)
-                    return -1;
-                if (category.CurrentBook != item.CurrentBook)
-                    return -2;
-                if (!IsContainsThisPair(category, item))
-                    return -3;
+                if (!IsAlreadyContainsThisPair(category.CurrentBook, category.Id, item.Id))
+                    return new CategoryInItem(category, item);
             }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (item == null)
-                    throw new ItemNullException();
-                if (category.CurrentBook != item.CurrentBook)
-                    throw new ElementsFromDifferentBooksException();
-                if (!IsContainsThisPair(category, item))
-                    throw new ElementIsNotInCollectionException();
-            }
-
-            Guid guid = CategoryInItem.GetGuidOfPair(category, item);
-            if (guid == Guid.Empty)
-                return -4;
-            category.CurrentBook.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(category.CurrentBook, guid));
-
-            return !IsContainsThisPair(category, item) == true ? 1 : -1;
+            return null;            
         }
-        public static int DeleteConnection(Book book, Guid categoryId, Guid itemId)
+
+        public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Category category)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Category.IsCategoryAndItsBookNotNull(category))
             {
-                if (book == null)
-                    return -2;
-                if (categoryId == Guid.Empty || itemId == Guid.Empty)
-                    return -1;
-                if (!IsContainsThisPair(book, categoryId, itemId))
-                    return -3;
+                ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
+                foreach (var pair in category.CurrentBook.CategoryInItemsOfBook)
+                {
+                    if (pair.categoryId == category.Id) list.Add(pair);
+                }
+                return list;
             }
-            else
+            return null;
+        }
+        public static ObservableCollection<CategoryInItem> GetCIIListByItem(Item item)
+        {
+            if (Item.IsItemAndItsBookNotNull(item))
             {
-                if (book == null)
-                    throw new BookNullException();
-                if (categoryId == Guid.Empty || itemId == Guid.Empty)
-                    throw new EmptyGuidException();
-                    if (!IsContainsThisPair(book, categoryId, itemId))
-                    throw new ElementIsNotInCollectionException();
+                ObservableCollection<CategoryInItem> list = new ObservableCollection<CategoryInItem>();
+                foreach (var pair in item.CurrentBook.CategoryInItemsOfBook)
+                {
+                    if (pair.itemId == item.Id) list.Add(pair);
+                }
+                return list;
+            }
+            return null;
+        }
+
+        public static bool DeleteConnection(Category category, Item item)
+        {
+            if(IsContainsThisPair(category, item))
+            {
+                Guid guid = CategoryInItem.GetGuidOfPair(category, item);
+                if (IsGuidIsNotEmpty(guid))
+                    category.CurrentBook.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(category.CurrentBook, guid));
             }
 
-
-            Guid guid = CategoryInItem.GetGuidOfPair(book, categoryId, itemId);
-            if (guid == Guid.Empty)
-                return -4;
-            book.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(book, guid));
-
-            return !IsContainsThisPair(book, categoryId, itemId) == true ? 1 : -1;
+            return GetGuidOfPair(category, item) == Guid.Empty;
+        }
+        public static bool DeleteConnection(Book book, Guid categoryId, Guid itemId)
+        {
+            if(IsContainsThisPair(book, categoryId, itemId))
+            {
+                Guid guid = CategoryInItem.GetGuidOfPair(book, categoryId, itemId);
+                if (IsGuidIsNotEmpty(guid))
+                    book.CategoryInItemsOfBook.RemoveAt(GetIndexOfPair(book, guid));
+            }
+            return GetGuidOfPair(book, categoryId, itemId) == Guid.Empty;
         }
 
 
         public bool DeleteConnection()
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(IsContainsThisPair(CurrentBook, categoryId, itemId))
             {
-                if (CurrentBook == null || !IsContainsThisPair(CurrentBook, categoryId, itemId))
-                    return false;
-            }
-            else
-            {
-                if (CurrentBook == null)
-                    throw new BookNullException();
-                if (!IsContainsThisPair(CurrentBook, categoryId, itemId))
-                    throw new ElementIsNotInCollectionException();
+                CurrentBook.CategoryInItemsOfBook.Remove(this);
             }
 
-            CurrentBook.CategoryInItemsOfBook.Remove(this);
-            return !IsContainsThisPair(CurrentBook, this.categoryId, this.itemId);
+            
+            return GetGuidOfPair(CurrentBook, this.categoryId, this.itemId) == Guid.Empty;
         }
 
 
         public static bool DeleteAllConnectionWithItem(Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Item.IsItemAndItsBookNotNull(item))
             {
-                if (item == null || item.CurrentBook == null)
-                    return false;
-            }
-            else
-            {
-                if (item == null)
-                    throw new ItemNullException();
-                if (item.CurrentBook == null)
-                    throw new BookNullException();               
-            }
+                if (!CategoryInItem.isItemHasConnection(item))
+                    return true;
 
-            if (!CategoryInItem.IsItemHasConnection(item))
-                return true;
-
-            foreach (var pair in CategoryInItem.GetCIIListByItem(item))
-            {
-                if (!pair.DeleteConnection())
+                foreach (var pair in CategoryInItem.GetCIIListByItem(item))
                 {
-                    if (!BaseClass.IsXamarinProjectDeploying)
-                        throw new InvalidOperationException();
+                    if (!pair.DeleteConnection())
+                    {
+                        if (!BaseClass.IsXamarinProjectDeploying)
+                            throw new InvalidOperationException();
+                    }
                 }
             }
 
-            return !IsItemHasConnection(item);
+            return !isItemHasConnection(item);
         }
         public static bool DeleteAllConnectionWithCategory(Category category)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Category.IsCategoryAndItsBookNotNull(category))
             {
-                if (category == null || category.CurrentBook == null)
-                    return false;
-            }
-            else
-            {
-                if (category == null)
-                    throw new CategoryNullException();
-                if (category.CurrentBook == null)
-                    throw new BookNullException();
-            }
+                if (!CategoryInItem.isCategoryHasConnection(category))
+                    return true;
 
-            if (!CategoryInItem.IsCategoryHasConnection(category))
-                return true;
-
-            foreach (var pair in CategoryInItem.GetCIIListByCategory(category))
-            {
-                if (!pair.DeleteConnection())
+                foreach (var pair in CategoryInItem.GetCIIListByCategory(category))
                 {
-                    if (!BaseClass.IsXamarinProjectDeploying)
-                        throw new InvalidOperationException();
+                    if (!pair.DeleteConnection())
+                    {
+                        if (!BaseClass.IsXamarinProjectDeploying)
+                            throw new InvalidOperationException();
+                    }
                 }
             }
 
-            return !IsCategoryHasConnection(category);
+            return !isCategoryHasConnection(category);
         }
 
         public override bool Equals(object obj)
@@ -462,7 +301,7 @@ namespace NotABookLibraryStandart.Models
 
         public override int GetHashCode()
         {
-            return this.GetHashCode();
+            return categoryId.GetHashCode() ^ itemId.GetHashCode();
         }
         
         #endregion

@@ -46,53 +46,36 @@ namespace NotABookLibraryStandart.Models
         {
             get
             {
-                if (IsXamarinProjectDeploying)
+                if (Book.IsBookIsNotNull(CurrentBook) && CategoryInItem.IsItemHasConnection(this)) 
                 {
-                    if (CurrentBook == null)
-                        return null;
-                    if (!CategoryInItem.IsItemHasConnection(this))
-                        return null;
-                }
-                else
-                {
-                    if (CurrentBook == null)
-                        throw new BookNullException();
-                    if (!CategoryInItem.IsItemHasConnection(this))
-                        throw new ElementIsNotInCollectionException();
-                }
-
-                ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
-                {
-                    if (pair.GetItemId == Id)
+                    ObservableCollection<Category> categories = new ObservableCollection<Category>();
+                    foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
                     {
-                        categories.Add(pair.Category);
+                        if (pair.GetItemId == Id)
+                        {
+                            categories.Add(pair.Category);
+                        }
                     }
+                    return categories;
                 }
-                return categories;
+                return null;
             }
             set
             {
-                if (IsXamarinProjectDeploying)
+                if (IsItemAndItsBookNotNull(this))
                 {
-                    if (CurrentBook == null || value == null)
-                        return;
-                }
-                else
-                {
-                    if (CurrentBook == null)
-                        throw new BookNullException();
-                    if (value == null)
-                        throw new ArgumentNullException();
-                }
+                    if(value != null)
+                    {
+                        CategoryInItem.DeleteAllConnectionWithItem(this);
 
-                CategoryInItem.DeleteAllConnectionWithItem(this);
-                foreach (var category in value ?? throw new ArgumentNullException())
-                {
-                    CategoryInItem.CreateCategoryInItem(category, this);
-                }
+                        foreach (var category in value)
+                        {
+                            CategoryInItem.CreateCategoryInItem(category, this);
+                        }
 
-                OnPropertyChanged("Categories");
+                        OnPropertyChanged("Categories");
+                    }
+                }              
             }
         }
 
@@ -127,6 +110,16 @@ namespace NotABookLibraryStandart.Models
 
         #region Methods
 
+        public static bool IsItemIsNotNull(Item item)
+        {
+            return item != null ? true : (IsXamarinProjectDeploying ? false : throw new ItemNullException());
+        }
+
+        public static bool IsItemAndItsBookNotNull(Item item)
+        {
+            return IsItemIsNotNull(item) && Book.IsBookIsNotNull(item.CurrentBook);
+        }
+
         /// <summary>
         /// Change book of the current item to another
         /// </summary>
@@ -134,9 +127,9 @@ namespace NotABookLibraryStandart.Models
         /// <returns>Result of changing</returns>
         public string ChangeBookStr(Book newBook)
         {
-            if (CurrentBook == null)
+            if (Book.IsBookIsNotNull(CurrentBook))
                 return "Current book is null";
-            if (newBook == null)
+            if (Book.IsBookIsNotNull(newBook))
                 return "new book is null";
             return $"Changing {CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook)}";
         }
@@ -149,11 +142,11 @@ namespace NotABookLibraryStandart.Models
         /// <returns>String result</returns>
         public static string ChangeBookStr(Book newBook, Item item)
         {
-            if (item == null)
+            if (Item.IsItemIsNotNull(item))
                 return "Item is null";
-            if (item.CurrentBook == null)
+            if (Book.IsBookIsNotNull(item.CurrentBook))
                 return "Current book is null";
-            if (newBook == null)
+            if (Book.IsBookIsNotNull(newBook)) 
                 return "new book is null";
             return $"Changing {item.CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook, item)}";
         }
@@ -164,25 +157,16 @@ namespace NotABookLibraryStandart.Models
         /// <param name="newBook">The book that will contain the current item </param>
         /// <returns>Is moved is success</returns>
         public bool ChangeBook(Book newBook)
-        {
-            Book lastBook = null;
-            if (BaseClass.IsXamarinProjectDeploying)
+        {            
+            if(Book.IsBookIsNotNull(CurrentBook) && Book.IsBookIsNotNull(newBook))
             {
-                if (CurrentBook == null || newBook == null)
-                    return false;
-                lastBook = this.CurrentBook;
+                Book lastBook = this.CurrentBook;
                 lastBook.DeleteItem(this);
                 CurrentBook = newBook;
+                CurrentBook.ItemsOfBook.Add(this);
+                return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
             }
-            else
-            {
-                lastBook = this.CurrentBook ?? throw new BookNullException();
-                lastBook.DeleteItem(this);
-                CurrentBook = newBook ?? throw new BookNullException();
-            }
-
-            CurrentBook.ItemsOfBook.Add(this);
-            return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
+            return false;
         }
 
         /// <summary>
@@ -192,27 +176,17 @@ namespace NotABookLibraryStandart.Models
         /// <param name="item">The item that will be moved from current book to "newBook"</param>
         /// <returns></returns>
         public static bool ChangeBook(Book newBook, Item item)
-        {
-            Book lastBook = null;
-            if (BaseClass.IsXamarinProjectDeploying)
+        {            
+            if (Item.IsItemAndItsBookNotNull(item) && Book.IsBookIsNotNull(newBook))
             {
-                if (item == null || item.CurrentBook == null || newBook == null)
-                    return false;
-                lastBook = item.CurrentBook;
+                Book lastBook = item.CurrentBook;
                 lastBook.DeleteItem(item);
                 item.CurrentBook = newBook;
-            }
-            else
-            {
-                if (item == null)
-                    throw new ItemNullException();
-                lastBook = item.CurrentBook ?? throw new BookNullException();
-                lastBook.DeleteItem(item);
-                item.CurrentBook = newBook ?? throw new BookNullException();
-            }
 
-            item.CurrentBook.ItemsOfBook.Add(item);
-            return !lastBook.ItemsOfBook.Contains(item) && newBook.ItemsOfBook.Contains(item);
+                item.CurrentBook.ItemsOfBook.Add(item);
+                return !lastBook.ItemsOfBook.Contains(item) && newBook.ItemsOfBook.Contains(item);
+            }
+            return false;
         }
 
         /// <summary>
@@ -255,21 +229,21 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
         public static bool IsItemContainsWord(Item item, string partOfItem)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (Item.IsItemIsNotNull(item))
             {
-                if (item == null)
-                    throw new ItemNullException();
-                if (partOfItem == null)
-                    throw new ArgumentNullException();
-                if (String.IsNullOrWhiteSpace(partOfItem))
-                    throw new ArgumentException();
-            }
-            else
-            {
-                if (item == null ||
-                    partOfItem == null ||
-                    String.IsNullOrWhiteSpace(partOfItem))
-                    return false;
+                if (BaseClass.IsXamarinProjectDeploying)
+                {
+                    if (partOfItem == null)
+                        throw new ArgumentNullException();
+                    if (String.IsNullOrWhiteSpace(partOfItem))
+                        throw new ArgumentException();
+                }
+                else
+                {
+                    if (partOfItem == null ||
+                        String.IsNullOrWhiteSpace(partOfItem))
+                        return false;
+                }
             }
 
             if (item.Title.Contains(partOfItem) || item.Description.Text.Contains(partOfItem))
@@ -306,7 +280,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>String represent of the deleting</returns>
         public string DeleteItemStr()
         {
-            if (CurrentBook == null)
+            if (Book.IsBookIsNotNull(this.CurrentBook))
                 return $"Current book of {Title} is null";
             return $"Deleting of {Title} is {DeleteItem().ToString()}";
         }
@@ -318,9 +292,9 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static string DeleteItemStr(Item item)
         {
-            if (item == null)
+            if (Item.IsItemIsNotNull(item))
                 return "Item is null";
-            if (item.CurrentBook == null)
+            if (Book.IsBookIsNotNull(item.CurrentBook)) 
                 return $"Current book of {item.Title} is null";
             return $"Deleting of {item.Title} is {DeleteItem(item).ToString()}";
         }
@@ -331,24 +305,15 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public bool DeleteItem()
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if(Book.IsBookIsNotNull(CurrentBook))
             {
-                if (CurrentBook == null)
-                    return false;
-            }
-            else
-            {
-                if (CurrentBook == null)
-                    throw new BookNullException();
+                CategoryInItem.DeleteAllConnectionWithItem(this);
+                CurrentBook.ItemsOfBook.Remove(this);
+
+                OnPropertyChanged("DateOfLastChanging");
             }
 
-            CurrentBook.ItemsOfBook.Remove(this);
-            CategoryInItem.DeleteAllConnectionWithItem(this);
-
-            if (IsXamarinProjectDeploying)
-                CurrentBook.OnPropertyChanged("DateOfLastChanging");
-
-            return !CurrentBook.ItemsOfBook.Contains(this) && !CategoryInItem.IsItemHasConnection(this);
+            return !CurrentBook.ItemsOfBook.Contains(this);
         }
 
         /// <summary>
@@ -358,25 +323,13 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool DeleteItem(Item item)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (IsItemAndItsBookNotNull(item))
             {
-                if (item == null || item.CurrentBook == null)
-                    return false;
-            }
-            else
-            {
-                if (item == null)
-                    throw new ItemNullException();
-                if (item.CurrentBook == null)
-                    throw new BookNullException();
-            }
+                item.CurrentBook.ItemsOfBook.Remove(item);
+                CategoryInItem.DeleteAllConnectionWithItem(item);
 
-            item.CurrentBook.ItemsOfBook.Remove(item);
-            CategoryInItem.DeleteAllConnectionWithItem(item);
-
-            if (BaseClass.IsXamarinProjectDeploying)
-                item.CurrentBook.OnPropertyChanged("DateOfLastChanging");
-
+                item.OnPropertyChanged("DateOfLastChanging");
+            }           
             return !item.CurrentBook.ItemsOfBook.Contains(item) && !CategoryInItem.IsItemHasConnection(item);
         }
 

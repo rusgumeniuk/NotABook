@@ -23,11 +23,11 @@ namespace NotABookLibraryStandart.Models
 
         public ElementOfTheBook(Book book) : base()
         {
-            CurrentBook = book ?? (IsXamarinProjectDeploying ? new Book("NULL BOOK") : throw new BookNullException());
+            CurrentBook = Book.IsBookIsNotNull(book) ? book : new Book("NULL BOOK");
         }
         public ElementOfTheBook(Book book, string title) : base(title)
         {
-            CurrentBook = book ?? (IsXamarinProjectDeploying ? new Book("NULL BOOK") : throw new BookNullException());
+            CurrentBook = Book.IsBookIsNotNull(book) ? book : new Book("NULL BOOK");
         }
 
         public override void OnPropertyChanged(string prop = "")
