@@ -64,7 +64,7 @@ namespace NotABookLibraryStandart.Models
             {
                 if (IsItemAndItsBookNotNull(this))
                 {
-                    if(value != null)
+                    if (value != null)
                     {
                         CategoryInItem.DeleteAllConnectionWithItem(this);
 
@@ -75,6 +75,8 @@ namespace NotABookLibraryStandart.Models
 
                         OnPropertyChanged("Categories");
                     }
+                    else if (!IsXamarinProjectDeploying)
+                        throw new ArgumentNullException();
                 }              
             }
         }
@@ -109,7 +111,12 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Returns value indicating is item is not null
+        /// </summary>
+        /// <param name="item">The item that is checked </param>
+        /// <exception cref="ItemNullException">When item is null and Xamarin mode is off</exception>
+        /// <returns>True - not null, else if Xamain mode in on - false, else throw Exc</returns>
         public static bool IsItemIsNotNull(Item item)
         {
             return item != null ? true : (IsXamarinProjectDeploying ? false : throw new ItemNullException());
@@ -264,39 +271,14 @@ namespace NotABookLibraryStandart.Models
         /// <returns>String represent of the Categories</returns>
         public string GetCategoriesInString()
         {
-            if (Categories == null || Categories.Count < 1) return "No one categories";
+            if (Categories == null || Categories.Count < 1) return "No one categories. ";
             
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Category categories in Categories)
             {
                 stringBuilder.Append(categories.Title).Append(", ");
             }
-            return stringBuilder.Remove(stringBuilder.Length - 2, 2).ToString();
-        }
-
-        /// <summary>
-        /// Delete this item
-        /// </summary>
-        /// <returns>String represent of the deleting</returns>
-        public string DeleteItemStr()
-        {
-            if (Book.IsBookIsNotNull(this.CurrentBook))
-                return $"Current book of {Title} is null";
-            return $"Deleting of {Title} is {DeleteItem().ToString()}";
-        }
-
-        /// <summary>
-        /// Delete "item"
-        /// </summary>
-        /// <param name="item">The item to delete</param>
-        /// <returns></returns>
-        public static string DeleteItemStr(Item item)
-        {
-            if (Item.IsItemIsNotNull(item))
-                return "Item is null";
-            if (Book.IsBookIsNotNull(item.CurrentBook)) 
-                return $"Current book of {item.Title} is null";
-            return $"Deleting of {item.Title} is {DeleteItem(item).ToString()}";
+            return stringBuilder.Remove(stringBuilder.Length - 2, 2).Append(". ").ToString();
         }
 
         /// <summary>
@@ -329,10 +311,9 @@ namespace NotABookLibraryStandart.Models
                 CategoryInItem.DeleteAllConnectionWithItem(item);
 
                 item.OnPropertyChanged("DateOfLastChanging");
-            }           
-            return !item.CurrentBook.ItemsOfBook.Contains(item) && !CategoryInItem.IsItemHasConnection(item);
+            }
+            return !item.CurrentBook.ItemsOfBook.Contains(item);
         }
-
         #endregion
     }
 
