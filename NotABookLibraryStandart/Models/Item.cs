@@ -210,26 +210,16 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
         public bool IsItemContainsWord(string partOfItem)
         {
-            if (BaseClass.IsXamarinProjectDeploying)
+            if (ExtensionClass.IsStringNotNull(partOfItem))
             {
-                if (partOfItem == null)
-                    throw new ArgumentNullException();
-                if (String.IsNullOrWhiteSpace(partOfItem))
-                    throw new ArgumentException();
-            }
-            else
-            {
-                if (partOfItem == null ||
-                    String.IsNullOrWhiteSpace(partOfItem))
-                    return false;
-            }
-
-            if (Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) || this.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
-                return true;
-            foreach (Category category in this.Categories)
-            {
-                if (category.IsCategoryContainsWord(partOfItem))
+                if (Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) 
+                    || this.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
                     return true;
+                foreach (Category category in this.Categories)
+                {
+                    if (category.IsCategoryContainsWord(partOfItem))
+                        return true;
+                }
             }
 
             return false;
@@ -243,31 +233,18 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
         public static bool IsItemContainsWord(Item item, string partOfItem)
         {
-            if (Item.IsItemIsNotNull(item))
+            if (Item.IsItemIsNotNull(item) && ExtensionClass.IsStringNotNull(partOfItem))
             {
-                if (BaseClass.IsXamarinProjectDeploying)
-                {
-                    if (partOfItem == null)
-                        throw new ArgumentNullException();
-                    if (String.IsNullOrWhiteSpace(partOfItem))
-                        throw new ArgumentException();
-                }
-                else
-                {
-                    if (partOfItem == null ||
-                        String.IsNullOrWhiteSpace(partOfItem))
-                        return false;
-                }
-            }
-
-            if (item.Title.Contains(partOfItem) || item.Description.Text.Contains(partOfItem))
+                if (item.Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) || 
+                    item.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
                     return true;
 
-            foreach(Category category in item.Categories)
-            {
-                if (category.IsCategoryContainsWord(partOfItem))
-                    return true;
-            }
+                foreach (Category category in item.Categories)
+                {
+                    if (category.IsCategoryContainsWord(partOfItem))
+                        return true;
+                }
+            }          
 
             return false;
         }
