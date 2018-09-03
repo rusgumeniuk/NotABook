@@ -55,7 +55,7 @@ namespace NotABookLibraryStandart.Models
         #region Methods
 
         /// <summary>
-        /// Indicates whether the CategoryInItem is null
+        /// Indicates whether the CategoryInItem is not null
         /// </summary>
         /// <param name="categoryInItem">The categoryInItem to test</param>
         /// <exception cref="CategoryInItemNullException">When categoryInItem is null and Xamarin mode is off</exception>

@@ -55,15 +55,6 @@ namespace NotABookTests
             Assert.IsTrue(Book.IsBooksContainsThisBook(new Book("Title new")));        
         }
 
-        [TestMethod] 
-        public void IsBooksContainsThisBook_WhenDeleteBook_ReturnsTrue()
-        {
-            SetUp();
-
-            CurrentBook.DeleteBook();
-            Assert.IsFalse(Book.IsBooksContainsThisBook(CurrentBook.Id));
-        }
-
         [TestMethod]
         [ExpectedException(typeof(BookNullException))]
         public void IsBooksContainsThisBook_WhenThisBookIsNull_ReturnsBookNullException()
@@ -116,8 +107,7 @@ namespace NotABookTests
         {
             SetUp();
 
-            Assert.IsTrue(CurrentBook.DeleteBook());
-            Assert.IsFalse(Book.IsBooksContainsThisBook(CurrentBook));
+            Assert.IsTrue(CurrentBook.DeleteBook());            
             Assert.AreEqual(CurrentBook.ItemsOfBook.Count, 0);
         }
 
@@ -126,8 +116,7 @@ namespace NotABookTests
         {
             SetUp();
 
-            Assert.IsTrue(Book.DeleteBook(CurrentBook));
-            Assert.IsFalse(Book.IsBooksContainsThisBook(CurrentBook.Id));
+            Assert.IsTrue(Book.DeleteBook(CurrentBook));            
             Assert.AreEqual(CurrentBook.CategoryInItemsOfBook.Count, 0);
         }
 
@@ -262,6 +251,7 @@ namespace NotABookTests
 
 
         [TestMethod]
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void IsBookContainsItem_WhenItemFromOtherBook_ReturnsFalse()
         {
             SetUp();
@@ -275,6 +265,7 @@ namespace NotABookTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ElementIsNotInCollectionException))]
         public void IsBookContainsCategories_WhenCategoriesromOtherBook_ReturnsFalse()
         {
             SetUp();

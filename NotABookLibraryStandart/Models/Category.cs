@@ -192,14 +192,27 @@ namespace NotABookLibraryStandart.Models
 
     internal static class ExtensionClass
     {
+        /// <summary>
+        /// Indicates whether word is not null and not empty
+        /// </summary>
+        /// <param name="word">string to test</param>
+        /// <exception cref="ArgumentNullException">when word is null, empty or white symbols</exception>
+        /// <returns></returns>
         public static bool IsStringNotNull(this string word)
         {
             return !string.IsNullOrWhiteSpace(word) ? true : (BaseClass.IsXamarinProjectDeploying? false : throw new ArgumentNullException());
         }
 
-        public static bool IsNotEmptyCollection<T>(this IList<T> list)
+        /// <summary>
+        /// Indicates whether a collection is not empty
+        /// </summary>
+        /// <typeparam name="T">any class</typeparam>
+        /// <param name="collection">collection to test</param>
+        /// <exception cref="EmptyCollectionException">When collection is empty</exception>
+        /// <returns></returns>
+        public static bool IsNotEmptyCollection<T>(this IList<T> collection)
         {
-            return list.Count > 0 ? true : (BaseClass.IsXamarinProjectDeploying ? false : throw new EmptyCollectionException());
+            return collection.Count > 0 ? true : (BaseClass.IsXamarinProjectDeploying ? false : throw new EmptyCollectionException());
         }
     }    
 }

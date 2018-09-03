@@ -19,11 +19,10 @@ namespace NotABookLibraryStandart.Models
 
         private ObservableCollection<CategoryInItem> categoriesInItemOfBook = new ObservableCollection<CategoryInItem>();
 
+        public static ObservableCollection<Book> Books = new ObservableCollection<Book>();
         #endregion
 
         #region Propereties
-
-        public static ObservableCollection<Book> Books = new ObservableCollection<Book>();
 
         public ObservableCollection<Item> ItemsOfBook
         {
@@ -73,125 +72,211 @@ namespace NotABookLibraryStandart.Models
 
         #region Methods
 
+        /// <summary>
+        /// Represents a list of items which contain partOfItem in Title or Desription
+        /// </summary>
+        /// <param name="partOfItem"></param>
+        /// <exception cref="ArgumentNullException">when partOfItem is null, empty or white spaces</exception>
+        /// <returns></returns>
+        public ObservableCollection<Item> FindItems(string partOfItem)
+        {
+            if (ExtensionClass.IsStringNotNull(partOfItem))
+            {
+                List<Item> items = new List<Item>();
+                foreach (Item item in ItemsOfBook)
+                {
+                    if (item.IsItemContainsWord(partOfItem))
+                        items.Add(item);
+                }
+                return new ObservableCollection<Item>(items);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Adds book to Books
+        /// </summary>
+        /// <param name="book">book to add</param>
+        /// <exception cref="BookNullException">when book is null</exception>
+        /// <exception cref="ElementIsNotInCollectionException">when after adding book not in the collection</exception>
+        /// <returns></returns>
+        public static bool AddBookToCollection(Book book)
+        {
+            if (IsBookIsNotNull(book))
+            {
+                if(IndexOfBookInBooks(book) == -1)
+                {
+                    Books.Add(book);
+                    return IsBooksContainsThisBook(book);
+                }
+                return IsXamarinProjectDeploying ? false : throw new ElementAlreadyExistException();
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Removes all elements of the book and remove book from the Books
+        /// </summary>
+        /// <returns></returns>
         public bool DeleteBook()
         {
             if(IsBookIsNotNullAndInBooks(this))
             {
                 CategoryInItemsOfBook.Clear();
-                ItemsOfBook.Clear();
-                CategoriesOfBook.Clear();
+                RemoveAllElementsOfBook(this);
                 Book.Books.Remove(this);
 
-                return !IsBooksContainsThisBook(this);
+                return IndexOfBookInBooks(this) == -1;
             }
             return false;
         }
+
+        /// <summary>
+        /// Removes all elements of the book and remove book from the Books
+        /// </summary>
+        /// <param name="book"> book to delete</param>
+        /// <returns></returns>
         public static bool DeleteBook(Book book)
         {
             if (IsBookIsNotNullAndInBooks(book))
-            {
+            {                
                 book.CategoryInItemsOfBook.Clear();
-                book.ItemsOfBook.Clear();
-                book.CategoriesOfBook.Clear();
+                RemoveAllElementsOfBook(book);
                 Book.Books.Remove(book);
 
-                return !IsBooksContainsThisBook(book);
+                return IndexOfBookInBooks(book) == -1;
             }
             return false;
-        }
+        }                
 
 
-        public static bool AddBookToCollection(Book book)
+       /// <summary>
+       /// Indicates whether the Books contains book
+       /// </summary>
+       /// <param name="book">book to test</param>
+       /// <exception cref="ElementIsNotInCollectionException">when Book doesn't contain book</exception>
+       /// <exception cref="BookNullException">when book is null</exception>
+       /// <returns></returns>
+        public static bool IsBooksContainsThisBook(Book book)
         {
-            if (IsBookIsNotNullAndInBooks(book))
-            {
-                Books.Add(book);
-                return IsBooksContainsThisBook(book);
-            }
-            return false;
-          
+            return IndexOfBookInBooks(book) != -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+        }
+
+        /// <summary>
+        /// Indicates whether the Books contains book with bookId
+        /// </summary>
+        /// <param name="bookId">id to test</param>
+        /// <exception cref="ElementIsNotInCollectionException">when Book doesn't contain book with same id</exception>       
+        /// <exception cref="EmptyGuidException">when bookId is empty</exception>
+        /// <returns></returns>
+        public static bool IsBooksContainsThisBook(Guid bookId)
+        {
+            return IndexOfBookInBooks(bookId) != -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+        } 
+
+
+        /// <summary>
+        /// Indicates whether the book contains item
+        /// </summary>
+        /// <param name="book">book in which we try to find item</param>
+        /// <param name="item">item to test</param>
+        /// <exception cref="ElementIsNotInCollectionException">when book doesn't contain item</exception>
+        /// <exception cref="ItemNullException">when item is null</exception>
+        /// <returns></returns>
+        public static bool IsBookContainsItem(Book book, Item item)
+        {
+            return GetIndexOfItemByID(book, item.Id) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException($"{item.Title} not in the {book.Title}"));
+        }
+
+        /// <summary>
+        /// Indicates whether the book contains item with itemId ID
+        /// </summary>
+        /// <param name="book">book in which we try to find</param>
+        /// <param name="itemId">Id to test</param>
+        ///   /// <exception cref="ElementIsNotInCollectionException">when book doesn't contain item</exception>
+        /// <exception cref="EmptyGuidException">when itemId is empty</exception>
+        /// <returns></returns>
+        public static bool IsBookContainsItem(Book book, Guid itemId)
+        {
+            return GetIndexOfItemByID(book, itemId) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
         }
 
 
+        /// <summary>
+        /// Indicates whether the book contains category
+        /// </summary>
+        /// <param name="book">book in which we try to find item</param>
+        /// <param name="category">category to test</param>
+        /// <exception cref="ElementIsNotInCollectionException">when book doesn't contain category</exception>
+        /// <exception cref="CategoryNullException">when category is null</exception>
+        /// <returns></returns>
+        public static bool IsBookContainsCategory(Book book, Category category)
+        {
+            return GetIndexOfCategoryByID(book, category.Id) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException($"{category.Title} not in the {book.Title}"));
+        }
+
+        /// <summary>
+        /// Indicates whether the book contains category with categoryId ID
+        /// </summary>
+        /// <param name="book">book in which we try to find</param>
+        /// <param name="categoryId">Id to test</param>
+        ///   /// <exception cref="ElementIsNotInCollectionException">when book doesn't contain category with categoryId</exception>
+        /// <exception cref="EmptyGuidException">when categoryId is empty</exception>
+        /// <returns></returns>
+        public static bool IsBookContainsCategory(Book book, Guid categoryId)
+        {
+            return GetIndexOfCategoryByID(book, categoryId) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+        }
+
+
+
+        /// <summary>
+        /// Indicates whether the book is not null
+        /// </summary>        
+        /// <param name="book">The book to test</param>
+        /// <exception cref="BookNullException">When book is null and Xamarin mode is off</exception>
+        /// <returns>true if book is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsBookIsNotNull(Book book)
         {
             return book != null ? true : (IsXamarinProjectDeploying ? false : throw new BookNullException());
         }
 
+        /// <summary>
+        /// Indicates whether the book is not null and is Books contains book
+        /// </summary>        
+        /// <param name="book">The book to test</param>
+        /// <exception cref="BookNullException">When book is null  and Xamarin mode is off</exception>
+        /// <exception cref="ElementIsNotInCollectionException">When Books doesn't contain book</exception>
+        /// <returns>true if book is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsBookIsNotNullAndInBooks(Book book)
         {
             return IsBookIsNotNull(book) && IsBooksContainsThisBook(book);
         }
 
-        public static bool IsBooksContainsThisBook(Book book)
+        
+        internal static int IndexOfBookInBooks(Book book)
         {
             if (Book.IsBookIsNotNull(book))
             {
-                foreach (Book boook in Book.Books)
+                for (int i = 0; i < Books.Count; i++)
                 {
-                    if (book.Id == boook.Id) return true;
+                    if (Books[i] == book)
+                        return i;
                 }
             }
-            
-            return false;
+            return -1;
         }
-        public static bool IsBooksContainsThisBook(Guid bookId)
+        internal static int IndexOfBookInBooks(Guid bookId)
         {
             if (IsGuidIsNotEmpty(bookId))
             {
-                foreach (Book boook in Book.Books)
+                for (int i = 0; i < Books.Count; i++)
                 {
-                    if (bookId == boook.Id) return true;
+                    if (Books[i].Id == bookId)
+                        return i;
                 }
-            }           
-            return false;
-        }
-
-        public static bool IsBookContainsItem(Book book, Item item)
-        {
-            return GetIndexOfItemByID(book, item.Id) > -1;
-        }
-        public static bool IsBookContainsItem(Book book, Guid itemId)
-        {
-            return GetIndexOfItemByID(book, itemId) > -1;
-        }
-
-        public static bool IsBookContainsCategory(Book book, Category category)
-        {
-            return GetIndexOfCategoryByID(book, category.Id) > -1;
-        }
-        public static bool IsBookContainsCategory(Book book, Guid categoryId)
-        {
-            return GetIndexOfCategoryByID(book, categoryId) > -1;
-        }
-
-        public ObservableCollection<Item> FindItems(string partOfItem)
-        {
-            if (BaseClass.IsXamarinProjectDeploying)
-            {
-                if (partOfItem == null)
-                    throw new ArgumentNullException();
-                if (String.IsNullOrWhiteSpace(partOfItem))
-                    throw new ArgumentException();
-                if (ItemsOfBook.Count < 1)
-                    throw new ElementIsNotInCollectionException();
             }
-            else
-            {
-                if (partOfItem == null || 
-                    String.IsNullOrWhiteSpace(partOfItem) || 
-                    ItemsOfBook.Count < 1)
-                        return null;
-            }
-
-            List<Item> items = new List<Item>();
-            foreach(Item item in ItemsOfBook)
-            {
-                if (item.IsItemContainsWord(partOfItem))
-                    items.Add(item);
-            }
-            return new ObservableCollection<Item>(items);
-
+            return -1;
         }
 
         public int GetIndexOfItemByID(Guid itemId)
@@ -211,7 +296,8 @@ namespace NotABookLibraryStandart.Models
             {
                 for (int i = 0; i < book.ItemsOfBook.Count; ++i)
                 {
-                    if (book.ItemsOfBook[i].Id == itemId) return i;
+                    if (book.ItemsOfBook[i].Id == itemId)
+                        return i;
                 }
             }
             return -1;
@@ -234,14 +320,14 @@ namespace NotABookLibraryStandart.Models
             {
                 for (int i = 0; i < book.CategoriesOfBook.Count; ++i)
                 {
-                    if (book.CategoriesOfBook[i].Id == categoryId) return i;
+                    if (book.CategoriesOfBook[i].Id == categoryId)
+                        return i;
                 }
             }            
             return -1;
         }
 
-
-        public int GetIndexOfCatrgoryInItemyByID(Guid pairId)
+        internal int GetIndexOfCategoryInItemByID(Guid pairId)
         {
             if(IsGuidIsNotEmpty(pairId))
             {
@@ -253,7 +339,7 @@ namespace NotABookLibraryStandart.Models
 
             return -1;
         }
-        public static int GetIndexOfCategoryInItemByID(Book book, Guid pairId)
+        internal static int GetIndexOfCategoryInItemByID(Book book, Guid pairId)
         {
             if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(pairId))
             {
@@ -268,10 +354,10 @@ namespace NotABookLibraryStandart.Models
 
         public bool DeleteItem(Item item)
         {
-            if (Item.IsItemIsNotNull(item) && IsBookContainsItem(this, item))////////////////
+            if (Item.IsItemIsNotNull(item) && IsBookContainsItem(this, item))
             {
                 item.DeleteItem();
-                return !IsBookContainsItem(this, item);
+                return GetIndexOfItemByID(item.Id) == -1;
             }
             return false;
         }
@@ -280,7 +366,7 @@ namespace NotABookLibraryStandart.Models
             if (IsGuidIsNotEmpty(itemId) && IsBookContainsItem(this, itemId))
             {
                 this.ItemsOfBook[Book.GetIndexOfItemByID(this, itemId)].DeleteItem();
-                return !IsBookContainsItem(this, itemId);
+                return GetIndexOfItemByID(itemId) == -1;
             }
             return false;           
         }
@@ -290,7 +376,7 @@ namespace NotABookLibraryStandart.Models
             if(Book.IsBookIsNotNull(book) && Item.IsItemIsNotNull(item) && IsBookContainsItem(book, item))
             {
                 item.DeleteItem();
-                return !IsBookContainsItem(book, item);
+                return GetIndexOfItemByID(book, item.Id) == -1;
             }
             return false;
         }
@@ -299,7 +385,7 @@ namespace NotABookLibraryStandart.Models
             if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(itemId) && IsBookContainsItem(book, itemId))
             {
                 book.ItemsOfBook[Book.GetIndexOfItemByID(book, itemId)].DeleteItem();
-                return !IsBookContainsItem(book, itemId);
+                return GetIndexOfItemByID(book, itemId) == -1;
             }
             return false;           
         }
@@ -310,7 +396,7 @@ namespace NotABookLibraryStandart.Models
             if (Category.IsCategoryIsNotNull(category) && IsBookContainsCategory(this, category))
             {
                 category.DeleteCategory();
-                return !IsBookContainsCategory(this, category);
+                return GetIndexOfCategoryByID(category.Id) == -1;
             }
             return false;
         }
@@ -319,7 +405,7 @@ namespace NotABookLibraryStandart.Models
             if (IsGuidIsNotEmpty(categoryId) && IsBookContainsCategory(this, categoryId))
             {
                 this.CategoriesOfBook[Book.GetIndexOfCategoryByID(this, categoryId)].DeleteCategory();
-                return !IsBookContainsCategory(this, categoryId);
+                return GetIndexOfCategoryByID(categoryId) == -1;
             }
             return false;            
         }
@@ -329,7 +415,7 @@ namespace NotABookLibraryStandart.Models
             if (Book.IsBookIsNotNull(book) && Category.IsCategoryIsNotNull(category) && IsBookContainsCategory(book, category))
             {
                 category.DeleteCategory();
-                return !IsBookContainsCategory(book, category);
+                return GetIndexOfCategoryByID(book, category.Id) == -1;
             }
             return false;            
         }
@@ -338,7 +424,7 @@ namespace NotABookLibraryStandart.Models
             if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(categoryId) && IsBookContainsCategory(book, categoryId))
             {
                 book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].DeleteCategory();
-                return !IsBookContainsCategory(book, categoryId);
+                return GetIndexOfCategoryByID(book, categoryId) == -1;
             }
             return false;          
         }
@@ -351,7 +437,7 @@ namespace NotABookLibraryStandart.Models
                 while (book.ItemsOfBook.Count > 0)
                 {
                     if (!book.ItemsOfBook[0].DeleteItem())
-                        return false;
+                        throw new InvalidOperationException();
                 }
             }           
             return book.ItemsOfBook.Count == 0;
@@ -363,7 +449,7 @@ namespace NotABookLibraryStandart.Models
                 while (book.CategoriesOfBook.Count > 0)
                 {
                     if (!book.CategoriesOfBook[0].DeleteCategory())
-                        return false;
+                        throw new InvalidOperationException();
                 }
             }           
             return book.CategoriesOfBook.Count == 0;
