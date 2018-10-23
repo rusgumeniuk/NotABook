@@ -182,7 +182,7 @@ namespace NotABookTests
             Item newItem = new Item(CurrentBook);
             Category newCategory = new Category(CurrentBook);
             CategoryInItem pair = CategoryInItem.CreateCategoryInItem(newCategory, newItem);
-            Assert.IsTrue(pair.DeleteConnection());
+            Assert.IsTrue(pair.Delete());
         }
 
         [TestMethod]
@@ -194,8 +194,8 @@ namespace NotABookTests
             Item newItem = new Item(CurrentBook);
             Category newCategory = new Category(CurrentBook);
             CategoryInItem pair = CategoryInItem.CreateCategoryInItem(newCategory, newItem);
-            pair.DeleteConnection();
-            pair.DeleteConnection();
+            pair.Delete();
+            pair.Delete();
         }
 
 

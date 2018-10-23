@@ -311,7 +311,7 @@ namespace NotABookLibraryStandart.Models
 
                 foreach (var pair in CategoryInItem.GetCIIListByItem(item))
                 {
-                    if (!pair.DeleteConnection())
+                    if (!pair.Delete())
                     {
                         if (!BaseClass.IsXamarinProjectDeploying)
                             throw new InvalidOperationException();
@@ -330,7 +330,7 @@ namespace NotABookLibraryStandart.Models
 
                 foreach (var pair in CategoryInItem.GetCIIListByCategory(category))
                 {
-                    if (!pair.DeleteConnection())
+                    if (!pair.Delete())
                     {
                         if (!BaseClass.IsXamarinProjectDeploying)
                             throw new InvalidOperationException();
@@ -365,7 +365,7 @@ namespace NotABookLibraryStandart.Models
             return GetGuidOfPair(book, categoryId, itemId) == Guid.Empty;
         }
 
-        public bool DeleteConnection()
+        public override bool Delete()
         {
             if (IsContainsThisPair(CurrentBook, categoryId, itemId))
             {

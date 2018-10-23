@@ -269,7 +269,7 @@ namespace NotABookLibraryStandart.Models
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool DeleteItem()
+        public override bool Delete()
         {
             if(Book.IsBookIsNotNull(CurrentBook))
             {
@@ -325,6 +325,13 @@ namespace NotABookLibraryStandart.Models
         public static Description CreateDescription(string text, List<Object> list)
         {
             return new Description(text, list);
-        }       
+        }
+
+        public override bool Delete()
+        {
+            Text = null;
+            Files = null;
+            return true;
+        }
     }
 }

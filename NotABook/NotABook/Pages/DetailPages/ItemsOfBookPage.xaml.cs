@@ -90,7 +90,7 @@ namespace NotABook.Pages.DetailPages
                     "Delete item",
                     "Do u want to delete this item?",
                     "Yes", "NO"))
-                    (((MenuItem)sender).CommandParameter as Item).DeleteItem();
+                    (((MenuItem)sender).CommandParameter as Item).Delete();
             }
             catch(Exception ex)
             {

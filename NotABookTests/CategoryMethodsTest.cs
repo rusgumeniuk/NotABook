@@ -72,7 +72,7 @@ namespace NotABookTests
         {
             SetUp();
 
-            SecondItem.DeleteItem();
+            SecondItem.Delete();
 
             Assert.AreEqual(SecondCategory.ItemsWithThisCategory.Count, 0);
             Assert.AreEqual(SecondCategory.CountOfItemsWithThisCategory, 0);
@@ -95,7 +95,7 @@ namespace NotABookTests
         public void RemoveCategoryFromAllItems_WhenRealCategory_ReturnsTrue()
         {
             SetUp();
-            Assert.IsTrue(FirstCategory.DeleteCategory());
+            Assert.IsTrue(FirstCategory.Delete());
             Assert.IsTrue(Category.DeleteCategory(SecondCategory));
             Assert.AreEqual(CurrentBook.CategoriesOfBook.Count, 0);
         }
@@ -112,7 +112,7 @@ namespace NotABookTests
         public void DeleteCategory_WhenRealCategory_ReturnsTrue()
         {
             SetUp();
-            Assert.IsTrue(FirstCategory.DeleteCategory());
+            Assert.IsTrue(FirstCategory.Delete());
             Assert.IsTrue(Category.DeleteCategory(SecondCategory));
             Assert.AreEqual(CurrentBook.CategoriesOfBook.Count, 0);
         }

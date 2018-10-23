@@ -46,7 +46,7 @@ namespace NotABook.Pages.ItemPages
 
        async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Deletin item", (((Button)sender).CommandParameter as Item).DeleteItemStr(), "ok");
+            await DisplayAlert("Deleting item", (((Button)sender).CommandParameter as Item).Delete() ? "Deleted" : "oops, is not deleted", "ok");
             await Navigation.PopAsync();
             //try
             //{

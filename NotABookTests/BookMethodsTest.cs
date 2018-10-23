@@ -40,7 +40,7 @@ namespace NotABookTests
             Assert.AreEqual(Book.Books.Count, 3);
             Assert.AreEqual(Book.Books[1], secondBook);
 
-            CurrentBook.DeleteBook();
+            CurrentBook.Delete();
             Assert.AreEqual(Book.Books.Count, 2);
         }
 
@@ -107,7 +107,7 @@ namespace NotABookTests
         {
             SetUp();
 
-            Assert.IsTrue(CurrentBook.DeleteBook());            
+            Assert.IsTrue(CurrentBook.Delete());            
             Assert.AreEqual(CurrentBook.ItemsOfBook.Count, 0);
         }
 
@@ -124,7 +124,7 @@ namespace NotABookTests
         [ExpectedException(typeof(NullReferenceException))]
         public void DeleteBook_WhenThisBookIsNull_ReturnsBookNullException()
         {
-            CurrentBook.DeleteBook();
+            CurrentBook.Delete();
         }
 
         [TestMethod]
@@ -139,8 +139,8 @@ namespace NotABookTests
         public void DeleteBook_WhenBooksNotContainsTheseBooks_ReturnsElementIsNotInCollectionException()
         {
             SetUp();
-            CurrentBook.DeleteBook();
-            CurrentBook.DeleteBook();
+            CurrentBook.Delete();
+            CurrentBook.Delete();
         }
 
         [TestMethod]

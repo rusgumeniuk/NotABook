@@ -118,7 +118,7 @@ namespace NotABookLibraryStandart.Models
         /// Removes all elements of the book and remove book from the Books
         /// </summary>
         /// <returns></returns>
-        public bool DeleteBook()
+        public override bool Delete()
         {
             if(IsBookIsNotNullAndInBooks(this))
             {
@@ -356,7 +356,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Item.IsItemIsNotNull(item) && IsBookContainsItem(this, item))
             {
-                item.DeleteItem();
+                item.Delete();
                 return GetIndexOfItemByID(item.Id) == -1;
             }
             return false;
@@ -365,7 +365,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (IsGuidIsNotEmpty(itemId) && IsBookContainsItem(this, itemId))
             {
-                this.ItemsOfBook[Book.GetIndexOfItemByID(this, itemId)].DeleteItem();
+                this.ItemsOfBook[Book.GetIndexOfItemByID(this, itemId)].Delete();
                 return GetIndexOfItemByID(itemId) == -1;
             }
             return false;           
@@ -375,7 +375,7 @@ namespace NotABookLibraryStandart.Models
         {
             if(Book.IsBookIsNotNull(book) && Item.IsItemIsNotNull(item) && IsBookContainsItem(book, item))
             {
-                item.DeleteItem();
+                item.Delete();
                 return GetIndexOfItemByID(book, item.Id) == -1;
             }
             return false;
@@ -384,7 +384,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(itemId) && IsBookContainsItem(book, itemId))
             {
-                book.ItemsOfBook[Book.GetIndexOfItemByID(book, itemId)].DeleteItem();
+                book.ItemsOfBook[Book.GetIndexOfItemByID(book, itemId)].Delete();
                 return GetIndexOfItemByID(book, itemId) == -1;
             }
             return false;           
@@ -395,7 +395,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Category.IsCategoryIsNotNull(category) && IsBookContainsCategory(this, category))
             {
-                category.DeleteCategory();
+                category.Delete();
                 return GetIndexOfCategoryByID(category.Id) == -1;
             }
             return false;
@@ -404,7 +404,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (IsGuidIsNotEmpty(categoryId) && IsBookContainsCategory(this, categoryId))
             {
-                this.CategoriesOfBook[Book.GetIndexOfCategoryByID(this, categoryId)].DeleteCategory();
+                this.CategoriesOfBook[Book.GetIndexOfCategoryByID(this, categoryId)].Delete();
                 return GetIndexOfCategoryByID(categoryId) == -1;
             }
             return false;            
@@ -414,7 +414,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Book.IsBookIsNotNull(book) && Category.IsCategoryIsNotNull(category) && IsBookContainsCategory(book, category))
             {
-                category.DeleteCategory();
+                category.Delete();
                 return GetIndexOfCategoryByID(book, category.Id) == -1;
             }
             return false;            
@@ -423,7 +423,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(categoryId) && IsBookContainsCategory(book, categoryId))
             {
-                book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].DeleteCategory();
+                book.CategoriesOfBook[Book.GetIndexOfCategoryByID(book, categoryId)].Delete();
                 return GetIndexOfCategoryByID(book, categoryId) == -1;
             }
             return false;          
@@ -436,7 +436,7 @@ namespace NotABookLibraryStandart.Models
             {
                 while (book.ItemsOfBook.Count > 0)
                 {
-                    if (!book.ItemsOfBook[0].DeleteItem())
+                    if (!book.ItemsOfBook[0].Delete())
                         throw new InvalidOperationException();
                 }
             }           
@@ -448,7 +448,7 @@ namespace NotABookLibraryStandart.Models
             {
                 while (book.CategoriesOfBook.Count > 0)
                 {
-                    if (!book.CategoriesOfBook[0].DeleteCategory())
+                    if (!book.CategoriesOfBook[0].Delete())
                         throw new InvalidOperationException();
                 }
             }           

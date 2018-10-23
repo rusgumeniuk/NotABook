@@ -202,7 +202,7 @@ namespace NotABookWPF.Windows
 
         private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
         {
-            ((sender as MenuItem).CommandParameter as Book).DeleteBook();
+            ((sender as MenuItem).CommandParameter as Book).Delete();
         }
     }
 }

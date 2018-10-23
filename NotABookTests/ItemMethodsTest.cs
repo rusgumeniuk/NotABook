@@ -116,7 +116,7 @@ namespace NotABookTests
         public void DeleteItem_WhenRealItem_ReturnsTrue()
         {
             SetUp();
-            Assert.IsTrue(FirstItem.DeleteItem());
+            Assert.IsTrue(FirstItem.Delete());
             Assert.IsTrue(Item.DeleteItem(SecondItem));
             Assert.AreEqual(CurrentBook.ItemsOfBook.Count, 0);
             Assert.AreEqual(CurrentBook.CategoryInItemsOfBook.Count, 0);

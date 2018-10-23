@@ -43,7 +43,7 @@ namespace NotABook.Pages.DetailPages
                   "Do u want to delete item's list?\nAllItems and categories will be deleted too",
                   "Okey",
                   "Cancel"))
-                    await DisplayAlert("Deletin book", (((MenuItem)sender).CommandParameter as Book).DeleteBook().ToString(), "ok");
+                    await DisplayAlert("Deletin book", (((MenuItem)sender).CommandParameter as Book).Delete().ToString(), "ok");
         }
 
         async private void OnClearBook_Clicked(object sender, EventArgs e)
