@@ -108,6 +108,8 @@ namespace NotABookLibraryStandart.Models
 
         public abstract bool Delete();
 
+        public abstract void ThrowNullException();
+
         #endregion
     }
 }

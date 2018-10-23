@@ -375,6 +375,11 @@ namespace NotABookLibraryStandart.Models
             return GetGuidOfPair(CurrentBook, this.categoryId, this.itemId) == Guid.Empty;
         }
 
+        public override void ThrowNullException()
+        {
+            throw new CategoryInItemNullException();
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is CategoryInItem)) return false;

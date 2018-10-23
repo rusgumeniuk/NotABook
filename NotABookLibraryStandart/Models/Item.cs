@@ -298,6 +298,11 @@ namespace NotABookLibraryStandart.Models
             }
             return !item.CurrentBook.ItemsOfBook.Contains(item);
         }
+
+        public override void ThrowNullException()
+        {
+            throw new ItemNullException();
+        }
         #endregion
     }
 
@@ -332,6 +337,11 @@ namespace NotABookLibraryStandart.Models
             Text = null;
             Files = null;
             return true;
+        }
+
+        public override void ThrowNullException()
+        {
+            throw new ArgumentNullException("Null description");
         }
     }
 }

@@ -459,6 +459,11 @@ namespace NotABookLibraryStandart.Models
         {
             return Book.IsBookIsNotNull(book) ? ClearItemsList(book) && ClearCaregoriesList(book) : false;
         }
+
+        public override void ThrowNullException()
+        {
+            throw new BookNullException();
+        }
         #endregion
     }
 }

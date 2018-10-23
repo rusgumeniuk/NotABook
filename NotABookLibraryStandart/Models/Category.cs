@@ -185,8 +185,12 @@ namespace NotABookLibraryStandart.Models
                 return CategoryInItem.DeleteAllConnectionWithCategory(category);                                
             }
             return false;           
-        }               
-        
+        }
+
+        public override void ThrowNullException()
+        {
+            throw new CategoryNullException();
+        }
         #endregion
     }
 
