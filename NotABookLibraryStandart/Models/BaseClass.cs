@@ -65,7 +65,9 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-        
+
+        public abstract bool IsNotNull();
+
         public static bool IsGuidIsNotEmpty(Guid id)
         {
             return id != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new EmptyGuidException());
