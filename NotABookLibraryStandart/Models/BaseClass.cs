@@ -106,6 +106,8 @@ namespace NotABookLibraryStandart.Models
             }           
         }
 
+        public abstract bool Delete();
+
         #endregion
     }
 }
