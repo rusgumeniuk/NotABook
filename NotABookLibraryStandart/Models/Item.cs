@@ -319,7 +319,7 @@ namespace NotABookLibraryStandart.Models
     /// </summary>
     public class Description : BaseClass
     {
-        public string Text;
+        public string Text { get; set; }
         public List<Object> Files { get; set; }
 
         private Description(string text)
