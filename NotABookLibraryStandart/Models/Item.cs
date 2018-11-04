@@ -9,7 +9,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a note of the book
     /// </summary>
-    public class Item : ElementOfTheBook
+    public class Item : BookElement
     {
         #region Fields
 

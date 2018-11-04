@@ -8,7 +8,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents elements of the book (for example, category, item)
     /// </summary>
-    public abstract class ElementOfTheBook : BaseClass
+    public abstract class BookElement : BaseClass
     {
         protected Book currentBook;
         public Book CurrentBook
@@ -21,11 +21,11 @@ namespace NotABookLibraryStandart.Models
             }
         }
 
-        public ElementOfTheBook(Book book) : base()
+        public BookElement(Book book) : base()
         {
             CurrentBook = Book.IsBookIsNotNull(book) ? book : new Book("NULL BOOK");
         }
-        public ElementOfTheBook(Book book, string title) : base(title)
+        public BookElement(Book book, string title) : base(title)
         {
             CurrentBook = Book.IsBookIsNotNull(book) ? book : new Book("NULL BOOK");
         }

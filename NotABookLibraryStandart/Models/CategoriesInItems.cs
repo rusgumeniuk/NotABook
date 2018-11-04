@@ -9,7 +9,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a solvable class 
     /// </summary>
-    public class CategoryInItem : ElementOfTheBook
+    public class CategoryInItem : BookElement
     {
         #region Fields        
         private Guid categoryId;

@@ -9,7 +9,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a category of the book
     /// </summary>
-    public class Category : ElementOfTheBook
+    public class Category : BookElement
     {
         #region Prop
         public string GetStringCountOfItemsWithCategory
