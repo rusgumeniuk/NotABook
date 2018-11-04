@@ -263,3 +263,11 @@ __pycache__/
 .vs/NotABook/v15/.suo
 *.ide-wal
 *.ide
+.vs/NotABook/DesignTimeBuild/.dtbcache
+*.ide-shm
+*.ide-wal
+NotABook/NotABook.Android/bin/Debug/NotABook.Android.dll
+NotABook/NotABook.Android/bin/Debug/NotABook.Android.dll.mdb
+NotABook/NotABook.Android/bin/Debug/NotABook.Android.pdb
+NotABook/NotABook.Android/bin/Debug/NotABook.dll
+NotABook/NotABook.Android/bin/Debug/NotABook.pdb
