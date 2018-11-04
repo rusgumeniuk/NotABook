@@ -48,15 +48,26 @@ namespace NotABookWPF.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(DataContext != null)
+            if (DataContext != null) 
             {
+                UpdateInfo();
                 Item item = DataContext as Item;
-                if(item.Title == null || item.Title == String.Empty)
+                if (String.IsNullOrWhiteSpace(item.Title) && item.Description.IsEmptyDescription()) 
                 {
-                    MessageBox.Show("Ooops", "wrong title");
-                    return;
+                    MessageBox.Show("Ooops, item should be non-empty", "Empty item");
+                    item.Delete();
                 }
+                else if (String.IsNullOrWhiteSpace(item.Title))
+                {
+                    item.Title = item.Description.GetTitleFromDescription();
+                }                
             }
+        }
+
+        private void UpdateInfo()
+        {
+            (this.DataContext as Item).Title = TBEditItemTitle.Text;
+            (this.DataContext as Item).DescriptionText = TBDescription.Text;
         }
     }
 }
