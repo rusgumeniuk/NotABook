@@ -261,3 +261,5 @@ __pycache__/
 *.pyc
 .vs/NotABook/v15/.suo
 .vs/NotABook/v15/.suo
+*.ide-wal
+*.ide
