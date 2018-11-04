@@ -348,11 +348,21 @@ namespace NotABookLibraryStandart.Models
 
         public string GetTitleFromDescription()
         {
-            if (string.IsNullOrEmpty(Text))
+            return !String.IsNullOrWhiteSpace(Text) ? GetTitleFromText() : GetTitleFromFiles();
+        }
+    
+        internal string GetTitleFromFiles()
+        {
+            return $"New item {this.DateOfCreating}";
+        }
+
+        internal string GetTitleFromText()
+        {
+            if (String.IsNullOrEmpty(Text))
                 return null;
 
-            string title = Text.Clone() as string;     
-            
+            string title = Text.Clone() as string;
+
             if (Text.Contains(" "))
             {
                 StringBuilder sb = new StringBuilder();
@@ -361,19 +371,19 @@ namespace NotABookLibraryStandart.Models
                     string word = GetNextWord(ref title);
                     if (word != null)
                     {
-                        sb.Append(word + " ");                        
+                        sb.Append(word + " ");
                     }
                     else
                         break;
                 }
 
                 return (sb.Length < 30 ? sb.ToString() : sb.ToString().Substring(0, 29));
-                        
+
             }
             else
-                return GetNextWord(ref title);           
+                return GetNextWord(ref title);
         }
-    
+
         private string GetNextWord(ref string str)
         {
             if (String.IsNullOrWhiteSpace(str)) return null;
