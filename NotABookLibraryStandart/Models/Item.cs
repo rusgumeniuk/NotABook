@@ -255,7 +255,15 @@ namespace NotABookLibraryStandart.Models
         /// <returns>String represent of the Categories</returns>
         public string GetCategoriesInString()
         {
-            if (Categories == null || Categories.Count < 1) return "No one categories. ";
+            try
+            {
+                if (Categories == null || Categories.Count < 1) return "No one categories. ";
+            }
+            catch(ElementIsNotInCollectionException)
+            {
+                return "No one categories.";
+            }
+            
             
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Category categories in Categories)
