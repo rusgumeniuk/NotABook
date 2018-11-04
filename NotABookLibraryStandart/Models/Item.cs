@@ -325,6 +325,7 @@ namespace NotABookLibraryStandart.Models
         private Description(string text)
         {
             Text = text;
+            Files = new List<object>();
         }
         private Description(string text, List<Object> list) : this(text)
         {
@@ -343,6 +344,51 @@ namespace NotABookLibraryStandart.Models
         public bool IsEmptyDescription()
         {
             return String.IsNullOrWhiteSpace(Text) && Files.Count == 0;
+        }
+
+        public string GetTitleFromDescription()
+        {
+            if (string.IsNullOrEmpty(Text))
+                return null;
+
+            string title = Text.Clone() as string;     
+            
+            if (Text.Contains(" "))
+            {
+                StringBuilder sb = new StringBuilder();
+                for (byte countOfWords = 0; countOfWords < 4 && sb.Length < 30; ++countOfWords)
+                {
+                    string word = GetNextWord(ref title);
+                    if (word != null)
+                    {
+                        sb.Append(word + " ");                        
+                    }
+                    else
+                        break;
+                }
+
+                return (sb.Length < 30 ? sb.ToString() : sb.ToString().Substring(0, 29));
+                        
+            }
+            else
+                return GetNextWord(ref title);           
+        }
+    
+        private string GetNextWord(ref string str)
+        {
+            if (String.IsNullOrWhiteSpace(str)) return null;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            int i = 0;
+
+            for(; i < str.Length && str[i] != ' ' && stringBuilder.Length < 30; ++i)                
+            {
+                stringBuilder.Append(str[i]);
+            }
+
+            str = str.Substring(str.Length > i + 1 ? i + 1 : i);
+
+            return stringBuilder.ToString();
         }
 
         public override bool Delete()
