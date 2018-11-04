@@ -319,7 +319,7 @@ namespace NotABookLibraryStandart.Models
     /// </summary>
     public class Description : BaseClass
     {
-        public string Text { get; set; }
+        public string Text;
         public List<Object> Files { get; set; }
 
         private Description(string text)
@@ -338,6 +338,11 @@ namespace NotABookLibraryStandart.Models
         public static Description CreateDescription(string text, List<Object> list)
         {
             return new Description(text, list);
+        }
+
+        public bool IsEmptyDescription()
+        {
+            return String.IsNullOrWhiteSpace(Text) && Files.Count == 0;
         }
 
         public override bool Delete()
