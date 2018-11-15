@@ -283,3 +283,12 @@ NotABook/NotABook.Android/bin/Debug/NotABook.pdb
 *.ide-shm
 *.ide-wal
 .vs/NotABook/v15/.suo
+.vs/NotABook/DesignTimeBuild/.dtbcache
+.vs/NotABook/v15/.suo
+.vs/NotABook/v15/Server/sqlite3/storage.ide-shm
+NotABook/NotABook.Android/bin/Debug/NotABook.Android.dll
+NotABook/NotABook.Android/bin/Debug/NotABook.Android.dll.mdb
+NotABook/NotABook.Android/bin/Debug/NotABook.Android.pdb
+NotABook/NotABook.Android/bin/Debug/NotABook.dll
+NotABook/NotABook.Android/bin/Debug/NotABook.pdb
+*.cache
