@@ -89,6 +89,10 @@ ipch/
 *.vsp
 *.vspx
 *.sap
+*.suo
+*.ide
+*.ide-wal
+*.ide-shm
 
 # TFS 2012 Local Workspace
 $tf/
@@ -259,9 +263,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-.vs/NotABook/v15/.suo
-.vs/NotABook/v15/.suo
-*.ide-wal
+
 *.ide
 .vs/NotABook/DesignTimeBuild/.dtbcache
 *.ide-shm
@@ -273,22 +275,4 @@ NotABook/NotABook.Android/bin/Debug/NotABook.dll
 NotABook/NotABook.Android/bin/Debug/NotABook.pdb
 .vs/NotABook/DesignTimeBuild/.dtbcache
 .vs/NotABook/v15/.suo
-*.ide
-*.cache
-*.ide-wal
-*.ide-shm
-.vs/NotABook/v15/.suo
-.vs/NotABook/DesignTimeBuild/.dtbcache
-*.ide
-*.ide-shm
-*.ide-wal
-.vs/NotABook/v15/.suo
-.vs/NotABook/DesignTimeBuild/.dtbcache
-.vs/NotABook/v15/.suo
-.vs/NotABook/v15/Server/sqlite3/storage.ide-shm
-NotABook/NotABook.Android/bin/Debug/NotABook.Android.dll
-NotABook/NotABook.Android/bin/Debug/NotABook.Android.dll.mdb
-NotABook/NotABook.Android/bin/Debug/NotABook.Android.pdb
-NotABook/NotABook.Android/bin/Debug/NotABook.dll
-NotABook/NotABook.Android/bin/Debug/NotABook.pdb
 *.cache
