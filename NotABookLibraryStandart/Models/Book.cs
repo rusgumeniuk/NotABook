@@ -109,7 +109,7 @@ namespace NotABookLibraryStandart.Models
                     Books.Add(book);
                     return IsBooksContainsThisBook(book);
                 }
-                return IsXamarinProjectDeploying ? false : throw new ElementAlreadyExistException();
+                return ProjectType == ProjectTypes.Xamarin ? false : throw new ElementAlreadyExistException();
             }
             return false;
         }
@@ -159,7 +159,7 @@ namespace NotABookLibraryStandart.Models
        /// <returns></returns>
         public static bool IsBooksContainsThisBook(Book book)
         {
-            return IndexOfBookInBooks(book) != -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+            return IndexOfBookInBooks(book) != -1 ? true : (ProjectType == ProjectTypes.Xamarin ? false : throw new ElementIsNotInCollectionException());
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsBooksContainsThisBook(Guid bookId)
         {
-            return IndexOfBookInBooks(bookId) != -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+            return IndexOfBookInBooks(bookId) != -1 ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
         } 
 
 
@@ -185,7 +185,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsBookContainsItem(Book book, Item item)
         {
-            return GetIndexOfItemByID(book, item.Id) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException($"{item.Title} not in the {book.Title}"));
+            return GetIndexOfItemByID(book, item.Id) > -1 ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException($"{item.Title} not in the {book.Title}"));
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsBookContainsItem(Book book, Guid itemId)
         {
-            return GetIndexOfItemByID(book, itemId) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+            return GetIndexOfItemByID(book, itemId) > -1 ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
         }
 
 
@@ -212,7 +212,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsBookContainsCategory(Book book, Category category)
         {
-            return GetIndexOfCategoryByID(book, category.Id) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException($"{category.Title} not in the {book.Title}"));
+            return GetIndexOfCategoryByID(book, category.Id) > -1 ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException($"{category.Title} not in the {book.Title}"));
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsBookContainsCategory(Book book, Guid categoryId)
         {
-            return GetIndexOfCategoryByID(book, categoryId) > -1 ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
+            return GetIndexOfCategoryByID(book, categoryId) > -1 ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
         }
 
 
@@ -238,7 +238,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if book is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsBookIsNotNull(Book book)
         {
-            return book != null ? true : (IsXamarinProjectDeploying ? false : throw new BookNullException());
+            return book != null ? true : (ProjectType == ProjectTypes.Xamarin ? false : throw new BookNullException());
         }
 
         /// <summary>

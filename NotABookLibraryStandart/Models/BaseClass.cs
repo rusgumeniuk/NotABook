@@ -19,14 +19,9 @@ namespace NotABookLibraryStandart.Models
 
         #region Prop
         /// <summary>
-        /// A field that show is project in Xamarin mode. "True" - to block Exceptions
-        /// </summary>        
-        public static bool IsXamarinProjectDeploying { get; set; } = false;
-
-        /// <summary>
-        /// A filed tha show is project in testing mode. "True" - to block OnPropertyChange
-        /// </summary>
-        public static bool IsTesingProjectRunning { get; set; } = true;
+        /// A field that show current project mode.
+        /// </summary>       
+        public static ProjectTypes ProjectType = ProjectTypes.Wpf;
 
         public Guid Id { get; private set; }
 
@@ -68,7 +63,7 @@ namespace NotABookLibraryStandart.Models
         
         public static bool IsGuidIsNotEmpty(Guid id)
         {
-            return id != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new EmptyGuidException());
+            return id != Guid.Empty ? true : (ProjectType == ProjectTypes.Xamarin ? false : throw new EmptyGuidException());
         }
 
         /// <summary>
@@ -96,14 +91,11 @@ namespace NotABookLibraryStandart.Models
 
         public virtual void OnPropertyChanged(string prop = "")
         {
-            if (!IsTesingProjectRunning)
+            if (PropertyChanged != null)
             {
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                    UpdateDateOfLastChanging();
-                }
-            }           
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                UpdateDateOfLastChanging();
+            }       
         }
 
         public abstract bool Delete();
