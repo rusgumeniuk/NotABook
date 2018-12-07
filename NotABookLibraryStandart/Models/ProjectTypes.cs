@@ -4,9 +4,10 @@ using System.Text;
 
 namespace NotABookLibraryStandart.Models
 {
-    public enum ProjectTypes
+    public enum TypeOfRunningProject
     {
         Xamarin,
-        Wpf
+        WPF,
+        Testing
     }
 }

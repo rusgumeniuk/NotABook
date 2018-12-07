@@ -21,7 +21,7 @@ namespace NotABookLibraryStandart.Models
         /// <summary>
         /// A field that show current project mode.
         /// </summary>       
-        public static ProjectTypes ProjectType = ProjectTypes.Wpf;
+        public static TypeOfRunningProject ProjectType = TypeOfRunningProject.WPF;
 
         public Guid Id { get; private set; }
 
@@ -63,7 +63,7 @@ namespace NotABookLibraryStandart.Models
         
         public static bool IsGuidIsNotEmpty(Guid id)
         {
-            return id != Guid.Empty ? true : (ProjectType == ProjectTypes.Xamarin ? false : throw new EmptyGuidException());
+            return id != Guid.Empty ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new EmptyGuidException());
         }
 
         /// <summary>

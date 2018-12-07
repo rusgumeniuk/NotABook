@@ -75,7 +75,7 @@ namespace NotABookLibraryStandart.Models
 
                         OnPropertyChanged("Categories");
                     }
-                    else if (ProjectType != ProjectTypes.Xamarin )
+                    else if (ProjectType != TypeOfRunningProject.Xamarin )
                         throw new ArgumentNullException();
                 }              
             }
@@ -119,7 +119,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>True - not null, else if Xamain mode in on - false, else throw Exc</returns>
         public static bool IsItemIsNotNull(Item item)
         {
-            return item != null ? true : (ProjectType == ProjectTypes.Xamarin ? false : throw new ItemNullException());
+            return item != null ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new ItemNullException());
         }
 
         /// <summary>

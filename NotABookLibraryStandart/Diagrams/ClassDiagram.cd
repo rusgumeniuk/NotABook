@@ -1,13 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="NotABookLibraryStandart.Models.BaseClass">
-    <Position X="9" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAACAAAAQAAAIEAEIACIAAIAgAEAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>Models\BaseClass.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="NotABookLibraryStandart.Models.BookElement">
     <Position X="9" Y="5.75" Width="1.5" />
     <TypeIdentifier>
@@ -46,9 +38,17 @@
   <Class Name="NotABookLibraryStandart.Models.Description" Collapsed="true">
     <Position X="6" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAACAAAAIA=</HashCode>
+      <HashCode>AAAAAAAAAAAABAAAQgCAAAAAAAEAAAAAAAEACAAAAIA=</HashCode>
       <FileName>Models\Item.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.BaseClass">
+    <Position X="9" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAQAAAAEAEIACIAAIEgAEAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

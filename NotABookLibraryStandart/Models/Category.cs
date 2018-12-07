@@ -68,7 +68,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if categoryInItem is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsCategoryIsNotNull(Category category)
         {
-            return category != null ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new CategoryNullException());
+            return category != null ? true : (ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new CategoryNullException());
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsStringNotNull(this string word)
         {
-            return !string.IsNullOrWhiteSpace(word) ? true : (BaseClass.ProjectType == ProjectTypes.Xamarin ? false : throw new ArgumentNullException());
+            return !string.IsNullOrWhiteSpace(word) ? true : (BaseClass.ProjectType == TypeOfRunningProject.Xamarin ? false : throw new ArgumentNullException());
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsNotEmptyCollection<T>(this IList<T> collection)
         {
-            return collection.Count > 0 ? true : (BaseClass.ProjectType == ProjectTypes.Xamarin  ? false : throw new EmptyCollectionException());
+            return collection.Count > 0 ? true : (BaseClass.ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new EmptyCollectionException());
         }
     }    
 }

@@ -62,7 +62,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if categoryInItem is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsCategoryInItemIsNotNull(CategoryInItem categoryInItem)
         {
-            return categoryInItem != null ? true : (ProjectType == ProjectTypes.Xamarin ? false : throw new CategoryInItemNullException());
+            return categoryInItem != null ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new CategoryInItemNullException());
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace NotABookLibraryStandart.Models
         {
             if(Item.IsItemIsNotNull(item))
             {
-                return IsItemHasConnectionHidden(item) ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
+                return IsItemHasConnectionHidden(item) ? true : (ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new ElementIsNotInCollectionException());
             }
 
             return false;
@@ -91,7 +91,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Category.IsCategoryIsNotNull(category))
             {
-                return IsCategoryHasConnectionHidden(category) ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
+                return IsCategoryHasConnectionHidden(category) ? true : (ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new ElementIsNotInCollectionException());
             }
 
             return false;
@@ -156,7 +156,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsContainsThisPair(Category category, Item item)
         {
-            return GetGuidOfPair(category, item) != Guid.Empty ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
+            return GetGuidOfPair(category, item) != Guid.Empty ? true : (ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new ElementIsNotInCollectionException());
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementIsNotInCollectionException());
+            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? true : (ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new ElementIsNotInCollectionException());
         }
         
         /// <summary>
@@ -182,7 +182,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>Exception if true</returns>
         private static bool IsAlreadyContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? (ProjectType == ProjectTypes.Xamarin  ? true : throw new ElementAlreadyExistException()) : false;
+            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? (ProjectType == TypeOfRunningProject.Xamarin  ? true : throw new ElementAlreadyExistException()) : false;
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Category.IsCategoryIsNotNull(category) && Item.IsItemIsNotNull(item)) 
             {
-                return category.CurrentBook == item.CurrentBook ? true : (ProjectType == ProjectTypes.Xamarin  ? false : throw new ElementsFromDifferentBooksException());
+                return category.CurrentBook == item.CurrentBook ? true : (ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new ElementsFromDifferentBooksException());
             }
 
             return false;
@@ -313,7 +313,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (!pair.Delete())
                     {
-                        if (ProjectType != ProjectTypes.Xamarin)
+                        if (ProjectType != TypeOfRunningProject.Xamarin)
                             throw new InvalidOperationException();
                     }
                 }
@@ -332,7 +332,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (!pair.Delete())
                     {
-                        if (ProjectType != ProjectTypes.Xamarin)
+                        if (ProjectType != TypeOfRunningProject.Xamarin)
                             throw new InvalidOperationException();
                     }
                 }
