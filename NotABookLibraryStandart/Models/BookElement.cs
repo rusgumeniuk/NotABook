@@ -8,7 +8,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents elements of the book (for example, category, item)
     /// </summary>
-    public abstract class BookElement : BaseClass
+    public abstract class BookElement : Base
     {
         protected Book currentBook;
         public Book CurrentBook
@@ -36,7 +36,7 @@ namespace NotABookLibraryStandart.Models
 
             if (currentBook != null)
                 Book.UpdateDateOfLastChanging(currentBook);
-            else if (!IsXamarinProjectDeploying && currentBook != null)
+            else if (ProjectType != ProjectType.Xamarin && currentBook != null)
                 throw new Exceptions.BookNullException();
         }
     }

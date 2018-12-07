@@ -9,24 +9,16 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represent a basic class for elements of the notebook
     /// </summary>
-    abstract public class BaseClass : INotifyPropertyChanged
+    abstract public class Base : INotifyPropertyChanged
     {
         #region Fields
-       
+
         protected string title;
 
         #endregion
 
         #region Prop
-        /// <summary>
-        /// A field that show is project in Xamarin mode. "True" - to block Exceptions
-        /// </summary>        
-        public static bool IsXamarinProjectDeploying { get; set; } = false;
-
-        /// <summary>
-        /// A filed tha show is project in testing mode. "True" - to block OnPropertyChange
-        /// </summary>
-        public static bool IsTesingProjectRunning { get; set; } = true;
+        public static ProjectType ProjectType = ProjectType.WPF;
 
         public Guid Id { get; private set; }
 
@@ -39,7 +31,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     title = value;
                     OnPropertyChanged("Title");
-                }                
+                }
             }
         }
 
@@ -50,7 +42,7 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Constr
-        public BaseClass()
+        public Base()
         {
             Id = Guid.NewGuid();
             DateOfCreating = DateTime.Now;
@@ -58,17 +50,17 @@ namespace NotABookLibraryStandart.Models
             OnPropertyChanged("New element");
         }
 
-        public BaseClass(string title) : this()
+        public Base(string title) : this()
         {
             Title = title;
         }
         #endregion
 
         #region Methods
-        
+
         public static bool IsGuidIsNotEmpty(Guid id)
         {
-            return id != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new EmptyGuidException());
+            return id != Guid.Empty ? true : (ProjectType == ProjectType.Xamarin ? false : throw new EmptyGuidException());
         }
 
         /// <summary>
@@ -82,7 +74,7 @@ namespace NotABookLibraryStandart.Models
         /// <summary>
         /// The method that update date of last changing after any operation with obj
         /// </summary>
-        protected static void UpdateDateOfLastChanging(BaseClass obj)
+        protected static void UpdateDateOfLastChanging(Base obj)
         {
             obj?.UpdateDateOfLastChanging();
         }
@@ -96,19 +88,19 @@ namespace NotABookLibraryStandart.Models
 
         public virtual void OnPropertyChanged(string prop = "")
         {
-            if (!IsTesingProjectRunning)
+            if (ProjectType != ProjectType.Testing)
             {
                 if (PropertyChanged != null)
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs(prop));
                     UpdateDateOfLastChanging();
                 }
-            }           
+            }
         }
 
         public abstract bool Delete();
 
-        public abstract void ThrowNullException();
+        public virtual void ThrowNullException() { }
 
         #endregion
     }

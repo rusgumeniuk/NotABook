@@ -36,7 +36,7 @@ namespace NotABookLibraryStandart.Models
                     }
                     return items;
                 }
-                return null;               
+                return null;
             }
         }
 
@@ -59,7 +59,7 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Methods
-       
+
         /// <summary>
         /// Indicates whether the CategoryInItem is null
         /// </summary>
@@ -68,7 +68,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if categoryInItem is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsCategoryIsNotNull(Category category)
         {
-            return category != null ? true : (IsXamarinProjectDeploying ? false : throw new CategoryNullException());
+            return category != null ? true : (ProjectType == ProjectType.Xamarin ? false : throw new CategoryNullException());
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NotABookLibraryStandart.Models
         /// <exception cref="ArgumentNullException">when word is null or empty</exception>
         /// <returns></returns>
         public bool IsCategoryContainsWord(string word)
-        {                      
+        {
             return ExtensionClass.IsStringNotNull(word) && Title.ToUpperInvariant().Contains(word.ToUpperInvariant());
         }
 
@@ -152,7 +152,7 @@ namespace NotABookLibraryStandart.Models
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
                 return !category.CurrentBook.CategoriesOfBook.Contains(category);
             }
-            return false;       
+            return false;
         }
 
         public string RemoveCategoryFromAllItemsStr()
@@ -173,18 +173,18 @@ namespace NotABookLibraryStandart.Models
             if (Book.IsBookIsNotNull(CurrentBook))
             {
                 CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return CategoryInItem.DeleteAllConnectionWithCategory(this);                                
+                return CategoryInItem.DeleteAllConnectionWithCategory(this);
             }
-            return false;           
+            return false;
         }
         public static bool RemoveCategoryFromAllItems(Category category)
         {
             if (Category.IsCategoryAndItsBookNotNull(category))
             {
                 category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return CategoryInItem.DeleteAllConnectionWithCategory(category);                                
+                return CategoryInItem.DeleteAllConnectionWithCategory(category);
             }
-            return false;           
+            return false;
         }
 
         public override void ThrowNullException()
@@ -204,7 +204,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsStringNotNull(this string word)
         {
-            return !string.IsNullOrWhiteSpace(word) ? true : (BaseClass.IsXamarinProjectDeploying? false : throw new ArgumentNullException());
+            return !string.IsNullOrWhiteSpace(word) ? true : (Base.ProjectType == ProjectType.Xamarin ? false : throw new ArgumentNullException());
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsNotEmptyCollection<T>(this IList<T> collection)
         {
-            return collection.Count > 0 ? true : (BaseClass.IsXamarinProjectDeploying ? false : throw new EmptyCollectionException());
+            return collection.Count > 0 ? true : (Base.ProjectType == ProjectType.Xamarin ? false : throw new EmptyCollectionException());
         }
-    }    
+    }
 }

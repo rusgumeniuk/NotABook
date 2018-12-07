@@ -46,7 +46,7 @@ namespace NotABookLibraryStandart.Models
         {
             get
             {
-                if (Book.IsBookIsNotNull(CurrentBook) && CategoryInItem.IsItemHasConnection(this)) 
+                if (Book.IsBookIsNotNull(CurrentBook) && CategoryInItem.IsItemHasConnection(this))
                 {
                     ObservableCollection<Category> categories = new ObservableCollection<Category>();
                     foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
@@ -75,9 +75,9 @@ namespace NotABookLibraryStandart.Models
 
                         OnPropertyChanged("Categories");
                     }
-                    else if (!IsXamarinProjectDeploying)
+                    else if (ProjectType != ProjectType.Xamarin)
                         throw new ArgumentNullException();
-                }              
+                }
             }
         }
 
@@ -119,7 +119,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>True - not null, else if Xamain mode in on - false, else throw Exc</returns>
         public static bool IsItemIsNotNull(Item item)
         {
-            return item != null ? true : (IsXamarinProjectDeploying ? false : throw new ItemNullException());
+            return item != null ? true : (ProjectType == ProjectType.Xamarin ? false : throw new ItemNullException());
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace NotABookLibraryStandart.Models
                 return "Item is null";
             if (Book.IsBookIsNotNull(item.CurrentBook))
                 return "Current book is null";
-            if (Book.IsBookIsNotNull(newBook)) 
+            if (Book.IsBookIsNotNull(newBook))
                 return "new book is null";
             return $"Changing {item.CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook, item)}";
         }
@@ -171,8 +171,8 @@ namespace NotABookLibraryStandart.Models
         /// <param name="newBook">The book that will contain the current item </param>
         /// <returns>Is moved is success</returns>
         public bool ChangeBook(Book newBook)
-        {            
-            if(Book.IsBookIsNotNull(CurrentBook) && Book.IsBookIsNotNull(newBook))
+        {
+            if (Book.IsBookIsNotNull(CurrentBook) && Book.IsBookIsNotNull(newBook))
             {
                 Book lastBook = this.CurrentBook;
                 lastBook.DeleteItem(this);
@@ -190,7 +190,7 @@ namespace NotABookLibraryStandart.Models
         /// <param name="item">The item that will be moved from current book to "newBook"</param>
         /// <returns></returns>
         public static bool ChangeBook(Book newBook, Item item)
-        {            
+        {
             if (Item.IsItemAndItsBookNotNull(item) && Book.IsBookIsNotNull(newBook))
             {
                 Book lastBook = item.CurrentBook;
@@ -212,7 +212,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (ExtensionClass.IsStringNotNull(partOfItem))
             {
-                if (Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) 
+                if (Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant())
                     || this.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
                     return true;
                 foreach (Category category in this.Categories)
@@ -235,7 +235,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Item.IsItemIsNotNull(item) && ExtensionClass.IsStringNotNull(partOfItem))
             {
-                if (item.Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) || 
+                if (item.Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) ||
                     item.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
                     return true;
 
@@ -244,7 +244,7 @@ namespace NotABookLibraryStandart.Models
                     if (category.IsCategoryContainsWord(partOfItem))
                         return true;
                 }
-            }          
+            }
 
             return false;
         }
@@ -259,12 +259,12 @@ namespace NotABookLibraryStandart.Models
             {
                 if (Categories == null || Categories.Count < 1) return "No one categories. ";
             }
-            catch(ElementIsNotInCollectionException)
+            catch (ElementIsNotInCollectionException)
             {
                 return "No one categories.";
             }
-            
-            
+
+
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Category categories in Categories)
             {
@@ -279,7 +279,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public override bool Delete()
         {
-            if(Book.IsBookIsNotNull(CurrentBook))
+            if (Book.IsBookIsNotNull(CurrentBook))
             {
                 CategoryInItem.DeleteAllConnectionWithItem(this);
                 CurrentBook.ItemsOfBook.Remove(this);
@@ -317,7 +317,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a description of the item
     /// </summary>
-    public class Description : BaseClass
+    public class Description : Base
     {
         public string Text { get; set; }
         public List<Object> Files { get; set; }
@@ -350,7 +350,7 @@ namespace NotABookLibraryStandart.Models
         {
             return !String.IsNullOrWhiteSpace(Text) ? GetTitleFromText() : GetTitleFromFiles();
         }
-    
+
         internal string GetTitleFromFiles()
         {
             return $"New item {this.DateOfCreating}";
@@ -391,7 +391,7 @@ namespace NotABookLibraryStandart.Models
             StringBuilder stringBuilder = new StringBuilder();
             int i = 0;
 
-            for(; i < str.Length && str[i] != ' ' && stringBuilder.Length < 30; ++i)                
+            for (; i < str.Length && str[i] != ' ' && stringBuilder.Length < 30; ++i)
             {
                 stringBuilder.Append(str[i]);
             }
