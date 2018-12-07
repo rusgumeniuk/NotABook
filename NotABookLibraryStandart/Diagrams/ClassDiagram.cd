@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="NotABookLibraryStandart.Models.Base">
+  <Class Name="NotABookLibraryStandart.Models.BaseClass">
     <Position X="9" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAACAAAAQAAAIEAEIACIAAIAgAEAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>Models\Base.cs</FileName>
+      <FileName>Models\BaseClass.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -46,7 +46,7 @@
   <Class Name="NotABookLibraryStandart.Models.Description" Collapsed="true">
     <Position X="6" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAQgCAAAAAAAEAAAAAAAEACAAAAIA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAAACAAAAIA=</HashCode>
       <FileName>Models\Item.cs</FileName>
     </TypeIdentifier>
   </Class>

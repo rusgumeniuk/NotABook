@@ -62,7 +62,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if categoryInItem is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsCategoryInItemIsNotNull(CategoryInItem categoryInItem)
         {
-            return categoryInItem != null ? true : (ProjectType == ProjectType.Xamarin ? false : throw new CategoryInItemNullException());
+            return categoryInItem != null ? true : (IsXamarinProjectDeploying ? false : throw new CategoryInItemNullException());
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace NotABookLibraryStandart.Models
         /// <returns>true if item is not null. Else if Xamarin mode is on - false.</returns>
         public static bool IsItemHasConnection(Item item)
         {
-            if (Item.IsItemIsNotNull(item))
+            if(Item.IsItemIsNotNull(item))
             {
-                return IsItemHasConnectionHidden(item) ? true : (ProjectType == ProjectType.Xamarin ? false : throw new ElementIsNotInCollectionException());
+                return IsItemHasConnectionHidden(item) ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
             }
 
             return false;
@@ -91,7 +91,7 @@ namespace NotABookLibraryStandart.Models
         {
             if (Category.IsCategoryIsNotNull(category))
             {
-                return IsCategoryHasConnectionHidden(category) ? true : (ProjectType == ProjectType.Xamarin ? false : throw new ElementIsNotInCollectionException());
+                return IsCategoryHasConnectionHidden(category) ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
             }
 
             return false;
@@ -126,7 +126,7 @@ namespace NotABookLibraryStandart.Models
             }
             return false;
         }
-
+               
 
         //public static string IsItemHasConnectionStr(Item item)
         //{
@@ -146,7 +146,7 @@ namespace NotABookLibraryStandart.Models
 
         //    return $"{IsCategoryHasConnection(category).ToString()}";
         //}
-
+        
         /// <summary>
         /// Indicates whether the elements from one book and is book contains pair of the category and item
         /// </summary>
@@ -156,7 +156,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsContainsThisPair(Category category, Item item)
         {
-            return GetGuidOfPair(category, item) != Guid.Empty ? true : (ProjectType == ProjectType.Xamarin ? false : throw new ElementIsNotInCollectionException());
+            return GetGuidOfPair(category, item) != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
         }
 
         /// <summary>
@@ -169,9 +169,9 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? true : (ProjectType == ProjectType.Xamarin ? false : throw new ElementIsNotInCollectionException());
+            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? true : (IsXamarinProjectDeploying ? false : throw new ElementIsNotInCollectionException());
         }
-
+        
         /// <summary>
         /// Indicates whether book already contains this pair and returns ElementAlreadyInCollection if true
         /// </summary>
@@ -182,7 +182,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns>Exception if true</returns>
         private static bool IsAlreadyContainsThisPair(Book book, Guid categoryId, Guid itemId)
         {
-            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? (ProjectType == ProjectType.Xamarin ? true : throw new ElementAlreadyExistException()) : false;
+            return GetGuidOfPair(book, categoryId, itemId) != Guid.Empty ? (IsXamarinProjectDeploying ? true : throw new ElementAlreadyExistException()) : false;
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static Guid GetGuidOfPair(Book book, Guid currentCategoryId, Guid currentItemId)
         {
-            if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(currentCategoryId) && IsGuidIsNotEmpty(currentItemId))
+            if(Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(currentCategoryId) && IsGuidIsNotEmpty(currentItemId))
             {
                 foreach (var pair in book.CategoryInItemsOfBook)
                 {
@@ -221,7 +221,7 @@ namespace NotABookLibraryStandart.Models
                 }
             }
             return Guid.Empty;
-        }
+        }        
 
         /// <summary>
         /// Indicates whether the category and the item from one book
@@ -232,9 +232,9 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsCategoryAndItemFromSameBook(Category category, Item item)
         {
-            if (Category.IsCategoryIsNotNull(category) && Item.IsItemIsNotNull(item))
+            if (Category.IsCategoryIsNotNull(category) && Item.IsItemIsNotNull(item)) 
             {
-                return category.CurrentBook == item.CurrentBook ? true : (ProjectType == ProjectType.Xamarin ? false : throw new ElementsFromDifferentBooksException());
+                return category.CurrentBook == item.CurrentBook ? true : (IsXamarinProjectDeploying ? false : throw new ElementsFromDifferentBooksException());
             }
 
             return false;
@@ -259,18 +259,18 @@ namespace NotABookLibraryStandart.Models
                     }
                 }
                 return -1;
-            }
+            }           
             return -2;
         }
 
         public static CategoryInItem CreateCategoryInItem(Category category, Item item)
         {
-            if (IsCategoryAndItemFromSameBook(category, item))
+            if(IsCategoryAndItemFromSameBook(category, item))
             {
                 if (!IsAlreadyContainsThisPair(category.CurrentBook, category.Id, item.Id))
                     return new CategoryInItem(category, item);
             }
-            return null;
+            return null;            
         }
 
         public static ObservableCollection<CategoryInItem> GetCIIListByCategory(Category category)
@@ -313,7 +313,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (!pair.Delete())
                     {
-                        if (Base.ProjectType != ProjectType.Xamarin)
+                        if (!BaseClass.IsXamarinProjectDeploying)
                             throw new InvalidOperationException();
                     }
                 }
@@ -332,7 +332,7 @@ namespace NotABookLibraryStandart.Models
                 {
                     if (!pair.Delete())
                     {
-                        if (Base.ProjectType != ProjectType.Xamarin)
+                        if (!BaseClass.IsXamarinProjectDeploying)
                             throw new InvalidOperationException();
                     }
                 }
@@ -389,7 +389,7 @@ namespace NotABookLibraryStandart.Models
         public override int GetHashCode()
         {
             return categoryId.GetHashCode() ^ itemId.GetHashCode();
-        }
+        }        
         #endregion
     }
 }
