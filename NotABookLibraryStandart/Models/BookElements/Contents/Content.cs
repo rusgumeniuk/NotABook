@@ -9,5 +9,9 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         object IContent.Content { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public abstract object Clone();
+
+        public abstract bool IsEmptyContent();
+
+        public abstract string GetTitleFromContent();      
     }
 }
