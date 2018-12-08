@@ -276,3 +276,9 @@ NotABook/NotABook.Android/bin/Debug/NotABook.pdb
 .vs/NotABook/DesignTimeBuild/.dtbcache
 .vs/NotABook/v15/.suo
 *.cache
+*.cache
+.Android/
+.bin
+.Debug
+.vs/
+.NotABook/NotABook.Android/
