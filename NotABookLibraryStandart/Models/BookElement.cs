@@ -8,7 +8,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents elements of the book (for example, category, item)
     /// </summary>
-    public abstract class BookElement : BaseClass
+    public abstract class BookElement : Entity
     {
         protected Book currentBook;
         public Book CurrentBook

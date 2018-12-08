@@ -317,7 +317,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a description of the item
     /// </summary>
-    public class Description : BaseClass
+    public class Description : Base
     {
         public string Text { get; set; }
         public List<Object> Files { get; set; }

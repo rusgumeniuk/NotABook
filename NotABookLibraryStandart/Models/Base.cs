@@ -9,34 +9,15 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represent a basic class for elements of the notebook
     /// </summary>
-    abstract public class BaseClass : INotifyPropertyChanged
+    public abstract class Base : INotifyPropertyChanged
     {
-        #region Fields
-       
-        protected string title;
-
-        #endregion
-
         #region Prop
         /// <summary>
         /// A field that show current project mode.
         /// </summary>       
         public static TypeOfRunningProject ProjectType = TypeOfRunningProject.WPF;
 
-        public Guid Id { get; private set; }
-
-        public virtual string Title
-        {
-            get => title;
-            set
-            {
-                if (!String.IsNullOrWhiteSpace(value))
-                {
-                    title = value;
-                    OnPropertyChanged("Title");
-                }                
-            }
-        }
+        public Guid Id { get; private set; }      
 
         public DateTime DateOfCreating { get; private set; }
 
@@ -45,18 +26,13 @@ namespace NotABookLibraryStandart.Models
         #endregion
 
         #region Constr
-        public BaseClass()
+        public Base()
         {
             Id = Guid.NewGuid();
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
             OnPropertyChanged("New element");
-        }
-
-        public BaseClass(string title) : this()
-        {
-            Title = title;
-        }
+        }        
         #endregion
 
         #region Methods
@@ -77,14 +53,14 @@ namespace NotABookLibraryStandart.Models
         /// <summary>
         /// The method that update date of last changing after any operation with obj
         /// </summary>
-        protected static void UpdateDateOfLastChanging(BaseClass obj)
+        protected static void UpdateDateOfLastChanging(Base obj)
         {
             obj?.UpdateDateOfLastChanging();
         }
 
         public override string ToString()
         {
-            return $"{ this.GetType().Name}: {Title}";
+            return $"{ this.GetType().Name}";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

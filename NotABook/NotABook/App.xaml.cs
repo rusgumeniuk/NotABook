@@ -31,7 +31,7 @@ namespace NotABook
 
         public App ()
 		{
-            BaseClass.ProjectType = ProjectTypes.Xamarin;
+            Base.ProjectType = TypeOfRunningProject.Xamarin;
 
             InitializeComponent();
 

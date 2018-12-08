@@ -204,7 +204,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsStringNotNull(this string word)
         {
-            return !string.IsNullOrWhiteSpace(word) ? true : (BaseClass.ProjectType == TypeOfRunningProject.Xamarin ? false : throw new ArgumentNullException());
+            return !string.IsNullOrWhiteSpace(word) ? true : (Base.ProjectType == TypeOfRunningProject.Xamarin ? false : throw new ArgumentNullException());
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace NotABookLibraryStandart.Models
         /// <returns></returns>
         public static bool IsNotEmptyCollection<T>(this IList<T> collection)
         {
-            return collection.Count > 0 ? true : (BaseClass.ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new EmptyCollectionException());
+            return collection.Count > 0 ? true : (Base.ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new EmptyCollectionException());
         }
     }    
 }

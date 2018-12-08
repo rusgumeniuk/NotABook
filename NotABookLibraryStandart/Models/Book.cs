@@ -9,7 +9,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a book, set of that's forms a notebook
     /// </summary>
-    public class Book : BaseClass
+    public class Book : Entity
     {
         #region Fields
 
