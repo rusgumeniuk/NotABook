@@ -29,16 +29,6 @@ namespace NotABookLibraryStandart.Models
             Title = title;
         }
 
-        public override bool Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ThrowNullException()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             return base.ToString() + ": " + title;

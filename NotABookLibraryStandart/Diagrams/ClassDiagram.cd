@@ -1,70 +1,136 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="NotABookLibraryStandart.Models.Book">
-    <Position X="16" Y="12" Width="4.25" />
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NotABookLibraryStandart.Models.Book" Collapsed="true">
+    <Position X="24.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABkIqAAAADIABAACAQCAEAEIgEEAAEhAAIAAAAAAAIA=</HashCode>
-      <FileName>Models\Book.cs</FileName>
+      <HashCode>ABkIqAAAADIABAACAQAAEAEIgEEAAEhAAIAAAAAAAIA=</HashCode>
+      <FileName>Models\BookElements\Book.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.BookElement">
-    <Position X="23.75" Y="12" Width="2.25" />
+  <Class Name="NotABookLibraryStandart.Models.BookElement" Collapsed="true">
+    <Position X="28.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAACAAAAAg=</HashCode>
-      <FileName>Models\BookElement.cs</FileName>
+      <FileName>Models\BookElements\BookElement.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.CategoryInItem">
-    <Position X="26.5" Y="4.5" Width="4.25" />
+  <Class Name="NotABookLibraryStandart.Models.CategoryInItem" Collapsed="true">
+    <Position X="26.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAIABAASQACEABAQwACAACAEABEAAIEABAAAACAoyAA=</HashCode>
-      <FileName>Models\CategoriesInItems.cs</FileName>
+      <HashCode>EAIABAASQACEABAQwAAAACAEABEAAIEABAAAACAoyAA=</HashCode>
+      <FileName>Models\BookElements\CategoriesInItems.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.Category">
-    <Position X="21" Y="15" Width="3.75" />
+  <Class Name="NotABookLibraryStandart.Models.Category" Collapsed="true">
+    <Position X="28.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QCAAAAAEAAIAAGAAEACAAABCIAEAAAAAAAAAAAIAAAA=</HashCode>
-      <FileName>Models\Category.cs</FileName>
+      <HashCode>QCAAAAAEAAIAAGAAEAAAAABCIAEAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Models\BookElements\Category.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.ExtensionClass">
-    <Position X="28.75" Y="3" Width="2.5" />
+  <Class Name="NotABookLibraryStandart.Models.ExtensionClass" Collapsed="true">
+    <Position X="44.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
-      <FileName>Models\Category.cs</FileName>
+      <FileName>Models\BookElements\Category.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.Item">
-    <Position X="25.5" Y="15" Width="3.25" />
+  <Class Name="NotABookLibraryStandart.Models.Item" Collapsed="true">
+    <Position X="31" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAQgAAAAIQiIAAAAAAEAEAAkAAAAAAIgAAA=</HashCode>
-      <FileName>Models\Item.cs</FileName>
+      <HashCode>AAEAAAAAAAQgAAAAIQgIAAAAAAEAEAAkAAAAAAIgAAA=</HashCode>
+      <FileName>Models\BookElements\Item.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.Description">
-    <Position X="14.5" Y="2.5" Width="3.25" />
+  <Class Name="NotABookLibraryStandart.Models.Description" Collapsed="true">
+    <Position X="22" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAQgCAAAAAAAEAAAAAAAEACAAAAIA=</HashCode>
-      <FileName>Models\Item.cs</FileName>
+      <HashCode>AAAAAAAAAAAABAAAQgAAAAAAAAAAAAAAAAEACAAAAIA=</HashCode>
+      <FileName>Models\BookElements\Item.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.Entity">
-    <Position X="21.25" Y="8.5" Width="2.25" />
+  <Class Name="NotABookLibraryStandart.Models.Entity" Collapsed="true">
+    <Position X="31" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAAEAEAACAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAAAAEAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Entity.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.Base">
-    <Position X="20.5" Y="2.5" Width="3.5" />
+  <Class Name="NotABookLibraryStandart.Models.Base" Collapsed="true">
+    <Position X="32" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAQAAAAEAEIACIAAIEgAEAAAAAQAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAEIAAIAAIEgAAAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>Models\Base.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Enum Name="NotABookLibraryStandart.Models.TypeOfRunningProject">
-    <Position X="26.5" Y="3" Width="2" />
+  <Class Name="NotABookLibraryStandart.Models.BookElements.Notes.Note" Collapsed="true">
+    <Position X="37.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Models\BookElements\Note.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.Roles.PremiumUser" Collapsed="true">
+    <Position X="33.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Roles\PremiumUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.Roles.User" Collapsed="true">
+    <Position X="34.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Roles\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.BookElements.Contents.PhotoContent" Collapsed="true">
+    <Position X="40" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Models\BookElements\Contents\PhotoContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.BookElements.Contents.TextContent" Collapsed="true">
+    <Position X="42.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Models\BookElements\Contents\TextContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.BookElements.Contents.Content" Collapsed="true">
+    <Position X="41" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Models\BookElements\Contents\Content.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.Roles.StandartUser" Collapsed="true">
+    <Position X="35.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Roles\StandartUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="NotABookLibraryStandart.Models.Roles.IUser" Collapsed="true">
+    <Position X="46.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Roles\IUser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="NotABookLibraryStandart.Models.BookElements.Contents.IContent" Collapsed="true">
+    <Position X="44.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BookElements\Contents\IContent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="NotABookLibraryStandart.Models.TypeOfRunningProject" Collapsed="true">
+    <Position X="44.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Models\ProjectTypes.cs</FileName>

@@ -72,12 +72,7 @@ namespace NotABookLibraryStandart.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
                 UpdateDateOfLastChanging();
             }       
-        }
-
-        public abstract bool Delete();
-
-        public abstract void ThrowNullException();
-
+        }        
         #endregion
     }
 }

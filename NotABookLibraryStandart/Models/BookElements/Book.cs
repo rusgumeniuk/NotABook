@@ -118,7 +118,7 @@ namespace NotABookLibraryStandart.Models
         /// Removes all elements of the book and remove book from the Books
         /// </summary>
         /// <returns></returns>
-        public override bool Delete()
+        public  bool Delete()
         {
             if(IsBookIsNotNullAndInBooks(this))
             {
@@ -458,11 +458,6 @@ namespace NotABookLibraryStandart.Models
         public static bool RemoveAllElementsOfBook(Book book)
         {
             return Book.IsBookIsNotNull(book) ? ClearItemsList(book) && ClearCaregoriesList(book) : false;
-        }
-
-        public override void ThrowNullException()
-        {
-            throw new BookNullException();
         }
         #endregion
     }

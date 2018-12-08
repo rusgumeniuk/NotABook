@@ -123,7 +123,7 @@ namespace NotABookLibraryStandart.Models
             if (Book.IsBookIsNotNull(CurrentBook))
                 return $"Book of {this.Title} is null";
 
-            return $"Deleting of {this.Title} is {Delete().ToString()}";
+            return $"Deleting of {this.Title} is {DeleteCategory(this).ToString()}";
         }
         public static string DeleteCategoryStr(Category category)
         {
@@ -132,7 +132,7 @@ namespace NotABookLibraryStandart.Models
             return $"Deleting of {category.Title} is {DeleteCategory(category).ToString()}";
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             if (Book.IsBookIsNotNull(CurrentBook))
             {
@@ -185,11 +185,6 @@ namespace NotABookLibraryStandart.Models
                 return CategoryInItem.DeleteAllConnectionWithCategory(category);                                
             }
             return false;           
-        }
-
-        public override void ThrowNullException()
-        {
-            throw new CategoryNullException();
         }
         #endregion
     }

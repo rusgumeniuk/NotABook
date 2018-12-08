@@ -365,7 +365,7 @@ namespace NotABookLibraryStandart.Models
             return GetGuidOfPair(book, categoryId, itemId) == Guid.Empty;
         }
 
-        public override bool Delete()
+        public  bool Delete()
         {
             if (IsContainsThisPair(CurrentBook, categoryId, itemId))
             {
@@ -373,11 +373,6 @@ namespace NotABookLibraryStandart.Models
             }
 
             return GetGuidOfPair(CurrentBook, this.categoryId, this.itemId) == Guid.Empty;
-        }
-
-        public override void ThrowNullException()
-        {
-            throw new CategoryInItemNullException();
         }
 
         public override bool Equals(object obj)

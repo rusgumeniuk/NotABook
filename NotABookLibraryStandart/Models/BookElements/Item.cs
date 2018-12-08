@@ -277,9 +277,9 @@ namespace NotABookLibraryStandart.Models
         /// 
         /// </summary>
         /// <returns></returns>
-        public override bool Delete()
+        public bool Delete()
         {
-            if(Book.IsBookIsNotNull(CurrentBook))
+            if (Book.IsBookIsNotNull(CurrentBook))
             {
                 CategoryInItem.DeleteAllConnectionWithItem(this);
                 CurrentBook.ItemsOfBook.Remove(this);
@@ -305,11 +305,6 @@ namespace NotABookLibraryStandart.Models
                 item.OnPropertyChanged("DateOfLastChanging");
             }
             return !item.CurrentBook.ItemsOfBook.Contains(item);
-        }
-
-        public override void ThrowNullException()
-        {
-            throw new ItemNullException();
         }
         #endregion
     }
@@ -399,18 +394,6 @@ namespace NotABookLibraryStandart.Models
             str = str.Substring(str.Length > i + 1 ? i + 1 : i);
 
             return stringBuilder.ToString();
-        }
-
-        public override bool Delete()
-        {
-            Text = null;
-            Files = null;
-            return true;
-        }
-
-        public override void ThrowNullException()
-        {
-            throw new ArgumentNullException("Null description");
         }
     }
 }
