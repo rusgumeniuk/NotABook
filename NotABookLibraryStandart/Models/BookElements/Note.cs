@@ -15,9 +15,18 @@ namespace NotABookLibraryStandart.Models.BookElements.Notes
             foreach (IContent item in contents)
             {
                 list.Add(item.Content);
-
             }
             return list;
+        }
+
+        public void AddContent(IContent content)
+        {
+            contents.Add(content);
+        }
+
+        public void RemoveContent(IContent content)
+        {
+            contents.Remove(content);
         }
 
     }
