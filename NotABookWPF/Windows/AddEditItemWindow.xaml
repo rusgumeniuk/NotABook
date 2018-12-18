@@ -8,11 +8,12 @@
         Title="NewItemWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="*"/>            
+            <RowDefinition Height="0.20*"/>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="0.10*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.10*"/>            
         </Grid.RowDefinitions>
         
         <TextBox Grid.Row="0" Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic" LostFocus="TBEditItemTitle_LostFocus"/>
@@ -28,6 +29,13 @@
             <TextBlock Text="Categories: "/>
             <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
         </StackPanel>
-        <TextBox Grid.Row="4" Name="TBDescription" Text="{Binding Description.Text}" LostFocus="TBDescription_LostFocus"/>
+        <ScrollViewer Grid.Row="4" >
+            <StackPanel Name="StackPanelContent">
+                <!--<TextBox Name="TBDescription" Text="{Binding Description.Text}" LostFocus="TBDescription_LostFocus"
+                   TextWrapping="Wrap" AcceptsReturn="True"  />-->
+            </StackPanel>
+        </ScrollViewer>
+                   
+        <Button Grid.Row="5" Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
     </Grid>
 </Window>
