@@ -12,8 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-
+using Microsoft.Win32;
+using System.ComponentModel;
 using NotABookLibraryStandart.Models;
+using System.IO;
+using NotABookLibraryStandart.Models.BookElements;
+using NotABookLibraryStandart.Models.BookElements.Contents;
 
 namespace NotABookWPF.Windows
 {
@@ -30,7 +34,7 @@ namespace NotABookWPF.Windows
             get => Book.Books;
             set => Book.Books = value;
         }
-
+        public static ObservableCollection<Note> Notes => currentBook?.Notes;
         public static ObservableCollection<Item> ItemsList => currentBook?.ItemsOfBook;
         public static ObservableCollection<Category> CategoriesList => currentBook?.CategoriesOfBook;
         public static ObservableCollection<CategoryInItem> CategoryInItemsList => currentBook?.CategoryInItemsOfBook;
@@ -62,17 +66,22 @@ namespace NotABookWPF.Windows
             Category tomatoCategory = new Category(currentBook, "Tomato");
             Category chickenCategory = new Category(currentBook, "Chicken");
 
-            Item chocolateBiscuit = new Item(currentBook, "Chocolate biscuit", Description.CreateDescription("The best chocolate cake ever"), new ObservableCollection<Category>() { chocolateCategory, flourCategory, eggsCategory });
-            Item salatWithPotatoAndTomato = new Item(currentBook, "Salat with potat, tomatos and eggs", Description.CreateDescription("Very healthy salat"), new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
-            Item chicken = new Item(currentBook, "Chicken", Description.CreateDescription("Chicken like in KFC"), new ObservableCollection<Category>() { chickenCategory, eggsCategory });
+
+
+            Note chocolateBiscuit = new Note(currentBook, "Chocolate biscuit", new List<IContent>() { new TextContent() { Content = "The best chocolate cake ever" } }, new List<Category>() { chocolateCategory, flourCategory, eggsCategory });
+            Note salatWithPotatoAndTomato = new Note(currentBook, "Salat with potat, tomatos and eggs", new List<IContent>() { new TextContent() { Content = "Very healthy salat" } }, new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
+            Note chicken = new Note(currentBook, "Chicken", new List<IContent>() { new TextContent() { Content = "Chicken like in KFC" } }, new ObservableCollection<Category>() { chickenCategory, eggsCategory });
+            currentBook.Notes.Add(chocolateBiscuit);
+            currentBook.Notes.Add(salatWithPotatoAndTomato);
+            currentBook.Notes.Add(chicken);
         }
 
         private void UpdateCurrentBook()
         {
-            ListBoxItems.ItemsSource = MainWindow.currentBook?.ItemsOfBook;
+            ListBoxItems.ItemsSource = MainWindow.currentBook?.Notes;
             ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
             ListViewBooks.SelectedItem = MainWindow.currentBook;
-            TextBlockCountOfItems.Text = MainWindow.currentBook?.ItemsOfBook.Count.ToString() + " ";
+            TextBlockCountOfItems.Text = MainWindow.currentBook?.Notes.Count.ToString() + " ";
             TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
         }
 
@@ -92,7 +101,8 @@ namespace NotABookWPF.Windows
 
         private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Item;
+            //StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
+            (new AddEditItemWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
         }
 
         private void TextBoxFindItem_GotFocus(object sender, RoutedEventArgs e)
@@ -101,7 +111,7 @@ namespace NotABookWPF.Windows
         }
         private void TextBoxFindItem_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBoxFindItem.Text = "Find item";
+            TextBoxFindItem.Text = "Find note";
             UpdateCurrentBook();
         }
         private void TextBoxFindItem_TextChanged(object sender, TextChangedEventArgs e)
@@ -109,12 +119,13 @@ namespace NotABookWPF.Windows
             if (TextBoxFindItem.IsFocused)
             {
                 if (String.IsNullOrWhiteSpace(TextBoxFindItem.Text))
-                    ListBoxItems.ItemsSource = MainWindow.currentBook.ItemsOfBook;
+                    ListBoxItems.ItemsSource = MainWindow.currentBook.Notes;
                 else
                 {
-                    ObservableCollection<Item> items = MainWindow.currentBook?.FindItems(TextBoxFindItem.Text);
-                    TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString() + " ";
-                    ListBoxItems.ItemsSource = items;
+                    throw new NotImplementedException();
+                    //ObservableCollection<Note> notes = MainWindow.currentBook?.FindItems(currentBook, TextBoxFindItem.Text);
+                    //TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString() + " ";
+                    //ListBoxItems.ItemsSource = items;
                 }
             }
         }
@@ -135,15 +146,20 @@ namespace NotABookWPF.Windows
         {
             if (StackPanelItemPanel.DataContext != null)
             {
-                (StackPanelItemPanel.DataContext as Item).Title = TBEditItemTitle.Text;
-
+                if((StackPanelItemPanel.DataContext as Note).IndexOfTextContent != -1)
+                {
+                    (StackPanelItemPanel.DataContext as Note).SetTextToFirstTextContent = TBDescription.Text;
+                }                
             }
         }
         private void TBDescription_LostFocus(object sender, RoutedEventArgs e)
         {
             if (StackPanelItemPanel.DataContext != null)
             {
-                (StackPanelItemPanel.DataContext as Item).DescriptionText = TBDescription.Text;
+                if ((StackPanelItemPanel.DataContext as Note).IndexOfTextContent != -1)
+                {
+                    (StackPanelItemPanel.DataContext as Note).SetTextToFirstTextContent = TBDescription.Text;
+                }
             }
         }
 
@@ -158,7 +174,7 @@ namespace NotABookWPF.Windows
         }
 
 
-        
+
 
         private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
         {
@@ -172,7 +188,7 @@ namespace NotABookWPF.Windows
 
         private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void MenuItemRemoveAllElements_Click(object sender, RoutedEventArgs e)
@@ -197,12 +213,27 @@ namespace NotABookWPF.Windows
 
         private void BtnNewItem_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditItemWindow() { Title = "Creating of item" }).Show();
+            (new AddEditItemWindow(currentBook) { Title = "Creating of item" }).Show();
         }
 
         private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
         {
             ((sender as MenuItem).CommandParameter as Book).Delete();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var note in Notes)
+            {
+                sb.AppendLine(note.Title + " : " + note.Contents.Count);
+            }
+            MessageBox.Show(sb.ToString());
+        }
+
+        private void ListBoxItems_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
         }
     }
 }
