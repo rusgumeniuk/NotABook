@@ -75,5 +75,20 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 
             return stringBuilder.ToString();
         }
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            TextContent cont = obj as TextContent;
+            return content.Equals(cont.content);
+        }
+        
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ Content.GetHashCode();
+        }
     }
 }
