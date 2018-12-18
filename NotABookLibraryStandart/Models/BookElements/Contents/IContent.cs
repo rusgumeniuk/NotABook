@@ -6,6 +6,8 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public interface IContent
     {
-        object Content { get; set; }        
+        object Content { get; set; }
+        bool IsEmptyContent();
+        string GetTitleFromContent();
     }
 }

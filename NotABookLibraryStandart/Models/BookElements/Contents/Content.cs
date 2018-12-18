@@ -6,12 +6,10 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public abstract class Content : Base, IContent, ICloneable
     {
-        object IContent.Content { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        object IContent.Content{ get; set; }
 
         public abstract object Clone();
-
+        public abstract string GetTitleFromContent();
         public abstract bool IsEmptyContent();
-
-        public abstract string GetTitleFromContent();      
     }
 }
