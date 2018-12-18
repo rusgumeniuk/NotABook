@@ -14,8 +14,7 @@ namespace NotABookLibraryStandart.Models
             {
                 if (!String.IsNullOrWhiteSpace(value))
                 {
-                    title = value;
-                    OnPropertyChanged("Title");
+                    title = value;                    
                 }
             }
         }
