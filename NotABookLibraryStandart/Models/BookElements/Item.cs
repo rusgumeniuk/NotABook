@@ -25,7 +25,7 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 description = value;
-                OnPropertyChanged("Description");
+                UpdateDateOfLastChanging();
             }
         }
 
@@ -38,60 +38,59 @@ namespace NotABookLibraryStandart.Models
             set
             {
                 description.Text = value;
-                OnPropertyChanged("Description.Text");
+                UpdateDateOfLastChanging();
+            }
+        }
+     
+        public void SetCategories(Book CurrentBook, IEnumerable<Category> categories)
+        {
+
+            if (IsItemAndItsBookNotNull(CurrentBook, this))
+            {
+                if (categories != null)
+                {
+                    CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
+
+                    foreach (var category in categories)
+                    {
+                        CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
+                    }
+
+                    UpdateDateOfLastChanging();
+                }
+                else if (ProjectType != TypeOfRunningProject.Xamarin)
+                    throw new ArgumentNullException();
             }
         }
 
-        public ObservableCollection<Category> Categories
+        public ObservableCollection<Category> GetCategories(Book CurrentBook)
         {
-            get
+            if (Book.IsBookIsNotNull(CurrentBook) && CategoryInItem.IsItemHasConnection(CurrentBook, this))
             {
-                if (Book.IsBookIsNotNull(CurrentBook) && CategoryInItem.IsItemHasConnection(this)) 
+                ObservableCollection<Category> categories = new ObservableCollection<Category>();
+                foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
                 {
-                    ObservableCollection<Category> categories = new ObservableCollection<Category>();
-                    foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
+                    if (pair.GetItemId == Id)
                     {
-                        if (pair.GetItemId == Id)
-                        {
-                            categories.Add(pair.Category);
-                        }
+                        categories.Add(pair.Category);
                     }
-                    return categories;
                 }
-                return null;
+                return categories;
             }
-            set
-            {
-                if (IsItemAndItsBookNotNull(this))
-                {
-                    if (value != null)
-                    {
-                        CategoryInItem.DeleteAllConnectionWithItem(this);
-
-                        foreach (var category in value)
-                        {
-                            CategoryInItem.CreateCategoryInItem(category, this);
-                        }
-
-                        OnPropertyChanged("Categories");
-                    }
-                    else if (ProjectType != TypeOfRunningProject.Xamarin )
-                        throw new ArgumentNullException();
-                }              
-            }
+            return null;
         }
 
         /// <summary>
         /// Represents a collection of Categories in string
         /// </summary>
-        public string CategoriesStr { get => this.GetCategoriesInString(); }
+        //public string CategoriesStr { get => this.GetCategoriesInString(); }
         #endregion
 
         #region Constr
 
         public Item(Book curBook) : base(curBook)
         {
-            CurrentBook.ItemsOfBook.Add(this);
+            curBook.ItemsOfBook.Add(this);
         }
 
         public Item(Book curBook, string title) : this(curBook)
@@ -106,7 +105,7 @@ namespace NotABookLibraryStandart.Models
 
         public Item(Book curBook, string title, Description description, ObservableCollection<Category> categories) : this(curBook, title, description)
         {
-            Categories = categories;
+            SetCategories(curBook, categories);
         }
         #endregion
 
@@ -129,9 +128,9 @@ namespace NotABookLibraryStandart.Models
         /// <exception cref="ItemNullException">When item is null</exception>
         /// <exception cref="BookNullException">When book of item is null</exception>
         /// <returns></returns>
-        public static bool IsItemAndItsBookNotNull(Item item)
+        public static bool IsItemAndItsBookNotNull(Book CurrentBook, Item item)
         {
-            return IsItemIsNotNull(item) && Book.IsBookIsNotNull(item.CurrentBook);
+            return IsItemIsNotNull(item) && Book.IsBookIsNotNull(CurrentBook);
         }
 
         /// <summary>
@@ -139,13 +138,13 @@ namespace NotABookLibraryStandart.Models
         /// </summary>
         /// <param name="newBook">The book that will contain the current item </param>
         /// <returns>Result of changing</returns>
-        public string ChangeBookStr(Book newBook)
+        public string ChangeBookStr(Book CurrentBook, Book newBook)
         {
             if (Book.IsBookIsNotNull(CurrentBook))
                 return "Current book is null";
             if (Book.IsBookIsNotNull(newBook))
                 return "new book is null";
-            return $"Changing {CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook)}";
+            return $"Changing {CurrentBook.Title} on {newBook.Title} is {ChangeBook(CurrentBook, newBook)}";
         }
 
         /// <summary>
@@ -154,28 +153,28 @@ namespace NotABookLibraryStandart.Models
         /// <param name="newBook">The book that will contain the current item</param>
         /// <param name="item">The item that will be moved from current book to "newBook"</param>
         /// <returns>String result</returns>
-        public static string ChangeBookStr(Book newBook, Item item)
-        {
-            if (Item.IsItemIsNotNull(item))
-                return "Item is null";
-            if (Book.IsBookIsNotNull(item.CurrentBook))
-                return "Current book is null";
-            if (Book.IsBookIsNotNull(newBook)) 
-                return "new book is null";
-            return $"Changing {item.CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook, item)}";
-        }
+        //public static string ChangeBookStr(Book newBook, Item item)
+        //{
+        //    if (Item.IsItemIsNotNull(item))
+        //        return "Item is null";
+        //    if (Book.IsBookIsNotNull(item.CurrentBook))
+        //        return "Current book is null";
+        //    if (Book.IsBookIsNotNull(newBook)) 
+        //        return "new book is null";
+        //    return $"Changing {item.CurrentBook.Title} on {newBook.Title} is {ChangeBook(newBook, item)}";
+        //}
 
         /// <summary>
         /// Change book of the current item to another
         /// </summary>
         /// <param name="newBook">The book that will contain the current item </param>
         /// <returns>Is moved is success</returns>
-        public bool ChangeBook(Book newBook)
+        public bool ChangeBook(Book CurrentBook, Book newBook)
         {            
             if(Book.IsBookIsNotNull(CurrentBook) && Book.IsBookIsNotNull(newBook))
             {
-                Book lastBook = this.CurrentBook;
-                lastBook.DeleteItem(this);
+                Book lastBook = CurrentBook;
+                Book.DeleteItem(CurrentBook, this);
                 CurrentBook = newBook;
                 CurrentBook.ItemsOfBook.Add(this);
                 return !lastBook.ItemsOfBook.Contains(this) && newBook.ItemsOfBook.Contains(this);
@@ -189,15 +188,14 @@ namespace NotABookLibraryStandart.Models
         /// <param name="newBook">The book that will contain the current item</param>
         /// <param name="item">The item that will be moved from current book to "newBook"</param>
         /// <returns></returns>
-        public static bool ChangeBook(Book newBook, Item item)
+        public static bool ChangeBook(Book CurrentBook, Book newBook, Item item)
         {            
-            if (Item.IsItemAndItsBookNotNull(item) && Book.IsBookIsNotNull(newBook))
+            if (Item.IsItemAndItsBookNotNull(CurrentBook, item) && Book.IsBookIsNotNull(newBook))
             {
-                Book lastBook = item.CurrentBook;
-                lastBook.DeleteItem(item);
-                item.CurrentBook = newBook;
+                Book lastBook = CurrentBook;
+                Book.DeleteItem(lastBook, item);                
 
-                item.CurrentBook.ItemsOfBook.Add(item);
+                newBook.ItemsOfBook.Add(item);
                 return !lastBook.ItemsOfBook.Contains(item) && newBook.ItemsOfBook.Contains(item);
             }
             return false;
@@ -208,14 +206,14 @@ namespace NotABookLibraryStandart.Models
         /// </summary>
         /// <param name="partOfItem">The string to seek</param>
         /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
-        public bool IsItemContainsWord(string partOfItem)
+        public bool IsItemContainsWord(Book CurrentBook, string partOfItem)
         {
             if (ExtensionClass.IsStringNotNull(partOfItem))
             {
                 if (Title.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()) 
                     || this.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
                     return true;
-                foreach (Category category in this.Categories)
+                foreach (Category category in this.GetCategories(CurrentBook))
                 {
                     if (category.IsCategoryContainsWord(partOfItem))
                         return true;
@@ -231,7 +229,7 @@ namespace NotABookLibraryStandart.Models
         /// <param name="item">The item in that looking for</param>
         /// <param name="partOfItem">The string to seek</param>
         /// <returns>true if the value parameter occurs within this string, or if value is the empty string (""); otherwise, false. </returns>        
-        public static bool IsItemContainsWord(Item item, string partOfItem)
+        public static bool IsItemContainsWord(Book CurrentBook, Item item, string partOfItem)
         {
             if (Item.IsItemIsNotNull(item) && ExtensionClass.IsStringNotNull(partOfItem))
             {
@@ -239,7 +237,7 @@ namespace NotABookLibraryStandart.Models
                     item.Description.Text.ToUpperInvariant().Contains(partOfItem.ToUpperInvariant()))
                     return true;
 
-                foreach (Category category in item.Categories)
+                foreach (Category category in item.GetCategories(CurrentBook))
                 {
                     if (category.IsCategoryContainsWord(partOfItem))
                         return true;
@@ -253,11 +251,11 @@ namespace NotABookLibraryStandart.Models
         /// Represents a collection of categories of this item in string
         /// </summary>
         /// <returns>String represent of the Categories</returns>
-        public string GetCategoriesInString()
+        public string GetCategoriesInString(Book CurrentBook)
         {
             try
             {
-                if (Categories == null || Categories.Count < 1) return "No one categories. ";
+                if (GetCategories(CurrentBook) == null || GetCategories(CurrentBook).Count < 1) return "No one categories. ";
             }
             catch(ElementIsNotInCollectionException)
             {
@@ -266,7 +264,7 @@ namespace NotABookLibraryStandart.Models
             
             
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (Category categories in Categories)
+            foreach (Category categories in GetCategories(CurrentBook))
             {
                 stringBuilder.Append(categories.Title).Append(", ");
             }
@@ -277,14 +275,14 @@ namespace NotABookLibraryStandart.Models
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool Delete()
+        public bool Delete(Book CurrentBook)
         {
             if (Book.IsBookIsNotNull(CurrentBook))
             {
-                CategoryInItem.DeleteAllConnectionWithItem(this);
+                CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
                 CurrentBook.ItemsOfBook.Remove(this);
 
-                OnPropertyChanged("DateOfLastChanging");
+                UpdateDateOfLastChanging();
             }
 
             return !CurrentBook.ItemsOfBook.Contains(this);
@@ -295,16 +293,16 @@ namespace NotABookLibraryStandart.Models
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static bool DeleteItem(Item item)
+        public static bool DeleteItem(Book CurrentBook, Item item)
         {
-            if (IsItemAndItsBookNotNull(item))
+            if (IsItemAndItsBookNotNull(CurrentBook, item))
             {
-                item.CurrentBook.ItemsOfBook.Remove(item);
-                CategoryInItem.DeleteAllConnectionWithItem(item);
+                CurrentBook.ItemsOfBook.Remove(item);
+                CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, item);
 
-                item.OnPropertyChanged("DateOfLastChanging");
+                item.UpdateDateOfLastChanging();
             }
-            return !item.CurrentBook.ItemsOfBook.Contains(item);
+            return !CurrentBook.ItemsOfBook.Contains(item);
         }
         #endregion
     }
@@ -312,28 +310,28 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represents a description of the item
     /// </summary>
-    public class Description : Base
+    public class Description : BookElement
     {
         public string Text { get; set; }
         public List<Object> Files { get; set; }
-
-        private Description(string text)
+        
+        private Description(Book book, string text) : base(book)
         {
             Text = text;
             Files = new List<object>();
         }
-        private Description(string text, List<Object> list) : this(text)
+        private Description(Book book, string text, List<Object> list) : this(book, text)
         {
             Files = list;
         }
 
-        public static Description CreateDescription(string text)
+        public static Description CreateDescription(Book book, string text)
         {
-            return new Description(text);
+            return new Description(book, text);
         }
-        public static Description CreateDescription(string text, List<Object> list)
+        public static Description CreateDescription(Book book, string text, List<Object> list)
         {
-            return new Description(text, list);
+            return new Description(book, text, list);
         }
 
         public bool IsEmptyDescription()

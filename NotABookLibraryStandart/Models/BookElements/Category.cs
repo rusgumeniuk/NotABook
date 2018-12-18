@@ -24,18 +24,18 @@ namespace NotABookLibraryStandart.Models
         {
             get
             {
-                if (Book.IsBookIsNotNull(CurrentBook) &&
-                        CurrentBook.CategoryInItemsOfBook.IsNotEmptyCollection() &&
-                            CategoryInItem.IsCategoryHasConnection(this))
-                {
-                    ObservableCollection<Item> items = new ObservableCollection<Item>();
-                    foreach (var pair in CurrentBook.CategoryInItemsOfBook)
-                    {
-                        if (pair.GetCategoryId == Id)
-                            items.Add(pair.Item);
-                    }
-                    return items;
-                }
+                //if (
+                //        //CurrentBook.CategoryInItemsOfBook.IsNotEmptyCollection() &&
+                //            CategoryInItem.IsCategoryHasConnection(this))
+                //{
+                //    ObservableCollection<Item> items = new ObservableCollection<Item>();
+                //    foreach (var pair in CurrentBook.CategoryInItemsOfBook)
+                //    {
+                //        if (pair.GetCategoryId == Id)
+                //            items.Add(pair.Item);
+                //    }
+                //    return items;
+                //}
                 return null;               
             }
         }
@@ -49,7 +49,7 @@ namespace NotABookLibraryStandart.Models
         #region Constr
         public Category(Book curBook) : base(curBook)
         {
-            CurrentBook.CategoriesOfBook.Add(this);
+            //CurrentBook.CategoriesOfBook.Add(this);
         }
 
         public Category(Book curBook, string title) : this(curBook)
@@ -78,9 +78,9 @@ namespace NotABookLibraryStandart.Models
         /// <exception cref="CategoryNullException">When category is null</exception>
         /// <exception cref="BookNullException">When book of item is null</exception>
         /// <returns></returns>
-        public static bool IsCategoryAndItsBookNotNull(Category category)
+        public static bool IsCategoryAndItsBookNotNull(Book CurrentBook, Category category)
         {
-            return IsCategoryIsNotNull(category) && Book.IsBookIsNotNull(category.CurrentBook);
+            return IsCategoryIsNotNull(category) && Book.IsBookIsNotNull(CurrentBook);
         }
 
         /// <summary>
@@ -118,71 +118,71 @@ namespace NotABookLibraryStandart.Models
             return Item.IsItemIsNotNull(item) && ItemsWithThisCategory.IsNotEmptyCollection() && ItemsWithThisCategory.Contains(item);
         }
 
-        public string DeleteCategoryStr()
+        public string DeleteCategoryStr(Book CurrentBook)
         {
-            if (Book.IsBookIsNotNull(CurrentBook))
-                return $"Book of {this.Title} is null";
+            //if (Book.IsBookIsNotNull(CurrentBook))
+            //    return $"Book of {this.Title} is null";
 
-            return $"Deleting of {this.Title} is {DeleteCategory(this).ToString()}";
+            return $"Deleting of {this.Title} is {DeleteCategory( this, CurrentBook).ToString()}";
         }
-        public static string DeleteCategoryStr(Category category)
+        public static string DeleteCategoryStr(Category category, Book CurrentBook)
         {
-            if (Category.IsCategoryAndItsBookNotNull(category))
+            if (Category.IsCategoryAndItsBookNotNull(CurrentBook, category))
                 return $"Smt is null";
-            return $"Deleting of {category.Title} is {DeleteCategory(category).ToString()}";
+            return $"Deleting of {category.Title} is {DeleteCategory(category, CurrentBook).ToString()}";
         }
 
-        public bool Delete()
+        public bool Delete(Book CurrentBook)
         {
             if (Book.IsBookIsNotNull(CurrentBook))
             {
                 CurrentBook.CategoriesOfBook.Remove(this);
-                RemoveCategoryFromAllItems();
-                CurrentBook.OnPropertyChanged("DateOfLastChanging");
+                RemoveCategoryFromAllItems(CurrentBook);
+                CurrentBook.OnPropertyChanged(CurrentBook, "DateOfLastChanging");
                 return !CurrentBook.CategoriesOfBook.Contains(this);
             }
             return false;
         }
-        public static bool DeleteCategory(Category category)
+        public static bool DeleteCategory(Category category, Book CurrentBook)
         {
-            if (Category.IsCategoryAndItsBookNotNull(category))
+            if (Category.IsCategoryAndItsBookNotNull(CurrentBook, category))
             {
-                category.CurrentBook.CategoriesOfBook.Remove(category);
-                category.RemoveCategoryFromAllItems();
-                category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return !category.CurrentBook.CategoriesOfBook.Contains(category);
+                CurrentBook.CategoriesOfBook.Remove(category);
+                //CurrentBook.RemoveCategoryFromAllItems();
+                category.UpdateDateOfLastChanging();
+                return !CurrentBook.CategoriesOfBook.Contains(category);
             }
             return false;       
         }
 
-        public string RemoveCategoryFromAllItemsStr()
+        public string RemoveCategoryFromAllItemsStr(Book CurrentBook)
         {
             if (Book.IsBookIsNotNull(CurrentBook))
                 return $"Book of {this.Title} is null";
-            return $"Removing all connections of {this.Title} is {RemoveCategoryFromAllItems().ToString()}";
+            return $"Removing all connections of {this.Title} is {RemoveCategoryFromAllItems(CurrentBook).ToString()}";
         }
-        public static string RemoveCategoryFromAllItemsStr(Category category)
-        {
-            if (Category.IsCategoryAndItsBookNotNull(category))
-                return "Smt is null";
-            return $"Removing all connections of {category.Title} is {RemoveCategoryFromAllItems(category).ToString()}";
-        }
+        //public static string RemoveCategoryFromAllItemsStr(Book CurrentBook, Category category)
+        //{
+        //    if (Category.IsCategoryAndItsBookNotNull(CurrentBook, category))
+        //        return "Smt is null";
+        //    return $"Removing all connections of {category.Title} is {RemoveCategoryFromAllItems(category).ToString()}";
+        //}
 
-        public bool RemoveCategoryFromAllItems()
+        public bool RemoveCategoryFromAllItems(Book CurrentBook)
         {
             if (Book.IsBookIsNotNull(CurrentBook))
             {
-                CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return CategoryInItem.DeleteAllConnectionWithCategory(this);                                
+                CurrentBook.OnPropertyChanged(CurrentBook, "DateOfLastChanging");
+                return CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, this);                                
             }
             return false;           
         }
-        public static bool RemoveCategoryFromAllItems(Category category)
+        public static bool RemoveCategoryFromAllItems(Book CurrentBook, Category category)
         {
-            if (Category.IsCategoryAndItsBookNotNull(category))
+            if (Category.IsCategoryAndItsBookNotNull(CurrentBook, category))
             {
-                category.CurrentBook.OnPropertyChanged("DateOfLastChanging");
-                return CategoryInItem.DeleteAllConnectionWithCategory(category);                                
+                CurrentBook.OnPropertyChanged(CurrentBook, "DateOfLastChanging");
+                return CategoryInItem.DeleteAllConnectionWithCategory(CurrentBook, category);                                
             }
             return false;           
         }
