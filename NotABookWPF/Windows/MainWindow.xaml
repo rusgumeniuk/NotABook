@@ -104,13 +104,14 @@
                     x:Name="ListBoxItems"
                     Height="Auto"                    
                     MouseDoubleClick="ListBoxItems_MouseDoubleClick"
+                    MouseEnter="ListBoxItems_MouseEnter"
                     SelectionMode="Single"
                     HorizontalContentAlignment="Stretch"     
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Background="AntiqueWhite" CanHorizontallyScroll="False" >
+                            <StackPanel Background="AntiqueWhite" CanHorizontallyScroll="False">
                                 <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
                                 <StackPanel Background="Azure" CanHorizontallyScroll="False">
                                     <TextBlock Text="{Binding DateOfLastChanging}" FontStyle="Italic"/>
@@ -151,5 +152,7 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
+        <Button Content="Button" Click="Button_Click"/>
+        <Image x:Name="MyImage" Height="100"/>
     </StackPanel>
 </Window>
