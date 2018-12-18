@@ -75,9 +75,9 @@ namespace NotABook.Pages.DetailPages
                 if (book != null)
                     await Navigation.PushAsync(new ItemCarouselPage(book));
                 else if (category != null)
-                    await Navigation.PushAsync(new ItemCarouselPage(category));
+                    await Navigation.PushAsync(new ItemCarouselPage(App.currentBook, category));
                 else
-                    await Navigation.PushAsync(new ItemCarouselPage(item));
+                    await Navigation.PushAsync(new ItemCarouselPage(App.currentBook, item));
             }
         }
 
@@ -90,7 +90,7 @@ namespace NotABook.Pages.DetailPages
                     "Delete item",
                     "Do u want to delete this item?",
                     "Yes", "NO"))
-                    (((MenuItem)sender).CommandParameter as Item).Delete();
+                    (((MenuItem)sender).CommandParameter as Item).Delete(App.currentBook);
             }
             catch(Exception ex)
             {
@@ -105,7 +105,7 @@ namespace NotABook.Pages.DetailPages
                "Do u want to delete all connections with item?",
                "Yes", "NO"))
             {                
-                CategoryInItem.DeleteAllConnectionWithItem(((MenuItem)sender).CommandParameter as Item);             
+                CategoryInItem.DeleteAllConnectionWithItem(App.currentBook, ((MenuItem)sender).CommandParameter as Item);             
             }               
            
         }

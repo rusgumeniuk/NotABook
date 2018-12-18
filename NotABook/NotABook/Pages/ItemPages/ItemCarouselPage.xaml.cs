@@ -23,19 +23,19 @@ namespace NotABook.Pages.ItemPages
             this.BindingContext = this;                                
         }
 
-        public ItemCarouselPage(Category category)
+        public ItemCarouselPage(Book currBook, Category category)
         {
             InitializeComponent();
             ItemsSource = category.ItemsWithThisCategory;
-            CurBook = category.CurrentBook;
+            CurBook = currBook;
             this.BindingContext = this;            
         }
 
-        public ItemCarouselPage(Item item)
+        public ItemCarouselPage(Book curBook, Item item)
         {
             InitializeComponent();
             ItemsSource = NotABook.App.ItemsList;
-            CurBook = item.CurrentBook;
+            CurBook = curBook;
             this.BindingContext = this;                      
         }
 
@@ -46,7 +46,7 @@ namespace NotABook.Pages.ItemPages
 
        async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Deleting item", (((Button)sender).CommandParameter as Item).Delete() ? "Deleted" : "oops, is not deleted", "ok");
+            await DisplayAlert("Deleting item", (((Button)sender).CommandParameter as Item).Delete(App.currentBook) ? "Deleted" : "oops, is not deleted", "ok");
             await Navigation.PopAsync();
             //try
             //{

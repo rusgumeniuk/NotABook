@@ -44,7 +44,7 @@ namespace NotABook.Pages.DetailPages
                 "Yes", "NO"))
             {
                 await DisplayAlert("Deleting of category", 
-                                    (((MenuItem)sender).CommandParameter as Category).DeleteCategoryStr(),
+                                    (((MenuItem)sender).CommandParameter as Category).DeleteCategoryStr(App.currentBook),
                                      "OK");
             }
         }
@@ -56,7 +56,7 @@ namespace NotABook.Pages.DetailPages
                 "Yes", "NO"))
             {
                 await DisplayAlert("Deleting connections",
-                    (((MenuItem)sender).CommandParameter as Category).RemoveCategoryFromAllItemsStr(),
+                    (((MenuItem)sender).CommandParameter as Category).RemoveCategoryFromAllItemsStr(App.currentBook),
                     "OK");
             }
         }

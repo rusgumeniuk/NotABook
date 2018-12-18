@@ -30,9 +30,9 @@ namespace NotABook.Pages.ItemPages
             InitializeComponent();
             CurrentItem = item;
             BindingContext = CurrentItem;
-            SelectedCategories = item.Categories;
+            SelectedCategories = item.GetCategories(App.currentBook);
             
-            PickerAllCategories.ItemsSource = item?.CurrentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+            PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
             PickerSelectedCategories.ItemsSource = SelectedCategories;
         }
 
@@ -78,13 +78,13 @@ namespace NotABook.Pages.ItemPages
                 
             if(CurrentItem == null)
             {
-                Item newItem = new Item(App.currentBook, EntryTitle.Text, Description.CreateDescription(EntryDescription.Text), SelectedCategories);
+                Item newItem = new Item(App.currentBook, EntryTitle.Text, Description.CreateDescription(App.currentBook, EntryDescription.Text), SelectedCategories);
             }
             else
             {
                 CurrentItem.Title = EntryTitle.Text;
-                CurrentItem.Description = Description.CreateDescription(EntryDescription.Text);
-                CurrentItem.Categories = SelectedCategories;                
+                CurrentItem.Description = Description.CreateDescription(App.currentBook, EntryDescription.Text);
+                CurrentItem.SetCategories(App.currentBook, SelectedCategories);
             }
 
             await Navigation.PopAsync();
