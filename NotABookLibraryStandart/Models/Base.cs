@@ -9,7 +9,7 @@ namespace NotABookLibraryStandart.Models
     /// <summary>
     /// Represent a basic class for elements of the notebook
     /// </summary>
-    public abstract class Base : INotifyPropertyChanged
+    public abstract class Base
     {
         #region Prop
         /// <summary>
@@ -19,9 +19,6 @@ namespace NotABookLibraryStandart.Models
 
         public Guid Id { get; private set; }      
 
-        public DateTime DateOfCreating { get; private set; }
-
-        public DateTime DateOfLastChanging { get; internal set; }
 
         #endregion
 
@@ -29,9 +26,7 @@ namespace NotABookLibraryStandart.Models
         public Base()
         {
             Id = Guid.NewGuid();
-            DateOfCreating = DateTime.Now;
-            DateOfLastChanging = DateTime.Now;
-            OnPropertyChanged("New element");
+            
         }        
         #endregion
 
@@ -45,34 +40,11 @@ namespace NotABookLibraryStandart.Models
         /// <summary>
         /// The method that update date of last changing after any operation with object
         /// </summary>
-        protected void UpdateDateOfLastChanging()
-        {
-            this.DateOfLastChanging = DateTime.Now;
-        }
-
-        /// <summary>
-        /// The method that update date of last changing after any operation with obj
-        /// </summary>
-        protected static void UpdateDateOfLastChanging(Base obj)
-        {
-            obj?.UpdateDateOfLastChanging();
-        }
-
+      
         public override string ToString()
         {
             return $"{ this.GetType().Name}";
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public virtual void OnPropertyChanged(string prop = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                UpdateDateOfLastChanging();
-            }       
-        }        
         #endregion
     }
 }
