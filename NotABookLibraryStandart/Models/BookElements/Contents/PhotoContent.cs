@@ -4,55 +4,63 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Windows.Media;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public class PhotoContent : Content
     {
-        private byte[] bytesOfPhoto;
-        private string imageTitle;
+        public byte[] BytesOfPhoto { get; set; }
+        public string ImageTitle { get; set; }
         public object Content
         {
             get
             {
-                using (var memoryStream = new MemoryStream(bytesOfPhoto))
+                using (var memoryStream = new MemoryStream(BytesOfPhoto))
                 {
                     return Image.FromStream(memoryStream);
                 }
             }
             set
             {
+                if(value is ImageSource)
+                {
+                    //Image image = Image.FromStream(value as ImageSource);
+                }
                 if (value is Image image)
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
                         binaryFormatter.Serialize(memoryStream, value);
-                        bytesOfPhoto = memoryStream.ToArray();
+                        BytesOfPhoto = memoryStream.ToArray();
                     }
-                    imageTitle = image.Tag?.ToString();
+                    ImageTitle = image.Tag?.ToString();
                 }
-
+                else if (value is byte[])
+                {
+                    BytesOfPhoto = (byte[])value;
+                }
             }
         }
 
         public override object Clone()
         {
             PhotoContent clone = this.MemberwiseClone() as PhotoContent;
-            clone.bytesOfPhoto = this.bytesOfPhoto;
+            clone.BytesOfPhoto = this.BytesOfPhoto;
             return clone;
         }
 
         public override bool IsEmptyContent()
         {
-            return bytesOfPhoto.Length == 0 && String.IsNullOrWhiteSpace(imageTitle);
+            return BytesOfPhoto.Length == 0 && String.IsNullOrWhiteSpace(ImageTitle);
         }
 
         public override string GetTitleFromContent()
         {
-            if (!String.IsNullOrWhiteSpace(imageTitle))
-                return imageTitle;
-            if (bytesOfPhoto == null || bytesOfPhoto.Length == 0)
+            if (!String.IsNullOrWhiteSpace(ImageTitle))
+                return ImageTitle;
+            if (BytesOfPhoto == null || BytesOfPhoto.Length == 0)
                 return null;
             return GenerateString();
         }
@@ -60,11 +68,23 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         public string GenerateString()
         {
             string title = String.Empty;
-            for (byte i = 0; i < bytesOfPhoto.Length && i < 15; ++i)
+            for (byte i = 0; i < BytesOfPhoto.Length && i < 15; ++i)
             {
-                title += (char)bytesOfPhoto[i];
+                title += (char)BytesOfPhoto[i];
             }
             return title;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj as PhotoContent == null)
+                return false;
+            PhotoContent content = obj as PhotoContent;
+            return BytesOfPhoto.Equals(content.BytesOfPhoto) && ImageTitle.Equals(content.ImageTitle);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ Content.GetHashCode();
         }
     }
 }
