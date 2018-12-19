@@ -10,7 +10,6 @@ namespace NotABookLibraryStandart.Models.BookElements
     {
         private IList<IContent> noteContents = new ObservableCollection<IContent>();
 
-
         #region prop
         public IList<Category> Categories { get; set; } = new ObservableCollection<Category>();
         public string CategoriesStr
@@ -91,7 +90,6 @@ namespace NotABookLibraryStandart.Models.BookElements
                 return -1;
             }
         }
-
         #endregion
 
         #region ctors
@@ -115,45 +113,7 @@ namespace NotABookLibraryStandart.Models.BookElements
             Categories = categories;
         }
         #endregion
-
-        public void SetCategories(Book CurrentBook, IEnumerable<Category> categories)
-        {
-            if (IsNoteAndBookNotNull(CurrentBook, this))
-            {
-                if (categories != null)
-                {
-                    // CategoryInItem.DeleteAllConnectionWithItem(CurrentBook, this);
-
-                    foreach (var category in categories)
-                    {
-                        //CategoryInItem.CreateCategoryInItem(CurrentBook, category, this);
-                    }
-
-                    UpdateDateOfLastChanging();
-                }
-                else if (ProjectType != TypeOfRunningProject.Xamarin)
-                    throw new ArgumentNullException();
-            }
-        }
-
-        public IList<Category> GetCategories(Book CurrentBook)
-        {
-            if (Book.IsBookIsNotNull(CurrentBook) /*&& CategoryInItem.IsItemHasConnection(CurrentBook, this)*/)
-            {
-                IList<Category> categories = new List<Category>();
-                foreach (CategoryInItem pair in CurrentBook.CategoryInItemsOfBook)
-                {
-                    if (pair.GetItemId == Id)
-                    {
-                        categories.Add(pair.Category);
-                    }
-                }
-                return categories;
-            }
-            return null;
-        }
-
-
+               
         public static bool IsNoteAndBookNotNull(Book CurrentBook, Note note)
         {
             return IsNoteNotNull(note) && Book.IsBookIsNotNull(CurrentBook);
