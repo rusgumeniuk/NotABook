@@ -1,15 +1,32 @@
 ﻿using NotABookLibraryStandart.Models.BookElements.Contents;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace NotABookLibraryStandart.Models.BookElements
 {
     public class Note : BookElement
     {
-        private IList<IContent> noteContents = new List<IContent>();
+        private IList<IContent> noteContents = new ObservableCollection<IContent>();
+
 
         #region prop
+        public IList<Category> Categories { get; set; } = new ObservableCollection<Category>();
+        public string CategoriesStr
+        {
+            get
+            {
+                if (Categories.Count < 1)
+                    return null;
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var category in Categories)
+                {
+                    stringBuilder.Append(category.Title).Append(", ");
+                }
+                return stringBuilder.Remove(stringBuilder.Length - 2, 2).Append(".").ToString();
+            }
+        }
         public IList<IContent> Contents
         {
             get => noteContents;
@@ -22,7 +39,6 @@ namespace NotABookLibraryStandart.Models.BookElements
                 }
             }
         }
-
         public bool IsHasNotContent
         {
             get
@@ -51,7 +67,6 @@ namespace NotABookLibraryStandart.Models.BookElements
         {
             get => noteContents[IndexOfTextContent] as TextContent;
         }
-
         public string SetTextToFirstTextContent
         {
             set
@@ -64,12 +79,11 @@ namespace NotABookLibraryStandart.Models.BookElements
                     throw new ArgumentException("U shouldn't see this");
             }
         }
-
         public int IndexOfTextContent
         {
             get
             {
-                for (int i = 0; i < noteContents.Count; i++)               
+                for (int i = 0; i < noteContents.Count; i++)
                 {
                     if (noteContents[i] is TextContent)
                         return i;
@@ -79,7 +93,7 @@ namespace NotABookLibraryStandart.Models.BookElements
         }
 
         #endregion
-      
+
         #region ctors
         public Note(Book book) : base(book)
         {
@@ -98,7 +112,7 @@ namespace NotABookLibraryStandart.Models.BookElements
 
         public Note(Book book, string title, IList<IContent> contents, IList<Category> categories) : this(book, title, contents)
         {
-            SetCategories(book, categories);
+            Categories = categories;
         }
         #endregion
 
