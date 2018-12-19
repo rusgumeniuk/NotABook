@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\BookElements\Notes\" />
+    <Compile Remove="Models\BookElements\Notes\**" />
+    <EmbeddedResource Remove="Models\BookElements\Notes\**" />
+    <None Remove="Models\BookElements\Notes\**" />
   </ItemGroup>
 
   <ItemGroup>
