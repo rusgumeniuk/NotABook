@@ -15,14 +15,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             {
                 content = value?.ToString();
             }
-        }
-
-        public override object Clone()
-        {
-            TextContent clone = this.MemberwiseClone() as TextContent;
-            clone.Content = this.content.Clone() as byte[];
-            return clone;
-        }
+        }    
 
         public override bool IsEmptyContent()
         {
@@ -55,9 +48,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             }
             else
                 return GetNextWord(ref title);
-        }
-
-       
+        }       
 
         private string GetNextWord(ref string str)
         {

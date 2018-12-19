@@ -23,10 +23,6 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             }
             set
             {
-                if(value is ImageSource)
-                {
-                    //Image image = Image.FromStream(value as ImageSource);
-                }
                 if (value is Image image)
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -43,14 +39,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
                 }
             }
         }
-
-        public override object Clone()
-        {
-            PhotoContent clone = this.MemberwiseClone() as PhotoContent;
-            clone.BytesOfPhoto = this.BytesOfPhoto;
-            return clone;
-        }
-
+        
         public override bool IsEmptyContent()
         {
             return BytesOfPhoto.Length == 0 && String.IsNullOrWhiteSpace(ImageTitle);

@@ -4,11 +4,10 @@ using System.Text;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
-    public abstract class Content : Base, IContent, ICloneable
+    public abstract class Content : Base, IContent
     {
         object IContent.Content{ get; set; }
-
-        public abstract object Clone();
+            
         public abstract string GetTitleFromContent();
         public abstract bool IsEmptyContent();
     }
