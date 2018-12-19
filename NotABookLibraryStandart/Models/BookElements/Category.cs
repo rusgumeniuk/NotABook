@@ -186,6 +186,20 @@ namespace NotABookLibraryStandart.Models
             }
             return false;           
         }
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            return (obj as Category).Title.Equals(Title);
+        }        
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ Title.GetHashCode();
+        }
         #endregion
     }
 
@@ -213,5 +227,6 @@ namespace NotABookLibraryStandart.Models
         {
             return collection.Count > 0 ? true : (Base.ProjectType == TypeOfRunningProject.Xamarin  ? false : throw new EmptyCollectionException());
         }
+      
     }    
 }
