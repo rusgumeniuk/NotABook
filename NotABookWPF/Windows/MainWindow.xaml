@@ -9,7 +9,7 @@
     <StackPanel  Margin="0,0,-0.4,0">
 
         <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0">
-            <MenuItem Header="Hello" Name="MenuItemHello" Click="MenuItemHello_Click"/>
+            <!--<MenuItem Header="Hello" Name="MenuItemHello" Click="MenuItemHello_Click"/>-->
             <MenuItem Header="File">
                 <MenuItem Header="New element">
                     <MenuItem Header="New book"/>
@@ -23,22 +23,13 @@
             <MenuItem Header="Edit">
                 <MenuItem Header="Undo"/>
             </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Height="10" Width="10" Fill="Blue"/>
-                        <TextBlock>About</TextBlock>
-                    </StackPanel>
-                </MenuItem.Header>
+            <MenuItem Header="About">             
+                <MenuItem Header="FAQ" Name = "MenuItemFAQ" Click="MenuItemFAQ_Click"/>
+                <MenuItem Header="About" Name = "MenuItemAbout" Click="MenuItemAbout_Click"/>
             </MenuItem>
         </Menu>
         <ToolBar Height="Auto">
-            <Button Name="BtnNewItem" Content="New Item" Click="BtnNewItem_Click"/>
-            <ToggleButton>
-                <Ellipse Width="10" Height="10" Fill="Yellow"/>
-            </ToggleButton>
-            <Separator/>
-            <Button Content="toool"/>
+            <Button Name="BtnNewNote" Content="New note" Click="BtnNewNote_Click"/>          
             <Separator/>
             <TextBox Foreground="LightGray" Width="100" Text="Find me..."/>
         </ToolBar>
@@ -52,7 +43,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="0">
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,5,5,5">
                 <TextBlock Text="Current book is:"/>
                 <TextBlock Name="TBCurrentBook" FontStretch="Expanded" FontStyle="Normal" FontWeight="ExtraBold"/>
                 <ListView
@@ -66,8 +57,7 @@
                             <StackPanel>
                                 <TextBox  Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
                                 <StackPanel.ContextMenu>
-                                    <ContextMenu>
-                                        <!--<MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>-->
+                                    <ContextMenu>                                        
                                         <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click_1"/>
                                         <MenuItem Name="MenuItemRemoveItems" Header="Remove items" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
                                         <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
@@ -81,39 +71,34 @@
                 </ListView>
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="1">
-                <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,-0.4,0" TextChanged="TextBoxFindItem_TextChanged"/>
-                <Border CornerRadius="10" BorderBrush="Yellow" BorderThickness="5"
-                        Background="LightCyan">
-                    <ContentControl Margin="2">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Count of items: "/>
-                                <TextBlock FontStyle="Oblique" Name="TextBlockCountOfItems"/>
-                                <TextBlock Text=" from"/>
-                            </StackPanel>
-                            <ComboBox
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
+                <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,0,0" TextChanged="TextBoxFindItem_TextChanged"/>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Count of notes: "/>
+                        <TextBlock FontStyle="Oblique" Name="TextBlockCountOfItems"/>
+                        <TextBlock Text=" from"/>
+                    </StackPanel>
+                    <ComboBox
                                 Name="ComboBoxCurrentBook"                    
                                 SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
                                 IsEditable="True"
                                 StaysOpenOnEdit="True"/>
-                        </StackPanel>
-                    </ContentControl>
-                </Border>
+                </StackPanel>
                 <ListBox                    
                     x:Name="ListBoxItems"
                     Height="Auto"                    
-                    MouseDoubleClick="ListBoxItems_MouseDoubleClick"
-                    MouseEnter="ListBoxItems_MouseEnter"
+                    MouseDoubleClick="ListBoxItems_MouseDoubleClick"                                   
+                    MouseLeftButtonUp="ListBoxItems_MouseLeftButtonUp"                    
                     SelectionMode="Single"
                     HorizontalContentAlignment="Stretch"     
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Background="AntiqueWhite" CanHorizontallyScroll="False">
+                            <StackPanel Background="WhiteSmoke" CanHorizontallyScroll="False">
                                 <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                                <StackPanel Background="Azure" CanHorizontallyScroll="False">
+                                <StackPanel Background="White" CanHorizontallyScroll="False">
                                     <TextBlock Text="{Binding DateOfLastChanging}" FontStyle="Italic"/>
                                     <TextBlock Text="{Binding Description.Text}" FontStretch="Expanded" TextWrapping="WrapWithOverflow"/>
                                 </StackPanel>
@@ -123,7 +108,7 @@
                 </ListBox>
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="2" x:Name="StackPanelItemPanel">
+            <StackPanel Grid.Row="0" Grid.Column="2" x:Name="StackPanelItemPanel" Margin="5,5,5,5">
                 <StackPanel>
                     <TextBox Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic" LostFocus="TBEditItemTitle_LostFocus"/>
                     <StackPanel Orientation="Horizontal">
@@ -133,17 +118,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Date of creating: "/>
                         <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
-                    </StackPanel>
-                    <!--<StackPanel Orientation="Horizontal">
-                        <ListBox
-                            Name="ListBoxCategories">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Content="{Binding Title}" IsChecked="{Binding }"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>-->
+                    </StackPanel>                   
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Categories: "/>
                         <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
@@ -152,7 +127,6 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Button Content="Button" Click="Button_Click"/>
-        <Image x:Name="MyImage" Height="100"/>
+        <!--<Button Content="Button" Click="Button_Click" VerticalAlignment="Bottom" Margin="10,10,10,10"/>-->
     </StackPanel>
 </Window>

@@ -30,10 +30,10 @@
             <TextBlock Name="TBCategoriesInString" Text="{Binding CategoriesStr}"/>
         </StackPanel>
         <ScrollViewer Grid.Row="4" >
-            <StackPanel Name="StackPanelContent">
-                <!--<TextBox Name="TBDescription" Text="{Binding Description.Text}" LostFocus="TBDescription_LostFocus"
-                   TextWrapping="Wrap" AcceptsReturn="True"  />-->
-            </StackPanel>
+            <StackPanel 
+                Name="StackPanelContent"
+                MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"                
+             />
         </ScrollViewer>
                    
         <Button Grid.Row="5" Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
