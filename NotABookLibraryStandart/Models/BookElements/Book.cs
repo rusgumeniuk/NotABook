@@ -92,7 +92,26 @@ namespace NotABookLibraryStandart.Models
 
             return false;
         }
-
+        /// <summary>
+        /// Represents a list of notes which contain text in Title, categories or contents
+        /// </summary>
+        /// <param name="text"></param>
+        /// <exception cref="ArgumentNullException">when text is null, empty or white spaces</exception>
+        /// <returns></returns>
+        public IList<Note> FindNotes(string text)
+        {
+            if (ExtensionClass.IsStringNotNull(text))
+            {
+                IList<Note> result = new List<Note>();
+                foreach (var note in Notes)
+                {
+                    if (note.IsContainsText(text))
+                        result.Add(note);
+                }
+                return result;
+            }
+            return null;
+        }
         /// <summary>
         /// Represents a list of items which contain partOfItem in Title or Desription
         /// </summary>
