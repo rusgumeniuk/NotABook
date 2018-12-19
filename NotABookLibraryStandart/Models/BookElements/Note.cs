@@ -116,12 +116,12 @@ namespace NotABookLibraryStandart.Models.BookElements
                
         public bool IsContainsText(string text)
         {
-            if (Title.Trim().ToUpperInvariant().Equals(text.Trim().ToUpperInvariant()))
+            if (Title.Trim().ToUpperInvariant().Contains(text.Trim().ToUpperInvariant()))
                 return true;
 
             foreach (var category in Categories)
             {
-                if (category.Title.Trim().ToUpperInvariant().Equals(text.Trim().ToUpperInvariant()))
+                if (category.Title.Trim().ToUpperInvariant().Contains(text.Trim().ToUpperInvariant()))
                     return true;
             }
             foreach (var content in noteContents)
