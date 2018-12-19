@@ -26,6 +26,7 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Init
         #region Lists etc
         public static Book currentBook = null;
 
@@ -66,6 +67,20 @@ namespace NotABookWPF.Windows
             Category tomatoCategory = new Category(currentBook, "Tomato");
             Category chickenCategory = new Category(currentBook, "Chicken");
 
+            currentBook.CategoriesOfBook.Add(chocolateCategory);
+            currentBook.CategoriesOfBook.Add(flourCategory);
+            currentBook.CategoriesOfBook.Add(eggsCategory);
+            currentBook.CategoriesOfBook.Add(potatoCategory);
+            currentBook.CategoriesOfBook.Add(tomatoCategory);
+            currentBook.CategoriesOfBook.Add(chickenCategory);
+
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test1"));
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test2"));
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test3"));
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test4"));
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test5"));
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test6"));
+            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test7"));
 
 
             Note chocolateBiscuit = new Note(currentBook, "Chocolate biscuit", new List<IContent>() { new TextContent() { Content = "The best chocolate cake ever" } }, new List<Category>() { chocolateCategory, flourCategory, eggsCategory });
@@ -74,37 +89,89 @@ namespace NotABookWPF.Windows
             currentBook.Notes.Add(chocolateBiscuit);
             currentBook.Notes.Add(salatWithPotatoAndTomato);
             currentBook.Notes.Add(chicken);
+
+            UpdateCurrentBook();
         }
+        #endregion
 
         private void UpdateCurrentBook()
         {
             ListBoxItems.ItemsSource = MainWindow.currentBook?.Notes;
+            CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>();
+            AllCategoriesListBox.ItemsSource = CategoriesList;
             ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
             ListViewBooks.SelectedItem = MainWindow.currentBook;
             TextBlockCountOfItems.Text = MainWindow.currentBook?.Notes.Count.ToString() + " ";
             TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
         }
 
-        private void BtnText_Click(object sender, RoutedEventArgs e)
+        #region Menu panel
+        private void MenuItemFAQ_Click(object sender, RoutedEventArgs e)
         {
-            //BtnText.Content = ModelsLibrary.Class1.Method();
+            (new FAQWindow() { Title = "FAQ" }).Show();
         }
-
+        private void MenuItemAbout_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hello! \n I Ruslan Humeniuk.\n I am KPI student and this is my first WPF project");
+        }
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-        private void MenuItemHello_Click(object sender, RoutedEventArgs e)
+        private void BtnNewNote_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(((MenuItem)sender).Header.ToString());
+            (new AddEditItemWindow(currentBook) { Title = "Creating of item" }).Show();
         }
+        #endregion
 
-        private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        #region Books stack panel
+        private void TBEditBookTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
-            (new AddEditItemWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
+            (sender as TextBox).IsEnabled = true;
+            MessageBox.Show("asd");
         }
+        private void ListViewBooks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListViewBooks.SelectedItem != null && ListViewBooks.SelectedItem as Book != currentBook)
+            {
+                currentBook = ListViewBooks.SelectedItem as Book;
+                UpdateCurrentBook();
+            }
+        }
+        private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            (sender as TextBox).IsEnabled = false;
+            //((sender as TextBox) as Book).Title = (sender as TextBox).Text;
+            (ListViewBooks.SelectedItem as Book).Title = (sender as TextBox).Text;
+        }
+        #region context menu
+        private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
+        {
+            Book.ClearItemsList(((sender as MenuItem).CommandParameter as Book));
+        }
+        private void MenuItemRemoveCategories_Click(object sender, RoutedEventArgs e)
+        {
+            Book.ClearCaregoriesList(((sender as MenuItem).CommandParameter as Book));
+        }
+        private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+        private void MenuItemRemoveAllElements_Click(object sender, RoutedEventArgs e)
+        {
+            Book.RemoveAllElementsOfBook(((sender as MenuItem).CommandParameter as Book));
+        }
+        private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
+        {
+            ((sender as MenuItem).CommandParameter as Book).Delete();
+        }
+        #endregion
+
+        #endregion
+
+        #region Notes stack panel       
+
+        #region Find text box
         private void TextBoxFindItem_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBoxFindItem.Text = String.Empty;
@@ -129,7 +196,18 @@ namespace NotABookWPF.Windows
                 }
             }
         }
+        #endregion
 
+        private void ListBoxItems_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
+            CategoryInNoteListBox.ItemsSource = (ListBoxItems.SelectedItem as Note).Categories;
+            StackPanelItemPanel.Visibility = Visibility.Visible;
+        }
+        private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            (new AddEditItemWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
+        }
         private void ComboBoxCurrentBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboBoxCurrentBook.SelectedItem != null && ComboBoxCurrentBook.SelectedItem as Book != currentBook)
@@ -138,114 +216,34 @@ namespace NotABookWPF.Windows
                 UpdateCurrentBook();
             }
         }
+        #endregion
 
+        #region Note stack panel
 
-
-
-        private void TBEditItemTitle_LostFocus(object sender, RoutedEventArgs e)
+        #region categories lists panel              
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            if (StackPanelItemPanel.DataContext != null)
-            {
-                if((StackPanelItemPanel.DataContext as Note).IndexOfTextContent != -1)
-                {
-                    (StackPanelItemPanel.DataContext as Note).SetTextToFirstTextContent = TBDescription.Text;
-                }                
-            }
+            (new AddEditCategoryWindow(currentBook) { Title = "Creating of category" }).Show();
         }
-        private void TBDescription_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (StackPanelItemPanel.DataContext != null)
-            {
-                if ((StackPanelItemPanel.DataContext as Note).IndexOfTextContent != -1)
-                {
-                    (StackPanelItemPanel.DataContext as Note).SetTextToFirstTextContent = TBDescription.Text;
-                }
-            }
-        }
-
-        #region Book list view
-        private void LeftListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ListViewBooks.SelectedItem != null && ListViewBooks.SelectedItem as Book != currentBook)
-            {
-                currentBook = ListViewBooks.SelectedItem as Book;
-                UpdateCurrentBook();
-            }
-        }
-
-
-
-
-        private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
-        {
-            Book.ClearItemsList(((sender as MenuItem).CommandParameter as Book));
-        }
-
-        private void MenuItemRemoveCategories_Click(object sender, RoutedEventArgs e)
-        {
-            Book.ClearCaregoriesList(((sender as MenuItem).CommandParameter as Book));
-        }
-
-        private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MenuItemRemoveAllElements_Click(object sender, RoutedEventArgs e)
-        {
-            Book.RemoveAllElementsOfBook(((sender as MenuItem).CommandParameter as Book));
-        }
-
-        private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
-        {
-            (sender as TextBox).IsEnabled = false;
-            //((sender as TextBox) as Book).Title = (sender as TextBox).Text;
-            (ListViewBooks.SelectedItem as Book).Title = (sender as TextBox).Text;
-        }
+        #endregion
 
         #endregion
 
-        private void TBEditBookTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void CategoryInNoteListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            (sender as TextBox).IsEnabled = true;
-            MessageBox.Show("asd");
+            (CategoryInNoteListBox.ItemsSource as IList<Category>).Remove(CategoryInNoteListBox.SelectedItem as Category);
+            CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
         }
 
-     
-
-        private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
+        private void AllCategoriesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ((sender as MenuItem).CommandParameter as Book).Delete();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var note in Notes)
+            if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
+                MessageBox.Show("Note already marked by this category!");
+            else
             {
-                sb.AppendLine(note.Title + " : " + note.Contents.Count);
+                (CategoryInNoteListBox.ItemsSource as IList<Category>).Add(AllCategoriesListBox.SelectedItem as Category);
+                CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
             }
-            MessageBox.Show(sb.ToString());
-        }
-       
-        private void ListBoxItems_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
-        }
-
-        private void MenuItemFAQ_Click(object sender, RoutedEventArgs e)
-        {
-            (new FAQWindow() { Title = "FAQ" }).Show();
-        }
-
-        private void MenuItemAbout_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Hello! \n I Ruslan Humeniuk.\n I am KPI student and this is my first WPF project");
-        }
-
-        private void BtnNewNote_Click(object sender, RoutedEventArgs e)
-        {
-            (new AddEditItemWindow(currentBook) { Title = "Creating of item" }).Show();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,23 +27,19 @@ namespace NotABookWPF.Windows
     {
         #region Init
         readonly Book currentBook;
-        public AddEditItemWindow(Book currentBook)
-        {
-            InitializeComponent();
-            this.currentBook = currentBook;
-            Note newNote = new Note(MainWindow.currentBook);
-            currentBook.Notes.Add(newNote);
-            this.DataContext = newNote;
-            InputContentsToStackPanel(newNote);
-            AddTextBoxIfNoContent();
-        }
-        public AddEditItemWindow(Book curBook, Note note)
+
+        public AddEditItemWindow(Book curBook, Note note = null)
         {
             InitializeComponent();
             currentBook = curBook;
-            this.DataContext = note;
-            this.Title = note.Title;
-            InputContentsToStackPanel(note);
+            AllCategoriesListBox.ItemsSource = currentBook.CategoriesOfBook;
+            Note newNote = note ?? new Note(MainWindow.currentBook);
+            if (note == null)
+                currentBook.Notes.Add(newNote);
+            this.DataContext = newNote;
+            this.Title = newNote.Title;
+            CategoryInNoteListBox.ItemsSource = newNote.Categories;
+            InputContentsToStackPanel(newNote);
             AddTextBoxIfNoContent();
         }
         #endregion
@@ -86,6 +83,7 @@ namespace NotABookWPF.Windows
         {
             Note note = DataContext as Note;
             note.Title = TBEditItemTitle.Text;
+            note.Categories = CategoryInNoteListBox.ItemsSource as ObservableCollection<Category>;
             IList<IContent> contents = new List<IContent>();
 
             foreach (var control in StackPanelContent.Children)
@@ -106,6 +104,7 @@ namespace NotABookWPF.Windows
                 note.Contents = contents;
             }
             DataContext = note;
+            this.UpdateLayout();
         }
         #endregion
         private void BtnAttachImage_Click(object sender, RoutedEventArgs e)
@@ -183,16 +182,16 @@ namespace NotABookWPF.Windows
         #endregion
 
         private void StackPanelContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {           
+        {
             var lol = e.Source is TextBox ? (e.Source as TextBox).Text : (e.Source as Image).Source.ToString();
-            var result = MessageBox.Show("Delete content " + lol+ "?", "Remove content", MessageBoxButton.OKCancel);
+            var result = MessageBox.Show("Delete content " + lol + "?", "Remove content", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 StackPanelContent.Children.Remove(e.Source as UIElement);
                 AddTextBoxIfNoContent();
             }
 
-        }        
+        }
         private void AddTextBoxIfNoContent()
         {
             if (!IsContentsHasTextBox())
@@ -210,5 +209,27 @@ namespace NotABookWPF.Windows
             return false;
         }
 
-    }    
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditCategoryWindow(currentBook) { Title = "Create category" }).Show();
+        }
+
+        private void CategoryInNoteListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            (CategoryInNoteListBox.ItemsSource as IList<Category>).Remove(CategoryInNoteListBox.SelectedItem as Category);
+            CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
+
+        }
+
+        private void AllCategoriesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
+                MessageBox.Show("Note already marked by this category!");
+            else
+            {
+                (CategoryInNoteListBox.ItemsSource as IList<Category>).Add(AllCategoriesListBox.SelectedItem as Category);
+                CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
+            }
+        }
+    }
 }
