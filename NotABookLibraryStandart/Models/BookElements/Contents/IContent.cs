@@ -9,5 +9,6 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         object Content { get; set; }
         bool IsEmptyContent();
         string GetTitleFromContent();
+        bool IsContainsText(string text);
     }
 }

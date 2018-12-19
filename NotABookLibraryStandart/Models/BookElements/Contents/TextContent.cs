@@ -81,5 +81,10 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         {
             return base.GetHashCode() ^ Content.GetHashCode();
         }
+
+        public override bool IsContainsText(string text)
+        {
+            return content.Contains(text);
+        }
     }
 }
