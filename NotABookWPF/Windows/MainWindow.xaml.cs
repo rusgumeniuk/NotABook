@@ -211,10 +211,7 @@ namespace NotABookWPF.Windows
             MessageBox.Show("asd");
         }
 
-        private void BtnNewItem_Click(object sender, RoutedEventArgs e)
-        {
-            (new AddEditItemWindow(currentBook) { Title = "Creating of item" }).Show();
-        }
+     
 
         private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
         {
@@ -230,10 +227,25 @@ namespace NotABookWPF.Windows
             }
             MessageBox.Show(sb.ToString());
         }
-
-        private void ListBoxItems_MouseEnter(object sender, MouseEventArgs e)
+       
+        private void ListBoxItems_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
+            StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
+        }
+
+        private void MenuItemFAQ_Click(object sender, RoutedEventArgs e)
+        {
+            (new FAQWindow() { Title = "FAQ" }).Show();
+        }
+
+        private void MenuItemAbout_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hello! \n I Ruslan Humeniuk.\n I am KPI student and this is my first WPF project");
+        }
+
+        private void BtnNewNote_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditItemWindow(currentBook) { Title = "Creating of item" }).Show();
         }
     }
 }
