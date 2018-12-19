@@ -78,7 +78,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 
         public override bool IsContainsText(string text)
         {
-            return ImageTitle?.Contains(text) ?? false || (GenerateString()?.Contains(text) ?? false);
+            return ImageTitle?.ToUpperInvariant().Contains(text.ToUpperInvariant()) ?? false || (GenerateString()?.ToUpperInvariant().Contains(text.ToUpperInvariant()) ?? false);
         }
     }
 }

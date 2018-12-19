@@ -84,7 +84,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 
         public override bool IsContainsText(string text)
         {
-            return content.Contains(text);
+            return content.ToUpperInvariant().Contains(text.ToUpperInvariant());
         }
     }
 }
