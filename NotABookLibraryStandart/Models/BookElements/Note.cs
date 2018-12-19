@@ -114,6 +114,23 @@ namespace NotABookLibraryStandart.Models.BookElements
         }
         #endregion
                
+        public bool IsContainsText(string text)
+        {
+            if (Title.Trim().ToUpperInvariant().Equals(text.Trim().ToUpperInvariant()))
+                return true;
+
+            foreach (var category in Categories)
+            {
+                if (category.Title.Trim().ToUpperInvariant().Equals(text.Trim().ToUpperInvariant()))
+                    return true;
+            }
+            foreach (var content in noteContents)
+            {
+                if (content.IsContainsText(text))
+                    return true;
+            }
+            return false;
+        }
         public static bool IsNoteAndBookNotNull(Book CurrentBook, Note note)
         {
             return IsNoteNotNull(note) && Book.IsBookIsNotNull(CurrentBook);
