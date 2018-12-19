@@ -178,36 +178,54 @@ namespace NotABookWPF.Windows
         }
         private void TextBoxFindItem_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBoxFindItem.Text = "Find note";
-            UpdateCurrentBook();
+            if(ListBoxItems.Items.Count < 1)
+            {
+                TextBoxFindItem.Text = "Find note";
+                UpdateCurrentBook();
+                HideNotePanel();
+            }            
+        }
+        private void TextBoxFindItem_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (ListBoxItems.Items.Count < 1)
+            {
+                TextBoxFindItem.Text = "Find note";
+                UpdateCurrentBook();
+                HideNotePanel();
+            }
         }
         private void TextBoxFindItem_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TextBoxFindItem.IsFocused)
             {
+                HideNotePanel();
                 if (String.IsNullOrWhiteSpace(TextBoxFindItem.Text))
                     ListBoxItems.ItemsSource = MainWindow.currentBook.Notes;
                 else
                 {
-                    throw new NotImplementedException();
-                    //ObservableCollection<Note> notes = MainWindow.currentBook?.FindItems(currentBook, TextBoxFindItem.Text);
-                    //TextBlockCountOfItems.Text = (items?.Count ?? 0).ToString() + " ";
-                    //ListBoxItems.ItemsSource = items;
+                    IList<Note> result = MainWindow.currentBook?.FindNotes(TextBoxFindItem.Text);
+                    TextBlockCountOfItems.Text = (result?.Count ?? 0).ToString() + " ";
+                    ListBoxItems.ItemsSource = result;
                 }
             }
         }
         #endregion
 
+        #region Note selection
         private void ListBoxItems_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
-            CategoryInNoteListBox.ItemsSource = (ListBoxItems.SelectedItem as Note).Categories;
-            StackPanelItemPanel.Visibility = Visibility.Visible;
+            if(ListBoxItems.SelectedItem != null)
+            {
+                StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
+                CategoryInNoteListBox.ItemsSource = (ListBoxItems.SelectedItem as Note).Categories;
+                StackPanelItemPanel.Visibility = Visibility.Visible;
+            }           
         }
         private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             (new AddEditItemWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
         }
+        #endregion
         private void ComboBoxCurrentBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboBoxCurrentBook.SelectedItem != null && ComboBoxCurrentBook.SelectedItem as Book != currentBook)
@@ -221,20 +239,11 @@ namespace NotABookWPF.Windows
         #region Note stack panel
 
         #region categories lists panel              
-        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
-        {
-            (new AddEditCategoryWindow(currentBook) { Title = "Creating of category" }).Show();
-        }
-        #endregion
-
-        #endregion
-
         private void CategoryInNoteListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             (CategoryInNoteListBox.ItemsSource as IList<Category>).Remove(CategoryInNoteListBox.SelectedItem as Category);
             CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
         }
-
         private void AllCategoriesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
@@ -244,6 +253,18 @@ namespace NotABookWPF.Windows
                 (CategoryInNoteListBox.ItemsSource as IList<Category>).Add(AllCategoriesListBox.SelectedItem as Category);
                 CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
             }
+        }
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditCategoryWindow(currentBook) { Title = "Creating of category" }).Show();
+        }
+        #endregion
+
+        #endregion
+
+       private void HideNotePanel()
+        {
+            StackPanelItemPanel.Visibility = Visibility.Collapsed;
         }
     }
 }
