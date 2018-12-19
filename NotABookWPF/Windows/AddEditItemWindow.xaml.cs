@@ -24,6 +24,7 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class AddEditItemWindow : Window
     {
+        #region Init
         readonly Book currentBook;
         public AddEditItemWindow(Book currentBook)
         {
@@ -31,8 +32,9 @@ namespace NotABookWPF.Windows
             this.currentBook = currentBook;
             Note newNote = new Note(MainWindow.currentBook);
             currentBook.Notes.Add(newNote);
-
             this.DataContext = newNote;
+            InputContentsToStackPanel(newNote);
+            AddTextBoxIfNoContent();
         }
         public AddEditItemWindow(Book curBook, Note note)
         {
@@ -40,22 +42,22 @@ namespace NotABookWPF.Windows
             currentBook = curBook;
             this.DataContext = note;
             this.Title = note.Title;
+            InputContentsToStackPanel(note);
+            AddTextBoxIfNoContent();
+        }
+        #endregion
+
+        private void InputContentsToStackPanel(Note note)
+        {
             foreach (var content in note.Contents)
             {
                 StackPanelContent.Children.Add(content is TextContent ?
-                    new TextBox() { Text = (content as TextContent).Content as string }
+                    new TextBox() { Text = (content as TextContent).Content as string, BorderBrush = Brushes.White, MinLines = 5 }
                     : (UIElement)new Image() { Source = BytesToImage((content as PhotoContent).BytesOfPhoto) });
             }
         }
 
-        private void TBDescription_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //(DataContext as Note).Contents.Clear();
-            //foreach (var control in StackPanelContent.Children)
-            //{
-            //    (DataContext as Note).AddContent(control as IContent);
-            //}
-        }
+        #region LostFocuc, close Window, Update infp
         private void TBEditItemTitle_LostFocus(object sender, RoutedEventArgs e)
         {
             (this.DataContext as Note).Title = TBEditItemTitle.Text;
@@ -65,6 +67,7 @@ namespace NotABookWPF.Windows
         {
             if (DataContext != null)
             {
+                RemoveEmptyContents();
                 UpdateInfo();
                 Note note = DataContext as Note;
                 if (String.IsNullOrWhiteSpace(note.Title) && note.IsHasNotContent)
@@ -84,14 +87,13 @@ namespace NotABookWPF.Windows
             Note note = DataContext as Note;
             note.Title = TBEditItemTitle.Text;
             IList<IContent> contents = new List<IContent>();
-            
+
             foreach (var control in StackPanelContent.Children)
             {
                 IContent cont = null;
                 if (control is Image)
                 {
-                    cont = new PhotoContent() { Content = ImageToBytes(control as Image) };                   
-                    
+                    cont = new PhotoContent() { Content = ImageToBytes(control as Image), ImageTitle = (control as Image).Source.ToString() };
                 }
                 else if (control is TextBox)
                 {
@@ -100,11 +102,12 @@ namespace NotABookWPF.Windows
                 contents.Add(cont);
             }
             if (!contents.Equals(note.Contents))
-            {                
+            {
                 note.Contents = contents;
             }
             DataContext = note;
         }
+        #endregion
         private void BtnAttachImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -115,7 +118,7 @@ namespace NotABookWPF.Windows
                 if (IsImageExtension(extension))
                 {
                     Image myImage = new Image();
-                    byte[] imageByte = File.ReadAllBytes(dialog.FileName);                    
+                    byte[] imageByte = File.ReadAllBytes(dialog.FileName);
                     myImage.Source = BytesToImage(imageByte);
                     string name = System.IO.Path.GetFileName(dialog.FileName);
                     RemoveEmptyContents();
@@ -126,8 +129,7 @@ namespace NotABookWPF.Windows
                         .Add(new PhotoContent()
                         { Content = imageByte, ImageTitle = name }
                         );
-
-                    MessageBox.Show("GOT IT");
+                    StackPanelContent.Children.Add(new TextBox() { BorderBrush = Brushes.White, MinLines = 5 });
                 }
                 else
                 {
@@ -138,20 +140,16 @@ namespace NotABookWPF.Windows
 
         private void RemoveEmptyContents()
         {
-            //for (byte i = 0; i < StackPanelContent.Children.Count; ++i)
-            //{
-            //    if((StackPanelContent.Children[i] as IContent).IsEmptyContent())
-            //        StackPanelContent.Children.Remo
-            //}
-            foreach (var control in StackPanelContent.Children)
+            for (int i = 0; i < StackPanelContent.Children.Count; i++)
             {
-               if((control as TextBox)?.Text.Length < 1)
+                if ((StackPanelContent.Children[i] as TextBox)?.Text.Length < 1)
                 {
-                    StackPanelContent.Children.Remove(control as UIElement);
+                    StackPanelContent.Children.RemoveAt(i);
                 }
             }
         }
 
+        #region Image/byte
         private static bool IsImageExtension(string extension)
         {
             return extension.Equals(".jpg") || extension.Equals(".png");
@@ -182,5 +180,35 @@ namespace NotABookWPF.Windows
             }
             return null;
         }
-    }
+        #endregion
+
+        private void StackPanelContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {           
+            var lol = e.Source is TextBox ? (e.Source as TextBox).Text : (e.Source as Image).Source.ToString();
+            var result = MessageBox.Show("Delete content " + lol+ "?", "Remove content", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                StackPanelContent.Children.Remove(e.Source as UIElement);
+                AddTextBoxIfNoContent();
+            }
+
+        }        
+        private void AddTextBoxIfNoContent()
+        {
+            if (!IsContentsHasTextBox())
+            {
+                StackPanelContent.Children.Add(new TextBox() { BorderBrush = Brushes.White, MinLines = 5 });
+            }
+        }
+        private bool IsContentsHasTextBox()
+        {
+            foreach (var control in StackPanelContent.Children)
+            {
+                if (control is TextBox)
+                    return true;
+            }
+            return false;
+        }
+
+    }    
 }
