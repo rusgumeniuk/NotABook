@@ -36,12 +36,10 @@ namespace NotABookLibraryStandart.Models
 
         private Book() : base(null)
         {
-            Books.Add(this);
         }
 
         public Book(string title) : base(null, title)
         {
-            Books.Add(this);
         }
 
         #endregion
