@@ -23,21 +23,19 @@ namespace NotABookWPF.Windows
     /// <summary>
     /// Interaction logic for AddEditItemWindow.xaml
     /// </summary>
-    public partial class AddEditItemWindow : Window
+    public partial class AddEditINoteWindow : Window
     {
         #region Init
         readonly Book currentBook;
 
-        public AddEditItemWindow(Book curBook, Note note = null)
+        public AddEditINoteWindow(Book curBook, Note note = null)
         {
             InitializeComponent();
             currentBook = curBook;
             AllCategoriesListBox.ItemsSource = MainWindow.CategoriesList;
-            Note newNote = note ?? new Note(MainWindow.currentBook);
-            if (note == null)
-                currentBook.Notes.Add(newNote);
+            Note newNote = note ?? new Note(MainWindow.currentBook);           
             this.DataContext = newNote;
-            this.Title = newNote.Title;
+            this.Title = newNote?.Title ?? String.Empty;
             CategoryInNoteListBox.ItemsSource = newNote.Categories;
             InputContentsToStackPanel(newNote);
             AddTextBoxIfNoContent();
@@ -62,36 +60,64 @@ namespace NotABookWPF.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (DataContext != null)
+            if (DataContext as Note != null)
             {
-                RemoveEmptyContents();
-                UpdateInfo();
                 Note note = DataContext as Note;
+                RemoveEmptyContents();
+                UpdateNoteData();                
                 if (String.IsNullOrWhiteSpace(note.Title) && note.IsHasNotContent)
-                {
-                    MessageBox.Show("Ooops, item should be non-empty", "Empty item");
-                    currentBook.RemoveBookElement(note);
+                {                    
+                    return;
                 }
                 else if (String.IsNullOrWhiteSpace(note.Title))
                 {
                     note.Title = note.TitleFromContent;
-                }
+                }                
+                currentBook.Notes.Add(note);
             }
         }
 
-        private void UpdateInfo()
+        private void UpdateNoteData()
         {
             Note note = DataContext as Note;
             note.Title = TBEditItemTitle.Text;
             note.Categories = CategoryInNoteListBox.ItemsSource as ObservableCollection<Category>;
-            IList<IContent> contents = new List<IContent>();
+            IList<IContent> contents = GetContentFromChildren(StackPanelContent.Children);
+            IList<IContent> addContent = new List<IContent>();
+            foreach (var newContent in contents)
+            {
+                bool exist = false;
+                foreach (var existingContent in note.Contents)
+                {
+                    if (newContent.Equals(existingContent))
+                    {
+                        exist = true;
+                        addContent.Add(existingContent);
+                        break;
+                    }
+                }
+                if (exist)
+                    continue;
+                else
+                {
+                    addContent.Add(newContent);
+                }
 
-            foreach (var control in StackPanelContent.Children)
+            }
+            note.Contents = addContent;            
+            DataContext = note;
+            this.UpdateLayout();
+        }
+        private IList<IContent> GetContentFromChildren(UIElementCollection children)
+        {
+            IList<IContent> contents = new List<IContent>();
+            AddTextBoxIfNoContent();
+            foreach (var control in children)
             {
                 IContent cont = null;
                 if (control is Image)
                 {
-                    cont = new PhotoContent() { Content = ImageToBytes(control as Image), ImageTitle = (control as Image).Source.ToString() };
+                    cont = new PhotoContent() { Content = ImageToBytes(control as Image), ImageTitle = (control as Image).Source.GetHashCode().ToString() };
                 }
                 else if (control is TextBox)
                 {
@@ -99,12 +125,7 @@ namespace NotABookWPF.Windows
                 }
                 contents.Add(cont);
             }
-            if (!contents.Equals(note.Contents))
-            {
-                note.Contents = contents;
-            }
-            DataContext = note;
-            this.UpdateLayout();
+            return contents;
         }
         #endregion
         private void BtnAttachImage_Click(object sender, RoutedEventArgs e)
@@ -126,7 +147,7 @@ namespace NotABookWPF.Windows
 
                     (this.DataContext as Note).Contents
                         .Add(new PhotoContent()
-                        { Content = imageByte, ImageTitle = name }
+                        { Content = ImageToBytes(myImage), ImageTitle = name }
                         );
                     StackPanelContent.Children.Add(new TextBox() { BorderBrush = Brushes.White, MinLines = 5 });
                 }
