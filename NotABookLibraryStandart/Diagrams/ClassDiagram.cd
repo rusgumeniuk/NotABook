@@ -1,12 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="NotABookLibraryStandart.Models.Book">
-    <Position X="24.25" Y="7.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>ABkoqAAAADIABAACAQAAEAEIgEEAAEhAAIAAAAAAIIA=</HashCode>
-      <FileName>Models\BookElements\Book.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="NotABookLibraryStandart.Models.BookElement">
     <Position X="27.5" Y="4" Width="1.5" />
     <TypeIdentifier>
@@ -14,20 +7,6 @@
       <FileName>Models\BookElements\BookElement.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="NotABookLibraryStandart.Models.CategoryInItem">
-    <Position X="19.5" Y="7.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>EAIABAASQACEABAQwAAAACAEABEAAIEABAAAACAoyAA=</HashCode>
-      <FileName>Models\BookElements\CategoriesInItems.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="NotABookLibraryStandart.Models.Category">
-    <Position X="26.75" Y="7.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>QCAAAAAEAAIAAGAAkAAAAABCIAEAAIAAAAAAAAIAAAA=</HashCode>
-      <FileName>Models\BookElements\Category.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Class Name="NotABookLibraryStandart.Models.ExtensionClass">
     <Position X="44.75" Y="1" Width="1.5" />
@@ -90,29 +69,29 @@
   <Class Name="NotABookLibraryStandart.Models.BookElements.Contents.TextContent">
     <Position X="42.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAkAAAAABgAAAAACAAAAAAIAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAkAAAAABgAAAAACAAAAAAIAAAAEACAAAAAA=</HashCode>
       <FileName>Models\BookElements\Contents\TextContent.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="NotABookLibraryStandart.Models.Item">
-    <Position X="17.75" Y="7.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEAAAAAAAQgAAAAIQgIAAAAAREAAAAkAAAAAAIAAAA=</HashCode>
-      <FileName>Models\BookElements\Item.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="NotABookLibraryStandart.Models.Description">
-    <Position X="21.25" Y="7.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAQgAAAAAAAAAAAAAAAAEACAAAAIA=</HashCode>
-      <FileName>Models\BookElements\Item.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="NotABookLibraryStandart.Models.BookElements.Note">
-    <Position X="29.5" Y="7.5" Width="2.25" />
+    <Position X="29.5" Y="7.5" Width="4" />
     <TypeIdentifier>
-      <HashCode>AAEAEAAAAAIIAAAIBAAAAgAAARgAEAAAAAAAAABgAAE=</HashCode>
+      <HashCode>AAEAEAAAAEIIAAAIBAAAAgAAABgAEAAAAAAAAABgAAE=</HashCode>
       <FileName>Models\BookElements\Note.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.BookElements.Category">
+    <Position X="26.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAgAAIAABAIAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BookElements\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NotABookLibraryStandart.Models.BookElements.Book">
+    <Position X="23.25" Y="7.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ABgoAAACAAAAAAQCAAAAEAEAgAEAAEgAAABACAAAIAg=</HashCode>
+      <FileName>Models\BookElements\Book.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="NotABookLibraryStandart.Models.Roles.IUser">
