@@ -7,29 +7,29 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public class TextContent : Content
     {
-        private string content;
+        public string Text { get; set; }
         public object Content
         {
-            get => content;
+            get => Text;
             set
             {
-                content = value?.ToString();
+                Text = value?.ToString();
             }
         }    
 
         public override bool IsEmptyContent()
         {
-            return String.IsNullOrWhiteSpace(content);
+            return String.IsNullOrWhiteSpace(Text);
         }
 
         public override string GetTitleFromContent()
         {
-            if (String.IsNullOrEmpty(content))
+            if (String.IsNullOrEmpty(Text))
                 return null;
 
-            string title = content.Clone() as string;
+            string title = Text.Clone() as string;
 
-            if (content.Contains(" "))
+            if (Text.Contains(" "))
             {
                 StringBuilder sb = new StringBuilder();
                 for (byte countOfWords = 0; countOfWords < 4 && sb.Length < 30; ++countOfWords)
@@ -74,7 +74,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
                 return false;
             }
             TextContent cont = obj as TextContent;
-            return content.Equals(cont.content);
+            return Text.Equals(cont.Text);
         }
         
         public override int GetHashCode()
@@ -84,7 +84,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 
         public override bool IsContainsText(string text)
         {
-            return content.ToUpperInvariant().Contains(text.ToUpperInvariant());
+            return Text.ToUpperInvariant().Contains(text.ToUpperInvariant());
         }
     }
 }
