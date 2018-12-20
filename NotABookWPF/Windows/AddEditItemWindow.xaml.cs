@@ -32,7 +32,7 @@ namespace NotABookWPF.Windows
         {
             InitializeComponent();
             currentBook = curBook;
-            AllCategoriesListBox.ItemsSource = currentBook.CategoriesOfBook;
+            AllCategoriesListBox.ItemsSource = MainWindow.CategoriesList;
             Note newNote = note ?? new Note(MainWindow.currentBook);
             if (note == null)
                 currentBook.Notes.Add(newNote);

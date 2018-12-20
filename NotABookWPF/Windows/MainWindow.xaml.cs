@@ -35,10 +35,8 @@ namespace NotABookWPF.Windows
             get => Book.Books;
             set => Book.Books = value;
         }
-        public static ObservableCollection<Note> Notes => currentBook?.Notes;
-        public static ObservableCollection<Item> ItemsList => currentBook?.ItemsOfBook;
-        public static ObservableCollection<Category> CategoriesList => currentBook?.CategoriesOfBook;
-        public static ObservableCollection<CategoryInItem> CategoryInItemsList => currentBook?.CategoryInItemsOfBook;
+        public static ObservableCollection<Note> Notes => currentBook?.Notes;        
+        public static ObservableCollection<Category> CategoriesList { get; set; } = new ObservableCollection<Category>();        
 
         #endregion
 
@@ -67,20 +65,20 @@ namespace NotABookWPF.Windows
             Category tomatoCategory = new Category(currentBook, "Tomato");
             Category chickenCategory = new Category(currentBook, "Chicken");
 
-            currentBook.CategoriesOfBook.Add(chocolateCategory);
-            currentBook.CategoriesOfBook.Add(flourCategory);
-            currentBook.CategoriesOfBook.Add(eggsCategory);
-            currentBook.CategoriesOfBook.Add(potatoCategory);
-            currentBook.CategoriesOfBook.Add(tomatoCategory);
-            currentBook.CategoriesOfBook.Add(chickenCategory);
+            CategoriesList.Add(chocolateCategory);
+            CategoriesList.Add(flourCategory);
+            CategoriesList.Add(eggsCategory);
+            CategoriesList.Add(potatoCategory);
+            CategoriesList.Add(tomatoCategory);
+            CategoriesList.Add(chickenCategory);
 
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test1"));
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test2"));
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test3"));
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test4"));
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test5"));
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test6"));
-            currentBook.CategoriesOfBook.Add(new Category(currentBook, "test7"));
+            CategoriesList.Add(new Category(currentBook, "test1"));
+            CategoriesList.Add(new Category(currentBook, "test2"));
+            CategoriesList.Add(new Category(currentBook, "test3"));
+            CategoriesList.Add(new Category(currentBook, "test4"));
+            CategoriesList.Add(new Category(currentBook, "test5"));
+            CategoriesList.Add(new Category(currentBook, "test6"));
+            CategoriesList.Add(new Category(currentBook, "test7"));
 
 
             Note chocolateBiscuit = new Note(currentBook, "Chocolate biscuit", new List<IContent>() { new TextContent() { Content = "The best chocolate cake ever" } }, new List<Category>() { chocolateCategory, flourCategory, eggsCategory });
@@ -147,11 +145,11 @@ namespace NotABookWPF.Windows
         #region context menu
         private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
         {
-            Book.ClearItemsList(((sender as MenuItem).CommandParameter as Book));
+            Book.ClearNotesList(((sender as MenuItem).CommandParameter as Book));
         }
         private void MenuItemRemoveCategories_Click(object sender, RoutedEventArgs e)
         {
-            Book.ClearCaregoriesList(((sender as MenuItem).CommandParameter as Book));
+            throw new NotImplementedException();
         }
         private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
         {

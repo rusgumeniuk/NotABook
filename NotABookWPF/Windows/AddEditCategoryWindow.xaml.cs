@@ -46,7 +46,7 @@ namespace NotABookWPF.Windows
                 }
                 else
                 {
-                    Book.CategoriesOfBook.Add(new Category(Book, CategoryTitleTextBox.Text));
+                   MainWindow.CategoriesList.Add(new Category(Book, CategoryTitleTextBox.Text));
                 }
                 Close();
             }
