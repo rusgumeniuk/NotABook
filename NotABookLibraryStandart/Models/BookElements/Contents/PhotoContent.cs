@@ -11,7 +11,9 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
     public class PhotoContent : Content
     {
         public byte[] BytesOfPhoto { get; set; }
-        public string ImageTitle { get; set; }
+        public string ImageTitle
+        { get;
+            set; }
         public object Content
         {
             get
@@ -31,7 +33,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
                         binaryFormatter.Serialize(memoryStream, value);
                         BytesOfPhoto = memoryStream.ToArray();
                     }
-                    ImageTitle = image.Tag?.ToString();
+                    ImageTitle = $"Image{DateTime.Now.Millisecond}";
                 }
                 else if (value is byte[])
                 {
@@ -69,7 +71,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             if (obj as PhotoContent == null)
                 return false;
             PhotoContent content = obj as PhotoContent;
-            return BytesOfPhoto.Equals(content.BytesOfPhoto) && ImageTitle.Equals(content.ImageTitle);
+            return BytesOfPhoto.Equals(content.BytesOfPhoto) || ImageTitle.Equals(content.ImageTitle);
         }
         public override int GetHashCode()
         {
