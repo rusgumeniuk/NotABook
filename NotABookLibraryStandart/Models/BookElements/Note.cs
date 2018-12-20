@@ -45,9 +45,9 @@ namespace NotABookLibraryStandart.Models.BookElements
                 foreach (var content in noteContents)
                 {
                     if (!content.IsEmptyContent())
-                        return true;
+                        return false;
                 }
-                return false;
+                return true;
             }
         }
         public string TitleFromContent
