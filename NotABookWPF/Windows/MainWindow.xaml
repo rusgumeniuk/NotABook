@@ -10,10 +10,10 @@
 
         <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="1,1,1,1">
             <MenuItem Header="File">
-                <MenuItem Header="New element">
-                    <MenuItem Header="New book"/>
-                    <MenuItem Header="New note"/>
-                    <MenuItem Header="New category"/>
+                <MenuItem Header="Create book element">
+                    <MenuItem x:Name="MenuItemCreateBook" Header="New book" Click="MenuItemCreateBook_Click"/>
+                    <MenuItem x:Name="MenuItemCreateNote" Header="New note" Click="MenuItemCreateNote_Click"/>
+                    <MenuItem x:Name="MenuItemCreateCategory" Header="New category" Click="MenuItemCreateCategory_Click"/>
                 </MenuItem>
                 <MenuItem Header="Syncronize"/>
                 <Separator/>
@@ -49,20 +49,29 @@
                 <ListView
                     x:Name="ListViewBooks"       
                     x:FieldModifier="public"
-                    SelectionChanged="ListViewBooks_SelectionChanged"
+                    SelectionChanged="ListViewBooks_SelectionChanged"                    
                     SelectionMode="Single"
-                     HorizontalContentAlignment="Stretch">
+                    MouseDoubleClick="ListViewBooks_MouseDoubleClick"
+                    HorizontalContentAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBox  Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click_1"/>
-                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove ntoes" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
-                                        <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
+                                        <MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>
+                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove notes" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>                                        
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
+                                <TextBox  
+                                    Name="TBEditBookTitle" 
+                                    Text="{Binding Title}" 
+                                    IsEnabled="False" 
+                                    LostFocus="TBEditBookTitle_LostFocus" 
+                                    MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"
+                                    HorizontalAlignment="Stretch">
+                                </TextBox>
+
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

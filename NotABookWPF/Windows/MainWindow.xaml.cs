@@ -58,6 +58,10 @@ namespace NotABookWPF.Windows
             Book secondBook = new Book("Second book");
             Book thirdBook = new Book("Third book");
 
+            Book.Books.Add(currentBook);
+            Book.Books.Add(secondBook);
+            Book.Books.Add(thirdBook);
+
             Category chocolateCategory = new Category(currentBook, "Chocolate");
             Category flourCategory = new Category(currentBook, "Flour");
             Category eggsCategory = new Category(currentBook, "Eggs");
@@ -101,9 +105,22 @@ namespace NotABookWPF.Windows
             ListViewBooks.SelectedItem = MainWindow.currentBook;
             TextBlockCountOfItems.Text = MainWindow.currentBook?.Notes.Count.ToString() + " ";
             TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
+            HideNotePanel();
         }
 
         #region Menu panel
+        private void MenuItemCreateNote_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditINoteWindow(currentBook) { Title = "Creating" }).Show();
+        }
+        private void MenuItemCreateBook_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditBook() { Title = "Creating" }).Show();
+        }
+        private void MenuItemCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditCategoryWindow(currentBook)).Show();
+        }
         private void MenuItemFAQ_Click(object sender, RoutedEventArgs e)
         {
             (new FAQWindow() { Title = "FAQ" }).Show();
@@ -118,7 +135,7 @@ namespace NotABookWPF.Windows
         }
         private void BtnNewNote_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditItemWindow(currentBook) { Title = "Creating of item" }).Show();
+            (new AddEditINoteWindow(currentBook) { Title = "Creating of item" }).Show();
         }
         #endregion
 
@@ -136,32 +153,28 @@ namespace NotABookWPF.Windows
                 UpdateCurrentBook();
             }
         }
+        private void ListViewBooks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            (new AddEditBook(ListViewBooks.SelectedItem as Book) { Title = "Creating" }).Show();
+        }
         private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
         {
-            (sender as TextBox).IsEnabled = false;
-            //((sender as TextBox) as Book).Title = (sender as TextBox).Text;
+            (sender as TextBox).IsEnabled = false;            
             (ListViewBooks.SelectedItem as Book).Title = (sender as TextBox).Text;
         }
+
         #region context menu
         private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
         {
             Book.ClearNotesList(((sender as MenuItem).CommandParameter as Book));
-        }
-        private void MenuItemRemoveCategories_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-        private void MenuItemRemoveAllConnections_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void MenuItemRemoveAllElements_Click(object sender, RoutedEventArgs e)
-        {
-            Book.RemoveAllElementsOfBook(((sender as MenuItem).CommandParameter as Book));
-        }
+        }             
         private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
         {
             ((sender as MenuItem).CommandParameter as Book).Delete();
+        }
+        private void MenuItemEditBook_Click(object sender, RoutedEventArgs e)
+        {
+            (new AddEditBook(((sender as MenuItem).CommandParameter as Book)) { Title = "Editing" }).Show();
         }
         #endregion
 
@@ -213,15 +226,70 @@ namespace NotABookWPF.Windows
         private void ListBoxItems_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if(ListBoxItems.SelectedItem != null)
-            {
+            {                
+                HideNotePanel();
                 StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
                 CategoryInNoteListBox.ItemsSource = (ListBoxItems.SelectedItem as Note).Categories;
+                InputContentsToStackPanel(ListBoxItems.SelectedItem as Note);
+                AddTextBoxIfNoContent();
                 StackPanelItemPanel.Visibility = Visibility.Visible;
             }           
         }
+
+        private void UpdateNoteData()
+        {
+            Note note = StackPanelContent.DataContext as Note;
+            note.Title = TBEditItemTitle.Text;
+            note.Categories = CategoryInNoteListBox.ItemsSource as ObservableCollection<Category>;
+            IList<IContent> contents = GetContentFromChildren(StackPanelContent.Children);
+            IList<IContent> addContent = new List<IContent>();
+            foreach (var newContent in contents)
+            {
+                bool exist = false;
+                foreach (var existingContent in note.Contents)
+                {
+                    if (newContent.Equals(existingContent))
+                    {
+                        exist = true;
+                        addContent.Add(existingContent);
+                        break;
+                    }
+                }
+                if (exist)
+                    continue;
+                else
+                {
+                    addContent.Add(newContent);
+                }
+
+            }
+            note.Contents = addContent;
+            DataContext = note;
+            this.UpdateLayout();
+        }
+        private IList<IContent> GetContentFromChildren(UIElementCollection children)
+        {
+            IList<IContent> contents = new List<IContent>();
+            AddTextBoxIfNoContent();
+            foreach (var control in children)
+            {
+                IContent cont = null;
+                if (control is Image)
+                {
+                    cont = new PhotoContent() { Content = ImageToBytes(control as Image), ImageTitle = (control as Image).Source.GetHashCode().ToString() };
+                }
+                else if (control is TextBox)
+                {
+                    cont = new TextContent() { Content = (control as TextBox).Text };
+                }
+                contents.Add(cont);
+            }
+            return contents;
+        }
+
         private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            (new AddEditItemWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
+            (new AddEditINoteWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
         }
         #endregion
         private void ComboBoxCurrentBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -258,11 +326,126 @@ namespace NotABookWPF.Windows
         }
         #endregion
 
-        #endregion
-
-       private void HideNotePanel()
+        private void HideNotePanel()
         {
             StackPanelItemPanel.Visibility = Visibility.Collapsed;
+            StackPanelContent.Children.Clear();
+            StackPanelItemPanel.DataContext = null;
         }
+
+        #region Content
+        private void InputContentsToStackPanel(Note note)
+        {
+            foreach (var content in note.Contents)
+            {
+                StackPanelContent.Children.Add(content is TextContent ?
+                    new TextBox() { Text = (content as TextContent).Content as string, BorderBrush = Brushes.White, MinLines = 5 }
+                    : (UIElement)new Image() { Source = BytesToImage((content as PhotoContent).BytesOfPhoto) });
+            }
+        }
+        private void RemoveEmptyContents()
+        {
+            for (int i = 0; i < StackPanelContent.Children.Count; i++)
+            {
+                if ((StackPanelContent.Children[i] as TextBox)?.Text.Length < 1)
+                {
+                    StackPanelContent.Children.RemoveAt(i);
+                }
+            }
+        }
+        private void StackPanelContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var lol = e.Source is TextBox ? (e.Source as TextBox).Text : (e.Source as Image).Source.ToString();
+            var result = MessageBox.Show("Delete content " + lol + "?", "Remove content", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                StackPanelContent.Children.Remove(e.Source as UIElement);
+                AddTextBoxIfNoContent();
+            }
+            UpdateNoteData();
+        }
+        private void AddTextBoxIfNoContent()
+        {
+            if (!IsContentsHasTextBox())
+            {
+                StackPanelContent.Children.Add(new TextBox() { BorderBrush = Brushes.White, MinLines = 5 });
+            }
+        }
+        private bool IsContentsHasTextBox()
+        {
+            foreach (var control in StackPanelContent.Children)
+            {
+                if (control is TextBox)
+                    return true;
+            }
+            return false;
+        }
+        private void BtnAttachImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                var extension = System.IO.Path.GetExtension(dialog.FileName);
+
+                if (IsImageExtension(extension))
+                {
+                    Image myImage = new Image();
+                    byte[] imageByte = File.ReadAllBytes(dialog.FileName);
+                    myImage.Source = BytesToImage(imageByte);
+                    string name = System.IO.Path.GetFileName(dialog.FileName);
+                    RemoveEmptyContents();
+
+                    StackPanelContent.Children.Add(myImage);
+
+                    (StackPanelItemPanel.DataContext as Note).Contents
+                        .Add(new PhotoContent()
+                        { Content = imageByte, ImageTitle = name }
+                        );
+                    StackPanelContent.Children.Add(new TextBox() { BorderBrush = Brushes.White, MinLines = 5 });
+                }
+                else
+                {
+                    MessageBox.Show("FALSE");
+                }
+            }
+            UpdateNoteData();
+        }
+        #region Image/byte
+        private static bool IsImageExtension(string extension)
+        {
+            return extension.Equals(".jpg") || extension.Equals(".png");
+        }
+        private static BitmapImage BytesToImage(byte[] bytes)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = new MemoryStream(bytes);
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+        private static byte[] ImageToBytes(Image image)
+        {
+            if (image.Source is BitmapSource bitmapSource)
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                using (var stream = new MemoryStream())
+                {
+                    encoder.Save(stream);
+                    return stream.ToArray();
+                }
+            }
+            return null;
+        }
+
+
+
+        #endregion
+
+        #endregion
+
+        #endregion        
     }
 }
