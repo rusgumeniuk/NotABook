@@ -35,8 +35,8 @@ namespace NotABookWPF.Windows
             get => Book.Books;
             set => Book.Books = value;
         }
-        public static ObservableCollection<Note> Notes => currentBook?.Notes;        
-        public static ObservableCollection<Category> CategoriesList { get; set; } = new ObservableCollection<Category>();        
+        public static ObservableCollection<Note> Notes => currentBook?.Notes;
+        public static ObservableCollection<Category> CategoriesList { get; set; } = new ObservableCollection<Category>();
 
         #endregion
 
@@ -159,7 +159,7 @@ namespace NotABookWPF.Windows
         }
         private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
         {
-            (sender as TextBox).IsEnabled = false;            
+            (sender as TextBox).IsEnabled = false;
             (ListViewBooks.SelectedItem as Book).Title = (sender as TextBox).Text;
         }
 
@@ -167,7 +167,7 @@ namespace NotABookWPF.Windows
         private void MenuItemRemoveItems_Click(object sender, RoutedEventArgs e)
         {
             Book.ClearNotesList(((sender as MenuItem).CommandParameter as Book));
-        }             
+        }
         private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
         {
             ((sender as MenuItem).CommandParameter as Book).Delete();
@@ -189,12 +189,12 @@ namespace NotABookWPF.Windows
         }
         private void TextBoxFindItem_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(ListBoxItems.Items.Count < 1)
+            if (ListBoxItems.Items.Count < 1)
             {
                 TextBoxFindItem.Text = "Find note";
                 UpdateCurrentBook();
                 HideNotePanel();
-            }            
+            }
         }
         private void TextBoxFindItem_LostMouseCapture(object sender, MouseEventArgs e)
         {
@@ -225,15 +225,15 @@ namespace NotABookWPF.Windows
         #region Note selection
         private void ListBoxItems_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if(ListBoxItems.SelectedItem != null)
-            {                
+            if (ListBoxItems.SelectedItem != null)
+            {
                 HideNotePanel();
                 StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
                 CategoryInNoteListBox.ItemsSource = (ListBoxItems.SelectedItem as Note).Categories;
                 InputContentsToStackPanel(ListBoxItems.SelectedItem as Note);
                 AddTextBoxIfNoContent();
                 StackPanelItemPanel.Visibility = Visibility.Visible;
-            }           
+            }
         }
 
         private void UpdateNoteData()

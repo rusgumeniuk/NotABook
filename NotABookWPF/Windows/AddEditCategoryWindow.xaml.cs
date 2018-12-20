@@ -1,4 +1,5 @@
 ﻿using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +47,12 @@ namespace NotABookWPF.Windows
                 }
                 else
                 {
-                   MainWindow.CategoriesList.Add(new Category(Book, CategoryTitleTextBox.Text));
+                    MainWindow.CategoriesList.Add(new Category(Book, CategoryTitleTextBox.Text));
                 }
                 Close();
             }
             else MessageBox.Show("Ooop, empty text box");
-               
+
         }
 
         private void BtnCancelSave_Click(object sender, RoutedEventArgs e)

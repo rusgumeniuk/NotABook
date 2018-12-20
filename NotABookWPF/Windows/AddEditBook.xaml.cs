@@ -1,4 +1,5 @@
 ﻿using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace NotABookWPF.Windows
             DataContext = Book;
             BookTitleTextBox.Text = Book?.Title ?? String.Empty;
 
-        }     
+        }
         private void BtnSaveBook_Click(object sender, RoutedEventArgs e)
         {
             if (!String.IsNullOrWhiteSpace(BookTitleTextBox.Text))
@@ -44,7 +45,7 @@ namespace NotABookWPF.Windows
                 Close();
             }
             else MessageBox.Show("Ooop, empty text box");
-        }       
+        }
 
         private void BtnCancelSave_Click(object sender, RoutedEventArgs e)
         {
