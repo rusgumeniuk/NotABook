@@ -66,12 +66,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\AddEditBook.xaml.cs">
+      <DependentUpon>AddEditBook.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddEditCategoryWindow.xaml.cs">
       <DependentUpon>AddEditCategoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\AddEditItemWindow.xaml.cs">
       <DependentUpon>AddEditItemWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Windows\AddEditBook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddEditCategoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,6 +138,10 @@
       <Project>{56e5237a-fe7b-4499-8c4c-462471766ad2}</Project>
       <Name>NotABookLibraryStandart</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
