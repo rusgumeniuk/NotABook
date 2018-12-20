@@ -62,13 +62,11 @@
             </Expander>
             <ScrollViewer HorizontalAlignment="Stretch">
                 <StackPanel 
-                Name="StackPanelContent"
-                MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"                
-             />
+                    Name="StackPanelContent"
+                    MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"      
+                    />
             </ScrollViewer>
-        </StackPanel>
-       
-                   
+        </StackPanel>                        
         <Button Grid.Row="4" Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
     </Grid>
 </Window>

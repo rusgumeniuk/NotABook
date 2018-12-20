@@ -6,14 +6,13 @@
         xmlns:local="clr-namespace:NotABookWPF.Windows"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel  Margin="0,0,-0.4,0">
+    <StackPanel  Margin="1,1,1,1">
 
-        <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0">
-            <!--<MenuItem Header="Hello" Name="MenuItemHello" Click="MenuItemHello_Click"/>-->
+        <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="1,1,1,1">
             <MenuItem Header="File">
                 <MenuItem Header="New element">
                     <MenuItem Header="New book"/>
-                    <MenuItem Header="New item"/>
+                    <MenuItem Header="New note"/>
                     <MenuItem Header="New category"/>
                 </MenuItem>
                 <MenuItem Header="Syncronize"/>
@@ -23,16 +22,15 @@
             <MenuItem Header="Edit">
                 <MenuItem Header="Undo"/>
             </MenuItem>
-            <MenuItem Header="About"
-                      >             
+            <MenuItem Header="About">
                 <MenuItem Header="FAQ" Name = "MenuItemFAQ" Click="MenuItemFAQ_Click"/>
                 <MenuItem Header="About" Name = "MenuItemAbout" Click="MenuItemAbout_Click"/>
             </MenuItem>
         </Menu>
         <ToolBar Height="Auto">
-            <Button Name="BtnNewNote" Content="New note" Click="BtnNewNote_Click"/>          
+            <Button Name="BtnNewNote" Content="New note" Click="BtnNewNote_Click"/>
             <Separator/>
-            <TextBox Foreground="LightGray" Width="100" Text="Find me..."/>
+            <TextBox Foreground="LightGray" Width="100" Text="Find note"/>
         </ToolBar>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -54,17 +52,15 @@
                     SelectionChanged="ListViewBooks_SelectionChanged"
                     SelectionMode="Single"
                      HorizontalContentAlignment="Stretch">
-                    <ListView.ItemTemplate>                        
+                    <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
                                 <TextBox  Name="TBEditBookTitle" Text="{Binding Title}" IsEnabled="False" LostFocus="TBEditBookTitle_LostFocus" MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"/>
                                 <StackPanel.ContextMenu>
-                                    <ContextMenu>                                        
+                                    <ContextMenu>
                                         <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click_1"/>
-                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove items" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
+                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove ntoes" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
                                         <MenuItem Name="MenuItemRemoveCategories" Header="Remove categories" CommandParameter="{Binding .}" Click="MenuItemRemoveCategories_Click"/>
-                                        <MenuItem Name="MenuItemRemoveAllConnections" Header="Remove all connections" CommandParameter="{Binding .}" Click="MenuItemRemoveAllConnections_Click"/>
-                                        <MenuItem Name="MenuItemRemoveAllElements" Header="Remove all elements" CommandParameter="{Binding .}" Click="MenuItemRemoveAllElements_Click"/>
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
                             </StackPanel>
@@ -102,7 +98,7 @@
                                 <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
                                 <StackPanel Background="White" CanHorizontallyScroll="False">
                                     <TextBlock Text="{Binding DateOfLastChanging}" FontStyle="Italic"/>
-                                    <TextBlock Text="{Binding Description.Text}" FontStretch="Expanded" TextWrapping="WrapWithOverflow"/>
+                                    <TextBlock Text="{Binding FirstTextContent.Content}" FontStretch="Expanded" TextWrapping="WrapWithOverflow"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
@@ -120,9 +116,9 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Date of creating: "/>
                         <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
-                    </StackPanel>                                       
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" >
-                        <Expander x:Name="CategoryExpander" ExpandDirection="Right" HorizontalAlignment="Left" VerticalAlignment="Top">                            
+                        <Expander x:Name="CategoryExpander" ExpandDirection="Right" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="0.45*"/>
@@ -152,15 +148,19 @@
                                     Content="Create new category" 
                                     Click="BtnCreateCategory_Click" 
                                     VerticalAlignment="Bottom" 
-                                    Margin="10,10,10,10" />                               
-                            </Grid>                                                                                                            
+                                    Margin="10,10,10,10" />
+                            </Grid>
                         </Expander>
-                        <StackPanel >
-                            <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Text="CONTENT"/>
-                        </StackPanel>
-                    </StackPanel>                    
+                        <ScrollViewer HorizontalAlignment="Right">
+                            <StackPanel 
+                                Name="StackPanelContent"
+                                MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"                
+                                />
+                        </ScrollViewer>
+                    </StackPanel>
                 </StackPanel>
+                <Button Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
             </StackPanel>
-        </Grid>              
+        </Grid>
     </StackPanel>
 </Window>
