@@ -5,7 +5,7 @@ using NotABookLibraryStandart.Exceptions;
 using System.Collections.ObjectModel;
 using NotABookLibraryStandart.Models.BookElements;
 
-namespace NotABookLibraryStandart.Models
+namespace NotABookLibraryStandart.Models.BookElements
 {
     /// <summary>
     /// Represents a category of the book
