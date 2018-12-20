@@ -17,7 +17,7 @@ namespace NotABookLibraryStandart.Models
         /// </summary>       
         public static TypeOfRunningProject ProjectType = TypeOfRunningProject.WPF;
 
-        public Guid Id { get; private set; }      
+        public Guid Id { get; set; }      
 
 
         #endregion
