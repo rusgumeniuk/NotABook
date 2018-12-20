@@ -14,15 +14,12 @@ namespace NotABookLibraryStandart.Models
             {
                 if (!String.IsNullOrWhiteSpace(value))
                 {
-                    title = value;                    
+                    title = value;
                 }
             }
         }
 
-        public Entity() : base()
-        {
-            title = $"{this.GetType().Name}{DateTime.Now.Millisecond}";
-        }
+        public Entity() : base() { }
         public Entity(string title) : base()
         {
             Title = title;
