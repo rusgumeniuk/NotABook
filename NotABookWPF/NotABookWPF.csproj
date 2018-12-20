@@ -72,9 +72,6 @@
     <Compile Include="Windows\AddEditCategoryWindow.xaml.cs">
       <DependentUpon>AddEditCategoryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\AddEditItemWindow.xaml.cs">
-      <DependentUpon>AddEditItemWindow.xaml</DependentUpon>
-    </Compile>
     <Page Include="Windows\AddEditBook.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -82,6 +79,10 @@
     <Page Include="Windows\AddEditCategoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddEditINoteWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\FAQWindow.xaml">
       <SubType>Designer</SubType>
@@ -95,16 +96,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\AddEditINoteWindow.xaml.cs">
+      <DependentUpon>AddEditINoteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\FAQWindow.xaml.cs">
       <DependentUpon>FAQWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Windows\AddEditItemWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
