@@ -26,17 +26,21 @@ namespace NotABookWPF.Windows
     public partial class AddEditINoteWindow : Window
     {
         #region Init
+        DataContext db;
         readonly Book currentBook;
+        bool creating = true;
 
-        public AddEditINoteWindow(Book curBook, Note note = null)
+        public AddEditINoteWindow(Book curBook, DataContext dataContext, Note note = null)
         {
             InitializeComponent();
+            db = dataContext;
             currentBook = curBook;
-            AllCategoriesListBox.ItemsSource = MainWindow.CategoriesList;
-            Note newNote = note ?? new Note(MainWindow.currentBook);           
+            AllCategoriesListBox.ItemsSource = dataContext.Categories.Local;
+            Note newNote = note ?? new Note();
+            creating = note == null;
             this.DataContext = newNote;
             this.Title = newNote?.Title ?? String.Empty;
-            CategoryInNoteListBox.ItemsSource = newNote.Categories;
+            CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(link => link.Note.Id.Equals(note?.Id))?.Select(conn => conn.Category);
             InputContentsToStackPanel(newNote);
             AddTextBoxIfNoContent();
         }
@@ -44,7 +48,7 @@ namespace NotABookWPF.Windows
 
         private void InputContentsToStackPanel(Note note)
         {
-            foreach (var content in note.Contents)
+            foreach (var content in note.NoteContents)
             {
                 StackPanelContent.Children.Add(content is TextContent ?
                     new TextBox() { Text = (content as TextContent).Content as string, BorderBrush = Brushes.White, MinLines = 5 }
@@ -64,30 +68,36 @@ namespace NotABookWPF.Windows
             {
                 Note note = DataContext as Note;
                 RemoveEmptyContents();
-                UpdateNoteData();                
+                SaveNoteData();
                 if (String.IsNullOrWhiteSpace(note.Title) && note.IsHasNotContent)
-                {                    
+                {
                     return;
                 }
-                else if (String.IsNullOrWhiteSpace(note.Title))
+                else if (!String.IsNullOrWhiteSpace(note.Title))
+                {
+                    note.Title = note.Title;
+                }
+                else
                 {
                     note.Title = note.TitleFromContent;
-                }                
-                currentBook.Notes.Add(note);
+                }
+                if (creating)
+                    currentBook.Notes.Add(note);
+                db.SaveChanges();
             }
         }
 
-        private void UpdateNoteData()
+        private void SaveNoteData()
         {
             Note note = DataContext as Note;
             note.Title = TBEditItemTitle.Text;
-            note.Categories = CategoryInNoteListBox.ItemsSource as ObservableCollection<Category>;
-            IList<IContent> contents = GetContentFromChildren(StackPanelContent.Children);
-            IList<IContent> addContent = new List<IContent>();
+            IList<Content> contents = GetContentFromChildren(StackPanelContent.Children);
+            IList<Content> addContent = new List<Content>();
+            bool hasDiffences = false;
             foreach (var newContent in contents)
             {
                 bool exist = false;
-                foreach (var existingContent in note.Contents)
+                foreach (var existingContent in note.NoteContents)
                 {
                     if (newContent.Equals(existingContent))
                     {
@@ -100,21 +110,30 @@ namespace NotABookWPF.Windows
                     continue;
                 else
                 {
+                    hasDiffences = true;
                     addContent.Add(newContent);
                 }
-
             }
-            note.Contents = addContent;            
+            if (hasDiffences || !contents.Count.Equals(note.NoteContents))
+            {
+                foreach (var content in note.NoteContents)
+                {
+                    db.Contents.Remove(content);
+                }
+                note.NoteContents.Clear();
+                note.NoteContents = addContent;
+                db.SaveChanges();
+            }
             DataContext = note;
-            this.UpdateLayout();
         }
-        private IList<IContent> GetContentFromChildren(UIElementCollection children)
+
+        private IList<Content> GetContentFromChildren(UIElementCollection children)
         {
-            IList<IContent> contents = new List<IContent>();
+            IList<Content> contents = new List<Content>();
             AddTextBoxIfNoContent();
             foreach (var control in children)
             {
-                IContent cont = null;
+                Content cont = null;
                 if (control is Image)
                 {
                     cont = new PhotoContent() { Content = ImageToBytes(control as Image), ImageTitle = (control as Image).Source.GetHashCode().ToString() };
@@ -145,7 +164,7 @@ namespace NotABookWPF.Windows
 
                     StackPanelContent.Children.Add(myImage);
 
-                    (this.DataContext as Note).Contents
+                    (this.DataContext as Note).NoteContents
                         .Add(new PhotoContent()
                         { Content = ImageToBytes(myImage), ImageTitle = name }
                         );
@@ -232,24 +251,34 @@ namespace NotABookWPF.Windows
 
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditCategoryWindow(currentBook) { Title = "Create category" }).Show();
+            (new AddEditCategoryWindow(db) { Title = "Create category" }).Show();
         }
 
         private void CategoryInNoteListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            (CategoryInNoteListBox.ItemsSource as IList<Category>).Remove(CategoryInNoteListBox.SelectedItem as Category);
-            CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
-
+            if (CategoryInNoteListBox.SelectedItem != null)
+            {
+                db.LinkNoteCategories.Local.Remove(
+                    db.LinkNoteCategories.Local
+                    .First(
+                        link => link.Note.Id.Equals((DataContext as Note).Id)
+                        && link.Category.Id.Equals((CategoryInNoteListBox.SelectedItem as Category).Id))
+               );
+                CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((DataContext as Note).Id)).Select(conn => conn.Category);
+            }
         }
 
         private void AllCategoriesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
-                MessageBox.Show("Note already marked by this category!");
-            else
+            if (AllCategoriesListBox.SelectedItem != null)
             {
-                (CategoryInNoteListBox.ItemsSource as IList<Category>).Add(AllCategoriesListBox.SelectedItem as Category);
-                CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
+                if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
+                    MessageBox.Show("Note already marked by this category!");
+                else
+                {
+                    db.LinkNoteCategories.Local.Add(new LinkNoteCategory(DataContext as Note, AllCategoriesListBox.SelectedItem as Category));
+                    CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((DataContext as Note).Id)).Select(conn => conn.Category);
+                }
             }
         }
     }
