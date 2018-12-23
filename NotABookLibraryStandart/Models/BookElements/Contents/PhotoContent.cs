@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Media;
@@ -71,7 +72,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             if (obj as PhotoContent == null)
                 return false;
             PhotoContent content = obj as PhotoContent;
-            return BytesOfPhoto.Equals(content.BytesOfPhoto) || ImageTitle.Equals(content.ImageTitle);
+            return BytesOfPhoto.SequenceEqual(content.BytesOfPhoto) || ImageTitle.Equals(content.ImageTitle);
         }
         public override int GetHashCode()
         {
