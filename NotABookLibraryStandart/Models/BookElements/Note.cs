@@ -8,41 +8,14 @@ namespace NotABookLibraryStandart.Models.BookElements
 {
     public class Note : BookElement
     {
-        private IList<IContent> noteContents = new ObservableCollection<IContent>();
+        public IList<Content> NoteContents { get; set; } = new ObservableCollection<Content>();
 
-        #region prop
-        public IList<Category> Categories { get; set; } = new ObservableCollection<Category>();
-        public string CategoriesStr
-        {
-            get
-            {
-                if (Categories.Count < 1)
-                    return null;
-                StringBuilder stringBuilder = new StringBuilder();
-                foreach (var category in Categories)
-                {
-                    stringBuilder.Append(category.Title).Append(", ");
-                }
-                return stringBuilder.Remove(stringBuilder.Length - 2, 2).Append(".").ToString();
-            }
-        }
-        public IList<IContent> Contents
-        {
-            get => noteContents;
-            set
-            {
-                noteContents.Clear();
-                foreach (var content in value)
-                {
-                    noteContents.Add(content);
-                }
-            }
-        }
+        #region prop             
         public bool IsHasNotContent
         {
             get
             {
-                foreach (var content in noteContents)
+                foreach (var content in NoteContents)
                 {
                     if (!content.IsEmptyContent())
                         return false;
@@ -54,7 +27,7 @@ namespace NotABookLibraryStandart.Models.BookElements
         {
             get
             {
-                foreach (var content in noteContents)
+                foreach (var content in NoteContents)
                 {
                     if (content.GetTitleFromContent() != null)
                         return content.GetTitleFromContent();
@@ -64,7 +37,7 @@ namespace NotABookLibraryStandart.Models.BookElements
         }
         public TextContent FirstTextContent
         {
-            get => noteContents[IndexOfTextContent] as TextContent;
+            get => IndexOfTextContent != -1 ? NoteContents[IndexOfTextContent] as TextContent : null;
         }
         public string SetTextToFirstTextContent
         {
@@ -72,7 +45,7 @@ namespace NotABookLibraryStandart.Models.BookElements
             {
                 if (IndexOfTextContent != -1)
                 {
-                    (noteContents[IndexOfTextContent] as TextContent).Content = value;
+                    (NoteContents[IndexOfTextContent] as TextContent).Content = value;
                 }
                 else
                     throw new ArgumentException("U shouldn't see this");
@@ -82,9 +55,9 @@ namespace NotABookLibraryStandart.Models.BookElements
         {
             get
             {
-                for (int i = 0; i < noteContents.Count; i++)
+                for (int i = 0; i < NoteContents.Count; i++)
                 {
-                    if (noteContents[i] is TextContent)
+                    if (NoteContents[i] is TextContent)
                         return i;
                 }
                 return -1;
@@ -93,38 +66,28 @@ namespace NotABookLibraryStandart.Models.BookElements
         #endregion
 
         #region ctors
-        public Note(Book book) : base(book)
+
+        public Note() : base()
         {
-            Contents.Add(new TextContent());
+           
         }
 
-        public Note(Book book, string title) : base(book, title)
+        public Note(string title) : base(title)
         {
-            Contents.Add(new TextContent());
+          
         }
 
-        public Note(Book book, string title, IList<IContent> contents) : this(book, title)
+        public Note(string title, IList<Content> contents) : this(title)
         {
-            Contents = contents;
-        }
-
-        public Note(Book book, string title, IList<IContent> contents, IList<Category> categories) : this(book, title, contents)
-        {
-            Categories = categories;
+            NoteContents = contents;
         }
         #endregion
-               
+
         public bool IsContainsText(string text)
         {
             if (Title.Trim().ToUpperInvariant().Contains(text.Trim().ToUpperInvariant()))
-                return true;
-
-            foreach (var category in Categories)
-            {
-                if (category.Title.Trim().ToUpperInvariant().Contains(text.Trim().ToUpperInvariant()))
-                    return true;
-            }
-            foreach (var content in noteContents)
+                return true;          
+            foreach (var content in NoteContents)
             {
                 if (content.IsContainsText(text))
                     return true;
@@ -141,19 +104,19 @@ namespace NotABookLibraryStandart.Models.BookElements
             return note != null ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new ArgumentNullException());
         }
 
-        public void AddContent(IContent content)
+        public void AddContent(Content content)
         {
-            noteContents.Add(content);
+            NoteContents.Add(content);
         }
 
-        public void RemoveContent(IContent content)
+        public void RemoveContent(Content content)
         {
-            noteContents.Remove(content);
+            NoteContents.Remove(content);
         }
 
-        public bool IsContainContant(IContent content)
+        public bool IsContainContant(Content content)
         {
-            return noteContents.Contains(content);
+            return NoteContents.Contains(content);
         }
     }
 }
