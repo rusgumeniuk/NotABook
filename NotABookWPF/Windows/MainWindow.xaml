@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NotABookWPF.Windows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
     <StackPanel  Margin="1,1,1,1">
 
         <Menu HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="794" Margin="1,1,1,1">
@@ -101,6 +101,11 @@
                     HorizontalContentAlignment="Stretch"     
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     >
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="MenuItemInNotesRemoveNote" Header="Remove note" Command="{Binding .}" Click="MenuItemInNotesRemoveNote_Click"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Background="WhiteSmoke" CanHorizontallyScroll="False">
@@ -137,9 +142,7 @@
                                 <StackPanel Grid.Row="0">
                                     <TextBlock  Text="Categories of this note:" HorizontalAlignment="Center"/>
                                     <ListBox  x:Name="CategoryInNoteListBox"
-                                          MouseLeftButtonUp="CategoryInNoteListBox_MouseLeftButtonUp"
-                                          ItemsSource="{Binding Categories}"
-                                          
+                                          MouseLeftButtonUp="CategoryInNoteListBox_MouseLeftButtonUp"                                          
                                           ScrollViewer.VerticalScrollBarVisibility="Visible"
                                           ScrollViewer.CanContentScroll="False"/>
                                 </StackPanel>
