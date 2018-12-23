@@ -69,7 +69,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataContext.cs" />
-    <Compile Include="DataModel.cs" />
     <Compile Include="Windows\AddEditBook.xaml.cs">
       <DependentUpon>AddEditBook.xaml</DependentUpon>
     </Compile>
