@@ -25,17 +25,15 @@ namespace NotABookLibraryStandart.Models
             }
         }
 
-        public BookElement(Book book) : base()
+        public BookElement() : base()
         {
             DateOfCreating = DateTime.Now;
-            DateOfLastChanging = DateTime.Now;
-            OnPropertyChanged(book, "New note");
+            DateOfLastChanging = DateTime.Now;           
         }
-        public BookElement(Book book, string title) : base(title)
+        public BookElement( string title) : base(title)
         {
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
-            OnPropertyChanged(book, "New note");
         }
 
         protected void UpdateDateOfLastChanging()

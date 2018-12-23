@@ -13,15 +13,8 @@ namespace NotABookLibraryStandart.Models.BookElements
     public class Category : BookElement
     {
         #region Constr
-        public Category(Book curBook) : base(curBook)
-        {
-            //CurrentBook.CategoriesOfBook.Add(this);
-        }
-
-        public Category(Book curBook, string title) : this(curBook)
-        {
-            Title = title;
-        }
+        public Category() : base() { }
+        public Category(string title) : base(title) { }
         #endregion
 
         #region Methods
@@ -78,10 +71,10 @@ namespace NotABookLibraryStandart.Models.BookElements
         /// <exception cref="ItemNullException">when note is null</exception>
         /// <exception cref="EmptyCollectionException">when category has not any connection</exception>        
         /// <returns></returns>
-        public bool IsCategoryHasConnectionWithNote(Note note)
-        {
-            return note.Categories.Contains(this);
-        }
+        //public bool IsCategoryHasConnectionWithNote(Note note)
+        //{
+        //    return note.Categories.Contains(this);
+        //}
 
         public override bool Equals(object obj)
         {
