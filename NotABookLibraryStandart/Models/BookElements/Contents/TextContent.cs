@@ -79,7 +79,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         
         public override int GetHashCode()
         {
-            return base.GetHashCode() ^ Content.GetHashCode();
+            return base.GetHashCode() ^ Content?.GetHashCode() ?? new Random().GetHashCode();
         }
 
         public override bool IsContainsText(string text)
