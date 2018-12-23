@@ -21,12 +21,14 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class AddEditBook : Window
     {
+        DataContext db;
         Book Book = null;
-        public AddEditBook(Book book = null)
+        public AddEditBook(DataContext dataContext, Book book = null)
         {
             InitializeComponent();
             Book = book;
             DataContext = Book;
+            db = dataContext;
             BookTitleTextBox.Text = Book?.Title ?? String.Empty;
 
         }
@@ -40,8 +42,9 @@ namespace NotABookWPF.Windows
                 }
                 else
                 {
-                    Book.Books.Add(new Book(BookTitleTextBox.Text));
+                    db.Books.Add(new Book(BookTitleTextBox.Text));
                 }
+                db.SaveChanges();
                 Close();
             }
             else MessageBox.Show("Ooop, empty text box");
