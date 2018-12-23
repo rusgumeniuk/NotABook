@@ -18,6 +18,7 @@ using NotABookLibraryStandart.Models;
 using System.IO;
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
+using System.Threading;
 
 namespace NotABookWPF.Windows
 {
@@ -27,83 +28,59 @@ namespace NotABookWPF.Windows
     public partial class MainWindow : Window
     {
         #region Init
+        DataContext db;
+
         #region Lists etc
-        public static Book currentBook = null;
-
-        public static ObservableCollection<Book> Books
-        {
-            get => Book.Books;
-            set => Book.Books = value;
-        }
-        public static ObservableCollection<Note> Notes => currentBook?.Notes;
-        public static ObservableCollection<Category> CategoriesList { get; set; } = new ObservableCollection<Category>();
-
+        public ObservableCollection<Book> Books;// => db.Books.Local;
+        public Book currentBook;// Books.Count > 0 ? Books[0] : null;
+        public ObservableCollection<Note> Notes;// => db.Books.FirstOrDefault(book => book.Id.Equals(currentBook.Id)).Notes;
+        public ObservableCollection<Category> CategoriesList;// => db.Categories.Local;
         #endregion
+
 
         public MainWindow()
         {
             InitializeComponent();
+            db = new DataContext();
 
-            SetUpModels();
+            InitLoadFromDb();
 
-            ListViewBooks.ItemsSource = Books;
-            ComboBoxCurrentBook.ItemsSource = Books;
+            Books = db.Books.Local;
+            currentBook = Books.Count > 0 ? Books[0] : null;
 
-            UpdateCurrentBook();
-        }
+            UpdateDataFromDb();
 
-        private void SetUpModels()
-        {
-            currentBook = new Book("My first book");
-            Book secondBook = new Book("Second book");
-            Book thirdBook = new Book("Third book");
-
-            Book.Books.Add(currentBook);
-            Book.Books.Add(secondBook);
-            Book.Books.Add(thirdBook);
-
-            Category chocolateCategory = new Category(currentBook, "Chocolate");
-            Category flourCategory = new Category(currentBook, "Flour");
-            Category eggsCategory = new Category(currentBook, "Eggs");
-            Category potatoCategory = new Category(currentBook, "Potato");
-            Category tomatoCategory = new Category(currentBook, "Tomato");
-            Category chickenCategory = new Category(currentBook, "Chicken");
-
-            CategoriesList.Add(chocolateCategory);
-            CategoriesList.Add(flourCategory);
-            CategoriesList.Add(eggsCategory);
-            CategoriesList.Add(potatoCategory);
-            CategoriesList.Add(tomatoCategory);
-            CategoriesList.Add(chickenCategory);
-
-            CategoriesList.Add(new Category(currentBook, "test1"));
-            CategoriesList.Add(new Category(currentBook, "test2"));
-            CategoriesList.Add(new Category(currentBook, "test3"));
-            CategoriesList.Add(new Category(currentBook, "test4"));
-            CategoriesList.Add(new Category(currentBook, "test5"));
-            CategoriesList.Add(new Category(currentBook, "test6"));
-            CategoriesList.Add(new Category(currentBook, "test7"));
-
-
-            Note chocolateBiscuit = new Note(currentBook, "Chocolate biscuit", new List<IContent>() { new TextContent() { Content = "The best chocolate cake ever" } }, new List<Category>() { chocolateCategory, flourCategory, eggsCategory });
-            Note salatWithPotatoAndTomato = new Note(currentBook, "Salat with potat, tomatos and eggs", new List<IContent>() { new TextContent() { Content = "Very healthy salat" } }, new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
-            Note chicken = new Note(currentBook, "Chicken", new List<IContent>() { new TextContent() { Content = "Chicken like in KFC" } }, new ObservableCollection<Category>() { chickenCategory, eggsCategory });
-            currentBook.Notes.Add(chocolateBiscuit);
-            currentBook.Notes.Add(salatWithPotatoAndTomato);
-            currentBook.Notes.Add(chicken);
 
             UpdateCurrentBook();
         }
         #endregion
-
-        private void UpdateCurrentBook()
+        private void InitLoadFromDb()
         {
-            ListBoxItems.ItemsSource = MainWindow.currentBook?.Notes;
-            CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>();
+            db.Books.ToArray();
+            db.Categories.ToArray();
+            db.Notes.ToArray();
+            db.Contents.ToArray();
+            var res = db.LinkNoteCategories.ToArray();
+        }
+        private void UpdateDataFromDb()
+        {
+            Books = db.Books.Local;
+            Notes = currentBook.Notes;
+            CategoriesList = db.Categories.Local;
+        }
+        private void UpdateCurrentBook(Note note = null)
+        {
+            UpdateDataFromDb();
+            ListViewBooks.ItemsSource = Books;
+            ComboBoxCurrentBook.ItemsSource = Books;
+            ListBoxItems.ItemsSource = Notes;
+            //CategoryInNoteListBox.ItemsSource = note == null ? null : db.LinkNoteCategories.Where(nt => nt.Id.Equals(note.Id));
             AllCategoriesListBox.ItemsSource = CategoriesList;
-            ComboBoxCurrentBook.SelectedItem = MainWindow.currentBook;
-            ListViewBooks.SelectedItem = MainWindow.currentBook;
-            TextBlockCountOfItems.Text = MainWindow.currentBook?.Notes.Count.ToString() + " ";
+
+            ComboBoxCurrentBook.SelectedItem = currentBook;
+            ListViewBooks.SelectedItem = currentBook;
+
+            TextBlockCountOfItems.Text = currentBook?.Notes.Count.ToString() + " ";
             TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
             HideNotePanel();
         }
@@ -111,15 +88,15 @@ namespace NotABookWPF.Windows
         #region Menu panel
         private void MenuItemCreateNote_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditINoteWindow(currentBook) { Title = "Creating" }).Show();
+            (new AddEditINoteWindow(currentBook, db) { Title = "Creating of note" }).Show();
         }
         private void MenuItemCreateBook_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditBook() { Title = "Creating" }).Show();
+            (new AddEditBook(db) { Title = "Creating of book" }).Show();
         }
         private void MenuItemCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditCategoryWindow(currentBook)).Show();
+            (new AddEditCategoryWindow(db) { Title = "Creating of category" }).Show();
         }
         private void MenuItemFAQ_Click(object sender, RoutedEventArgs e)
         {
@@ -135,7 +112,7 @@ namespace NotABookWPF.Windows
         }
         private void BtnNewNote_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditINoteWindow(currentBook) { Title = "Creating of item" }).Show();
+            (new AddEditINoteWindow(currentBook, db) { Title = "Creating of item" }).Show();
         }
         #endregion
 
@@ -155,7 +132,7 @@ namespace NotABookWPF.Windows
         }
         private void ListViewBooks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            (new AddEditBook(ListViewBooks.SelectedItem as Book) { Title = "Creating" }).Show();
+            (new AddEditBook(db, ListViewBooks.SelectedItem as Book) { Title = $"Editing of '{(ListViewBooks.SelectedItem as Book).Title}'" }).Show();
         }
         private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -170,11 +147,12 @@ namespace NotABookWPF.Windows
         }
         private void MenuItemDeleteBook_Click_1(object sender, RoutedEventArgs e)
         {
-            ((sender as MenuItem).CommandParameter as Book).Delete();
+            db.Books.Remove(ListViewBooks.SelectedItem as Book);
+            db.SaveChanges();
         }
         private void MenuItemEditBook_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditBook(((sender as MenuItem).CommandParameter as Book)) { Title = "Editing" }).Show();
+            (new AddEditBook(db, ((sender as MenuItem).CommandParameter as Book)) { Title = $"Editing of '{((sender as MenuItem).CommandParameter as Book).Title}'" }).Show();
         }
         #endregion
 
@@ -211,10 +189,10 @@ namespace NotABookWPF.Windows
             {
                 HideNotePanel();
                 if (String.IsNullOrWhiteSpace(TextBoxFindItem.Text))
-                    ListBoxItems.ItemsSource = MainWindow.currentBook.Notes;
+                    ListBoxItems.ItemsSource = currentBook.Notes;
                 else
                 {
-                    IList<Note> result = MainWindow.currentBook?.FindNotes(TextBoxFindItem.Text);
+                    IList<Note> result = currentBook?.FindNotes(TextBoxFindItem.Text, db.LinkNoteCategories.Local);
                     TextBlockCountOfItems.Text = (result?.Count ?? 0).ToString() + " ";
                     ListBoxItems.ItemsSource = result;
                 }
@@ -227,53 +205,67 @@ namespace NotABookWPF.Windows
         {
             if (ListBoxItems.SelectedItem != null)
             {
+                SaveNoteData();
                 HideNotePanel();
                 StackPanelItemPanel.DataContext = ListBoxItems.SelectedItem as Note;
-                CategoryInNoteListBox.ItemsSource = (ListBoxItems.SelectedItem as Note).Categories;
+
                 InputContentsToStackPanel(ListBoxItems.SelectedItem as Note);
                 AddTextBoxIfNoContent();
                 StackPanelItemPanel.Visibility = Visibility.Visible;
+                CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((ListBoxItems.SelectedItem as Note).Id)).Select(conn => conn.Category);
             }
         }
 
-        private void UpdateNoteData()
+        private void SaveNoteData()
         {
-            Note note = StackPanelContent.DataContext as Note;
-            note.Title = TBEditItemTitle.Text;
-            note.Categories = CategoryInNoteListBox.ItemsSource as ObservableCollection<Category>;
-            IList<IContent> contents = GetContentFromChildren(StackPanelContent.Children);
-            IList<IContent> addContent = new List<IContent>();
-            foreach (var newContent in contents)
+            if (StackPanelContent.DataContext != null && CategoryInNoteListBox.ItemsSource != null)
             {
-                bool exist = false;
-                foreach (var existingContent in note.Contents)
+                Note note = StackPanelContent.DataContext as Note;
+                note.Title = TBEditItemTitle.Text;
+                
+                IList<Content> contents = GetContentFromChildren(StackPanelContent.Children);
+                IList<Content> addContent = new List<Content>();
+                bool hasDiffences = false;
+                foreach (var newContent in contents)
                 {
-                    if (newContent.Equals(existingContent))
+                    bool exist = false;
+                    foreach (var existingContent in note.NoteContents)
                     {
-                        exist = true;
-                        addContent.Add(existingContent);
-                        break;
+                        if (newContent.Equals(existingContent))
+                        {
+                            exist = true;
+                            addContent.Add(existingContent);
+                            break;
+                        }
+                    }
+                    if (exist)
+                        continue;
+                    else
+                    {
+                        hasDiffences = true;
+                        addContent.Add(newContent);
                     }
                 }
-                if (exist)
-                    continue;
-                else
+                if (hasDiffences)
                 {
-                    addContent.Add(newContent);
+                    foreach (var content in note.NoteContents)
+                    {
+                        db.Contents.Remove(content);
+                    }
+                    note.NoteContents.Clear();
+                    note.NoteContents = addContent;
+                    db.SaveChanges();
                 }
-
+                DataContext = note;
             }
-            note.Contents = addContent;
-            DataContext = note;
-            this.UpdateLayout();
         }
-        private IList<IContent> GetContentFromChildren(UIElementCollection children)
+        private IList<Content> GetContentFromChildren(UIElementCollection children)
         {
-            IList<IContent> contents = new List<IContent>();
+            IList<Content> contents = new List<Content>();
             AddTextBoxIfNoContent();
             foreach (var control in children)
             {
-                IContent cont = null;
+                Content cont = null;
                 if (control is Image)
                 {
                     cont = new PhotoContent() { Content = ImageToBytes(control as Image), ImageTitle = (control as Image).Source.GetHashCode().ToString() };
@@ -289,14 +281,14 @@ namespace NotABookWPF.Windows
 
         private void ListBoxItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            (new AddEditINoteWindow(currentBook, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
+            (new AddEditINoteWindow(currentBook, db, ListBoxItems.SelectedItem as Note) { Title = "Editing note" }).Show();
         }
         #endregion
         private void ComboBoxCurrentBook_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboBoxCurrentBook.SelectedItem != null && ComboBoxCurrentBook.SelectedItem as Book != currentBook)
             {
-                MainWindow.currentBook = ComboBoxCurrentBook.SelectedItem as Book;
+                currentBook = ComboBoxCurrentBook.SelectedItem as Book;
                 UpdateCurrentBook();
             }
         }
@@ -307,22 +299,36 @@ namespace NotABookWPF.Windows
         #region categories lists panel              
         private void CategoryInNoteListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            (CategoryInNoteListBox.ItemsSource as IList<Category>).Remove(CategoryInNoteListBox.SelectedItem as Category);
-            CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
+            if (CategoryInNoteListBox.SelectedItem != null)
+            {
+                db.LinkNoteCategories.Local.Remove(
+                    db.LinkNoteCategories.Local
+                    .First(
+                        link => link.Note.Id.Equals((ListBoxItems.SelectedItem as Note).Id)
+                        && link.Category.Id.Equals((CategoryInNoteListBox.SelectedItem as Category).Id))
+               );
+                db.SaveChanges();
+                CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((ListBoxItems.SelectedItem as Note).Id)).Select(conn => conn.Category);
+            }
+
         }
         private void AllCategoriesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
-                MessageBox.Show("Note already marked by this category!");
-            else
+            if (AllCategoriesListBox.SelectedItem != null)
             {
-                (CategoryInNoteListBox.ItemsSource as IList<Category>).Add(AllCategoriesListBox.SelectedItem as Category);
-                CategoryInNoteListBox.ItemsSource = new ObservableCollection<Category>(CategoryInNoteListBox.ItemsSource as IEnumerable<Category>);
+                if (CategoryInNoteListBox.Items.Contains(AllCategoriesListBox.SelectedItem))
+                    MessageBox.Show("Note already marked by this category!");
+                else
+                {
+                    db.LinkNoteCategories.Local.Add(new LinkNoteCategory(ListBoxItems.SelectedItem as Note, AllCategoriesListBox.SelectedItem as Category));
+                    CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((ListBoxItems.SelectedItem as Note).Id)).Select(conn => conn.Category);
+                    db.SaveChanges();
+                }
             }
         }
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditCategoryWindow(currentBook) { Title = "Creating of category" }).Show();
+            (new AddEditCategoryWindow(db) { Title = "Creating of category" }).Show();
         }
         #endregion
 
@@ -336,7 +342,7 @@ namespace NotABookWPF.Windows
         #region Content
         private void InputContentsToStackPanel(Note note)
         {
-            foreach (var content in note.Contents)
+            foreach (var content in note.NoteContents)
             {
                 StackPanelContent.Children.Add(content is TextContent ?
                     new TextBox() { Text = (content as TextContent).Content as string, BorderBrush = Brushes.White, MinLines = 5 }
@@ -362,7 +368,7 @@ namespace NotABookWPF.Windows
                 StackPanelContent.Children.Remove(e.Source as UIElement);
                 AddTextBoxIfNoContent();
             }
-            UpdateNoteData();
+            SaveNoteData();
         }
         private void AddTextBoxIfNoContent()
         {
@@ -397,7 +403,7 @@ namespace NotABookWPF.Windows
 
                     StackPanelContent.Children.Add(myImage);
 
-                    (StackPanelItemPanel.DataContext as Note).Contents
+                    (StackPanelItemPanel.DataContext as Note).NoteContents
                         .Add(new PhotoContent()
                         { Content = imageByte, ImageTitle = name }
                         );
@@ -408,7 +414,7 @@ namespace NotABookWPF.Windows
                     MessageBox.Show("FALSE");
                 }
             }
-            UpdateNoteData();
+            SaveNoteData();
         }
         #region Image/byte
         private static bool IsImageExtension(string extension)
@@ -445,7 +451,59 @@ namespace NotABookWPF.Windows
         #endregion
 
         #endregion
+        
+        #endregion
 
-        #endregion        
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if(StackPanelItemPanel.DataContext != null)
+            {
+                SaveNoteData();
+            }
+        }
+      
+        private void MenuItemInNotesRemoveNote_Click(object sender, RoutedEventArgs e)
+        {
+            db.Notes.Remove(ListBoxItems.SelectedItem as Note);
+            db.SaveChanges();
+        }
     }
 }
+//currentBook = new Book("My first book");
+//Book secondBook = new Book("Second book");
+//Book thirdBook = new Book("Third book");
+//db.Books.Add(currentBook);
+//db.Books.Add(secondBook);
+//db.Books.Add(thirdBook);
+//db.SaveChanges();
+//Category chocolateCategory = new Category(currentBook, "Chocolate");
+//Category flourCategory = new Category(currentBook, "Flour");
+//Category eggsCategory = new Category(currentBook, "Eggs");
+//Category potatoCategory = new Category(currentBook, "Potato");
+//Category tomatoCategory = new Category(currentBook, "Tomato");
+//Category chickenCategory = new Category(currentBook, "Chicken");
+
+//db.Categories.Add(chocolateCategory);
+//db.Categories.Add(flourCategory);
+//db.Categories.Add(eggsCategory);
+//db.Categories.Add(potatoCategory);
+//db.Categories.Add(tomatoCategory);
+//db.Categories.Add(chickenCategory);
+
+//Note chocolateBiscuit = new Note(currentBook, "Chocolate biscuit", new List<Content>() { new TextContent() { Content = "The best chocolate cake ever" } }, new List<Category>() { chocolateCategory, flourCategory, eggsCategory });
+//Note salatWithPotatoAndTomato = new Note(currentBook, "Salat with potat, tomatos and eggs", new List<Content>() { new TextContent() { Content = "Very healthy salat" } }, new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
+//Note chicken = new Note(currentBook, "Chicken", new List<Content>() { new TextContent() { Content = "Chicken like in KFC" } }, new ObservableCollection<Category>() { chickenCategory, eggsCategory });
+
+//db.Notes.Add(chocolateBiscuit);
+//db.Notes.Add(salatWithPotatoAndTomato);
+//db.Notes.Add(chicken);
+
+//db.LinkNoteCategories.Add(new LinkNoteCategory(chocolateBiscuit, chocolateCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(chocolateBiscuit, eggsCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(chocolateBiscuit, flourCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(salatWithPotatoAndTomato, potatoCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(salatWithPotatoAndTomato, tomatoCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(salatWithPotatoAndTomato, eggsCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(chicken, chickenCategory));
+//db.LinkNoteCategories.Add(new LinkNoteCategory(chicken, eggsCategory));
+//db.SaveChanges();

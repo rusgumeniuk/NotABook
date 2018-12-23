@@ -21,20 +21,20 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class AddEditCategoryWindow : Window
     {
-        Book Book = null;
+        DataContext db;        
         Category Category = null;
-        public AddEditCategoryWindow(Book book)
-        {
+        public AddEditCategoryWindow(DataContext dataContext)
+        {            
             InitializeComponent();
-            DataContext = Category;
-            Book = book;
+            DataContext = Category;            
+            db = dataContext;
         }
-        public AddEditCategoryWindow(Category category, Book book)
+        public AddEditCategoryWindow(DataContext dataContext, Category category)
         {
             InitializeComponent();
             Category = category;
-            DataContext = Category;
-            Book = book;
+            DataContext = Category;            
+            db = dataContext;
         }
 
         private void BtnSaveCategory_Click(object sender, RoutedEventArgs e)
@@ -47,12 +47,12 @@ namespace NotABookWPF.Windows
                 }
                 else
                 {
-                    MainWindow.CategoriesList.Add(new Category(Book, CategoryTitleTextBox.Text));
+                    db.Categories.Add(new Category(CategoryTitleTextBox.Text));                    
                 }
+                db.SaveChanges();
                 Close();
             }
             else MessageBox.Show("Ooop, empty text box");
-
         }
 
         private void BtnCancelSave_Click(object sender, RoutedEventArgs e)
