@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Windows.Media;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public class PhotoContent : Content
     {
         public byte[] BytesOfPhoto { get; set; }
-        public string ImageTitle
-        { get;
-            set; }
+        public string ImageTitle { get; set; }
         public object Content
         {
             get
@@ -42,7 +37,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
                 }
             }
         }
-        
+
         public override bool IsEmptyContent()
         {
             return BytesOfPhoto.Length == 0 && String.IsNullOrWhiteSpace(ImageTitle);

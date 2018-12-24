@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NotABookLibraryStandart.Models
+﻿namespace NotABookLibraryStandart.Models
 {
     public enum TypeOfRunningProject
     {

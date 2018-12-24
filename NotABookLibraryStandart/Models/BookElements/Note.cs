@@ -1,8 +1,8 @@
 ﻿using NotABookLibraryStandart.Models.BookElements.Contents;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace NotABookLibraryStandart.Models.BookElements
 {
@@ -66,16 +66,8 @@ namespace NotABookLibraryStandart.Models.BookElements
         #endregion
 
         #region ctors
-
-        public Note() : base()
-        {
-           
-        }
-
-        public Note(string title) : base(title)
-        {
-          
-        }
+        public Note() : base() { }
+        public Note(string title) : base(title) { }
 
         public Note(string title, IList<Content> contents) : this(title)
         {
@@ -86,7 +78,7 @@ namespace NotABookLibraryStandart.Models.BookElements
         public bool IsContainsText(string text)
         {
             if (Title.Trim().ToUpperInvariant().Contains(text.Trim().ToUpperInvariant()))
-                return true;          
+                return true;
             foreach (var content in NoteContents)
             {
                 if (content.IsContainsText(text))

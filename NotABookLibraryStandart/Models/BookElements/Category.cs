@@ -1,9 +1,7 @@
-﻿using System;
+﻿using NotABookLibraryStandart.Exceptions;
+
+using System;
 using System.Collections.Generic;
-using System.Text;
-using NotABookLibraryStandart.Exceptions;
-using System.Collections.ObjectModel;
-using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABookLibraryStandart.Models.BookElements
 {
@@ -16,7 +14,6 @@ namespace NotABookLibraryStandart.Models.BookElements
         public Category() : base() { }
         public Category(string title) : base(title) { }
         #endregion
-
         #region Methods
         /// <summary>
         /// Indicates whether the CategoryInItem is null
@@ -63,18 +60,6 @@ namespace NotABookLibraryStandart.Models.BookElements
         {
             return Category.IsCategoryIsNotNull(category) && ExtensionClass.IsStringNotNull(word) && category.Title.ToUpperInvariant().Contains(word.ToUpperInvariant());
         }
-
-        /// <summary>
-        /// Indicates whether category has connection with note
-        /// </summary>
-        /// <param name="note">note with which we try to find a connection</param>
-        /// <exception cref="ItemNullException">when note is null</exception>
-        /// <exception cref="EmptyCollectionException">when category has not any connection</exception>        
-        /// <returns></returns>
-        //public bool IsCategoryHasConnectionWithNote(Note note)
-        //{
-        //    return note.Categories.Contains(this);
-        //}
 
         public override bool Equals(object obj)
         {

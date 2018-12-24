@@ -13,16 +13,9 @@ namespace NotABookLibraryStandart.Models.BookElements
     public class Book : BookElement
     {
         #region Fields       
-
-        private ObservableCollection<Note> notes = new ObservableCollection<Note>();        
-
-        public Book()
-        {
-        }
-
-        public Book(string title) : base(title)
-        {
-        }
+        private ObservableCollection<Note> notes = new ObservableCollection<Note>();
+        public Book() { }
+        public Book(string title) : base(title) { }
         #endregion
 
         #region Propereties            
@@ -78,38 +71,17 @@ namespace NotABookLibraryStandart.Models.BookElements
             return null;
         }
 
-        /// <summary>
-        /// Removes all elements of the book and remove book from the Books
-        /// </summary>
-        /// <returns></returns>
+       
         public bool Delete()
         {
-            //if (IsBookIsNotNullAndInBooks(this))
-            //{
-            //    RemoveAllElementsOfBook(this);
-            //   // Book.Books.Remove(this);
-
-            //    return IndexOfBookInBooks(this) == -1;
-            //}
             return false;
         }
 
-        /// <summary>
-        /// Removes all elements of the book and remove book from the Books
-        /// </summary>
-        /// <param name="book"> book to delete</param>
-        /// <returns></returns>
+      
         public static bool DeleteBook(Book book)
-        {
-            //if (IsBookIsNotNullAndInBooks(book))
-            //{
-            //    //RemoveAllElementsOfBook(book);
-            //    ////Book.Books.Remove(book);
-
-            //    //return IndexOfBookInBooks(book) == -1;
-            //}
+        {            
             return false;
-        }                
+        }
 
         /// <summary>
         /// Indicates whether the book contains note
@@ -146,8 +118,8 @@ namespace NotABookLibraryStandart.Models.BookElements
         public static bool IsBookIsNotNull(Book book)
         {
             return book != null ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new BookNullException());
-        }  
-      
+        }
+
         public int GetIndexOfNoteByID(Guid noteId)
         {
             if (IsGuidIsNotEmpty(noteId))
@@ -170,7 +142,7 @@ namespace NotABookLibraryStandart.Models.BookElements
                 }
             }
             return -1;
-        }         
+        }
 
         public static bool ClearNotesList(Book book)
         {
@@ -179,7 +151,7 @@ namespace NotABookLibraryStandart.Models.BookElements
                 book.Notes.Clear();
             }
             return book.Notes.Count == 0;
-        }      
+        }
 
         public static bool RemoveAllElementsOfBook(Book book)
         {

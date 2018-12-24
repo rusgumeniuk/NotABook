@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NotABookLibraryStandart.Models.BookElements;
+
+using System;
 using System.ComponentModel;
-using System.Text;
-using NotABookLibraryStandart.Exceptions;
-using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABookLibraryStandart.Models
 {
     /// <summary>
-    /// Represents elements of the book (for example, category, item)
+    /// Represents elements of the book (for example, category, note)
     /// </summary>
     public abstract class BookElement : Entity, INotifyPropertyChanged
     {
-        public DateTime DateOfCreating { get; private set; }
-        public DateTime DateOfLastChanging { get; internal set; }
+        public DateTime DateOfCreating { get; set; }
+        public DateTime DateOfLastChanging { get; set; }
 
         public override string Title
         {
@@ -28,9 +26,9 @@ namespace NotABookLibraryStandart.Models
         public BookElement() : base()
         {
             DateOfCreating = DateTime.Now;
-            DateOfLastChanging = DateTime.Now;           
+            DateOfLastChanging = DateTime.Now;
         }
-        public BookElement( string title) : base(title)
+        public BookElement(string title) : base(title)
         {
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
