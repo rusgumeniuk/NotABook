@@ -10,11 +10,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.20*"/>
             <RowDefinition Height="0.05*"/>
-            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="0.05*"/>            
             <RowDefinition Height="0.60*"/>
-            <RowDefinition Height="0.10*"/>
+            <RowDefinition Height="0.10*"/>            
         </Grid.RowDefinitions>
-
+        
         <TextBox Grid.Row="0" Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic" LostFocus="TBEditItemTitle_LostFocus"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <TextBlock Text="Date of last changing: "/>
@@ -25,52 +25,48 @@
             <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
         </StackPanel>
 
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="0.8*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.45*"/>
-                <RowDefinition Height="0.45*"/>
-                <RowDefinition Height="0.1*"/>
-            </Grid.RowDefinitions>
-            <Expander ExpandDirection="Right" Grid.RowSpan="3" Grid.Column="0">
-                <StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Expander ExpandDirection="Right">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.45*"/>
+                        <RowDefinition Height="0.45*"/>
+                        <RowDefinition Height="0.1*"/>
+                    </Grid.RowDefinitions>                  
                     <StackPanel Grid.Row="0">
                         <TextBlock  Text="Categories of this note:" HorizontalAlignment="Center"/>
-                        <ListBox  
-                                    VerticalAlignment="Stretch"
-                                    x:Name="CategoryInNoteListBox"
+                        <ListBox  x:Name="CategoryInNoteListBox"
                                           MouseLeftButtonUp="CategoryInNoteListBox_MouseLeftButtonUp"
                                           ItemsSource="{Binding Categories}"
+                                          
+                                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                  ScrollViewer.CanContentScroll="True" 
                                           />
                     </StackPanel>
                     <StackPanel Grid.Row="1">
                         <TextBlock  Text="All categories:" HorizontalAlignment="Center"/>
-                        <ListView  
-                                    VerticalAlignment="Stretch"
-                                    x:Name="AllCategoriesListBox"
-                                           MouseLeftButtonUp="AllCategoriesListBox_MouseLeftButtonUp"                                            
+                        <ListView  x:Name="AllCategoriesListBox"
+                                           MouseLeftButtonUp="AllCategoriesListBox_MouseLeftButtonUp" 
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                           ScrollViewer.CanContentScroll="False"
                                           />
                     </StackPanel>
 
-                    <Button 
-                        VerticalAlignment="Bottom"
-                        Grid.Row="1"
-                        x:Name="BtnCreateCategory" 
+                    <Button  Grid.Row="2"
+                                    x:Name="BtnCreateCategory" 
                                     Content="Create new category" 
-                                    Click="BtnCreateCategory_Click"                                     
-                                    Margin="2" />
-                </StackPanel>
+                                    Click="BtnCreateCategory_Click" 
+                                    VerticalAlignment="Bottom" 
+                                    Margin="2,2,2,2" />
+                </Grid>
             </Expander>
-            <ScrollViewer HorizontalAlignment="Stretch" Grid.RowSpan="3" Grid.Column="1">
+            <ScrollViewer HorizontalAlignment="Stretch">
                 <StackPanel 
                     Name="StackPanelContent"
                     MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"      
                     />
             </ScrollViewer>
-        </Grid>
+        </StackPanel>                        
         <Button Grid.Row="4" Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
     </Grid>
 </Window>

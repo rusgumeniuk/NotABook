@@ -1,8 +1,9 @@
-﻿using NotABookLibraryStandart.Exceptions;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using NotABookLibraryStandart.Exceptions;
 using System.Collections.ObjectModel;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABookLibraryStandart.Models.BookElements
 {
@@ -13,7 +14,7 @@ namespace NotABookLibraryStandart.Models.BookElements
     {
         #region Fields       
 
-        private ObservableCollection<Note> notes = new ObservableCollection<Note>();
+        private ObservableCollection<Note> notes = new ObservableCollection<Note>();        
 
         public Book()
         {
@@ -108,7 +109,7 @@ namespace NotABookLibraryStandart.Models.BookElements
             //    //return IndexOfBookInBooks(book) == -1;
             //}
             return false;
-        }
+        }                
 
         /// <summary>
         /// Indicates whether the book contains note
@@ -145,8 +146,8 @@ namespace NotABookLibraryStandart.Models.BookElements
         public static bool IsBookIsNotNull(Book book)
         {
             return book != null ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new BookNullException());
-        }
-
+        }  
+      
         public int GetIndexOfNoteByID(Guid noteId)
         {
             if (IsGuidIsNotEmpty(noteId))
@@ -169,7 +170,7 @@ namespace NotABookLibraryStandart.Models.BookElements
                 }
             }
             return -1;
-        }
+        }         
 
         public static bool ClearNotesList(Book book)
         {
@@ -178,7 +179,7 @@ namespace NotABookLibraryStandart.Models.BookElements
                 book.Notes.Clear();
             }
             return book.Notes.Count == 0;
-        }
+        }      
 
         public static bool RemoveAllElementsOfBook(Book book)
         {

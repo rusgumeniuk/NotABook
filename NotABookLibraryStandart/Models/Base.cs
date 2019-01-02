@@ -1,6 +1,8 @@
-﻿using NotABookLibraryStandart.Exceptions;
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
+using NotABookLibraryStandart.Exceptions;
 
 namespace NotABookLibraryStandart.Models
 {
@@ -15,7 +17,7 @@ namespace NotABookLibraryStandart.Models
         /// </summary>       
         public static TypeOfRunningProject ProjectType = TypeOfRunningProject.WPF;
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; }      
 
 
         #endregion
@@ -24,12 +26,12 @@ namespace NotABookLibraryStandart.Models
         public Base()
         {
             Id = Guid.NewGuid();
-
-        }
+            
+        }        
         #endregion
 
         #region Methods
-
+        
         public static bool IsGuidIsNotEmpty(Guid id)
         {
             return id != Guid.Empty ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new EmptyGuidException());
@@ -38,7 +40,7 @@ namespace NotABookLibraryStandart.Models
         /// <summary>
         /// The method that update date of last changing after any operation with object
         /// </summary>
-
+      
         public override string ToString()
         {
             return $"{ this.GetType().Name}";

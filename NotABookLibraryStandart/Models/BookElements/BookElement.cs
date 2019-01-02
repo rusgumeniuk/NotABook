@@ -1,7 +1,9 @@
-﻿using NotABookLibraryStandart.Models.BookElements;
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
+using NotABookLibraryStandart.Exceptions;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABookLibraryStandart.Models
 {
@@ -26,9 +28,9 @@ namespace NotABookLibraryStandart.Models
         public BookElement() : base()
         {
             DateOfCreating = DateTime.Now;
-            DateOfLastChanging = DateTime.Now;
+            DateOfLastChanging = DateTime.Now;           
         }
-        public BookElement(string title) : base(title)
+        public BookElement( string title) : base(title)
         {
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;

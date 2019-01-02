@@ -1,4 +1,8 @@
-﻿namespace NotABookLibraryStandart.Models.BookElements.Contents
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public interface IContent
     {
