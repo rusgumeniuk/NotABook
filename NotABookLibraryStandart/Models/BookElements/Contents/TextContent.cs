@@ -1,6 +1,4 @@
-﻿using NotABookLibraryStandart.Models.BookElements;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
@@ -15,7 +13,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             {
                 Text = value?.ToString();
             }
-        }    
+        }
 
         public override bool IsEmptyContent()
         {
@@ -48,7 +46,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             }
             else
                 return GetNextWord(ref title);
-        }       
+        }
 
         private string GetNextWord(ref string str)
         {
@@ -66,7 +64,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 
             return stringBuilder.ToString();
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -76,7 +74,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             TextContent cont = obj as TextContent;
             return Text.Equals(cont.Text);
         }
-        
+
         public override int GetHashCode()
         {
             return base.GetHashCode() ^ Content?.GetHashCode() ?? new Random().GetHashCode();

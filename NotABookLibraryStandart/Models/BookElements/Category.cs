@@ -1,9 +1,7 @@
-﻿using System;
+﻿using NotABookLibraryStandart.Exceptions;
+
+using System;
 using System.Collections.Generic;
-using System.Text;
-using NotABookLibraryStandart.Exceptions;
-using System.Collections.ObjectModel;
-using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABookLibraryStandart.Models.BookElements
 {

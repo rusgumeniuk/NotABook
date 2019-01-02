@@ -39,11 +39,12 @@
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.999*"/>
-                <RowDefinition Height="0.001*"/>
+                <RowDefinition Height="0.45*"/>
+                <RowDefinition Height="0.45*"/>
+                <RowDefinition Height="0.1*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,5,5,5">
+            <StackPanel Grid.Column="0" Margin="5,5,5,5" Grid.RowSpan="3">
                 <TextBlock Text="Current book is:"/>
                 <TextBlock Name="TBCurrentBook" FontStretch="Expanded" FontStyle="Normal" FontWeight="ExtraBold"/>
                 <ListView
@@ -60,7 +61,7 @@
                                     <ContextMenu>
                                         <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click_1"/>
                                         <MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>
-                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove notes" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>                                        
+                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove notes" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
                                 <TextBox  
@@ -78,7 +79,7 @@
                 </ListView>
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
+            <StackPanel Grid.RowSpan="3" Grid.Column="1" Margin="5,5,5,5">
                 <TextBox Name="TextBoxFindItem" Text="Find item" GotFocus="TextBoxFindItem_GotFocus" LostFocus="TextBoxFindItem_LostFocus" Margin="0,0,0,0" TextChanged="TextBoxFindItem_TextChanged"/>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -120,7 +121,7 @@
                 </ListBox>
             </StackPanel>
 
-            <StackPanel Grid.Row="0" Grid.Column="2" x:Name="StackPanelItemPanel" Margin="5,5,5,5" Visibility="Collapsed">
+            <StackPanel Grid.RowSpan="3" Grid.Column="2" x:Name="StackPanelItemPanel" Margin="5,5,5,5" Visibility="Collapsed">
                 <StackPanel>
                     <TextBox Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic"/>
                     <StackPanel Orientation="Horizontal">
@@ -131,45 +132,46 @@
                         <TextBlock Text="Date of creating: "/>
                         <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" >
-                        <Expander x:Name="CategoryExpander" ExpandDirection="Right" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.45*"/>
-                                    <RowDefinition Height="0.45*"/>
-                                    <RowDefinition Height="0.1*"/>
-                                </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0.8*"/>
+                        </Grid.ColumnDefinitions>                     
+                        <Expander ExpandDirection="Right" Grid.RowSpan="3" Grid.Column="0">
+                            <StackPanel>
                                 <StackPanel Grid.Row="0">
                                     <TextBlock  Text="Categories of this note:" HorizontalAlignment="Center"/>
-                                    <ListBox  x:Name="CategoryInNoteListBox"
-                                          MouseLeftButtonUp="CategoryInNoteListBox_MouseLeftButtonUp"                                          
-                                          ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                          ScrollViewer.CanContentScroll="False"/>
+                                    <ListBox  
+                                    VerticalAlignment="Stretch"
+                                    x:Name="CategoryInNoteListBox"
+                                          MouseLeftButtonUp="CategoryInNoteListBox_MouseLeftButtonUp"
+                                          ItemsSource="{Binding Categories}"
+                                          />
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
                                     <TextBlock  Text="All categories:" HorizontalAlignment="Center"/>
-                                    <ListView  x:Name="AllCategoriesListBox"
-                                           MouseLeftButtonUp="AllCategoriesListBox_MouseLeftButtonUp" 
-                                           
-                                           ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                                           ScrollViewer.CanContentScroll="False"/>
+                                    <ListView  
+                                    VerticalAlignment="Stretch"
+                                    x:Name="AllCategoriesListBox"
+                                           MouseLeftButtonUp="AllCategoriesListBox_MouseLeftButtonUp"                                            
+                                          />
                                 </StackPanel>
-
-                                <Button  Grid.Row="2"
-                                    x:Name="BtnCreateCategory" 
+                                <Button 
+                        VerticalAlignment="Bottom"
+                        Grid.Row="1"
+                        x:Name="BtnCreateCategory" 
                                     Content="Create new category" 
-                                    Click="BtnCreateCategory_Click" 
-                                    VerticalAlignment="Bottom" 
-                                    Margin="10,10,10,10" />
-                            </Grid>
+                                    Click="BtnCreateCategory_Click"                                     
+                                    Margin="2" />
+                            </StackPanel>
                         </Expander>
-                        <ScrollViewer HorizontalAlignment="Right">
+                        <ScrollViewer HorizontalAlignment="Stretch" Grid.RowSpan="3" Grid.Column="1">
                             <StackPanel 
-                                Name="StackPanelContent"
-                                MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"                
-                                />
+                    Name="StackPanelContent"
+                    MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"      
+                    />
                         </ScrollViewer>
-                    </StackPanel>
+                    </Grid>
                 </StackPanel>
                 <Button Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
             </StackPanel>
