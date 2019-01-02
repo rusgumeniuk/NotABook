@@ -70,17 +70,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataContext.cs" />
-    <Compile Include="Windows\AddEditBook.xaml.cs">
-      <DependentUpon>AddEditBook.xaml</DependentUpon>
+    <Compile Include="Windows\AddEditBookElement.xaml.cs">
+      <DependentUpon>AddEditBookElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\AddEditCategoryWindow.xaml.cs">
-      <DependentUpon>AddEditCategoryWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Windows\AddEditBook.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\AddEditCategoryWindow.xaml">
+    <Page Include="Windows\AddEditBookElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

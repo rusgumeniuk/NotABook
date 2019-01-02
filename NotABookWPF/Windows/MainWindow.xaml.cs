@@ -85,11 +85,11 @@ namespace NotABookWPF.Windows
         }
         private void MenuItemCreateBook_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditBook(db) { Title = "Creating of book" }).Show();
+            (new AddEditBookElement(db, new Book(String.Empty))).Show();
         }
         private void MenuItemCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditCategoryWindow(db) { Title = "Creating of category" }).Show();
+            (new AddEditBookElement(db, new Category(String.Empty))).Show();
         }
         private void MenuItemFAQ_Click(object sender, RoutedEventArgs e)
         {
@@ -125,7 +125,7 @@ namespace NotABookWPF.Windows
         }
         private void ListViewBooks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            (new AddEditBook(db, ListViewBooks.SelectedItem as Book) { Title = $"Editing of '{(ListViewBooks.SelectedItem as Book).Title}'" }).Show();
+            new AddEditBookElement(db, ListViewBooks.SelectedItem as Book).Show();            
         }
         private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -145,7 +145,7 @@ namespace NotABookWPF.Windows
         }
         private void MenuItemEditBook_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditBook(db, ((sender as MenuItem).CommandParameter as Book)) { Title = $"Editing of '{((sender as MenuItem).CommandParameter as Book).Title}'" }).Show();
+            new AddEditBookElement(db, ((sender as MenuItem).CommandParameter as Book)).Show();            
         }
         #endregion
 
@@ -295,7 +295,6 @@ namespace NotABookWPF.Windows
                 db.SaveChanges();
                 CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((ListBoxItems.SelectedItem as Note).Id)).Select(conn => conn.Category);
             }
-
         }
         private void AllCategoriesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -313,7 +312,7 @@ namespace NotABookWPF.Windows
         }
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditCategoryWindow(db) { Title = "Creating of category" }).Show();
+            new AddEditBookElement(db, new Category(String.Empty)).Show();            
         }
         #endregion
 
