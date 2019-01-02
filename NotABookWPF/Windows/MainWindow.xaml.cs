@@ -1,24 +1,20 @@
-﻿using System;
+﻿using Microsoft.Win32;
+
+using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
+using NotABookLibraryStandart.Models.BookElements.Contents;
+
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using Microsoft.Win32;
-using System.ComponentModel;
-using NotABookLibraryStandart.Models;
-using System.IO;
-using NotABookLibraryStandart.Models.BookElements;
-using NotABookLibraryStandart.Models.BookElements.Contents;
-using System.Threading;
 
 namespace NotABookWPF.Windows
 {
@@ -28,16 +24,14 @@ namespace NotABookWPF.Windows
     public partial class MainWindow : Window
     {
         #region Init
-        DataContext db;
+        readonly DataContext db;
 
         #region Lists etc
-        public ObservableCollection<Book> Books;// => db.Books.Local;
-        public Book currentBook;// Books.Count > 0 ? Books[0] : null;
-        public ObservableCollection<Note> Notes;// => db.Books.FirstOrDefault(book => book.Id.Equals(currentBook.Id)).Notes;
-        public ObservableCollection<Category> CategoriesList;// => db.Categories.Local;
+        public ObservableCollection<Book> Books;
+        public Book currentBook;
+        public ObservableCollection<Note> Notes;
+        public ObservableCollection<Category> CategoriesList;
         #endregion
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -49,7 +43,6 @@ namespace NotABookWPF.Windows
             currentBook = Books.Count > 0 ? Books[0] : null;
 
             UpdateDataFromDb();
-
 
             UpdateCurrentBook();
         }
@@ -174,15 +167,7 @@ namespace NotABookWPF.Windows
                 HideNotePanel();
             }
         }
-        private void TextBoxFindItem_LostMouseCapture(object sender, MouseEventArgs e)
-        {
-            if (ListBoxItems.Items.Count < 1)
-            {
-                TextBoxFindItem.Text = "Find note";
-                UpdateCurrentBook();
-                HideNotePanel();
-            }
-        }
+
         private void TextBoxFindItem_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TextBoxFindItem.IsFocused)
@@ -222,7 +207,7 @@ namespace NotABookWPF.Windows
             {
                 Note note = StackPanelContent.DataContext as Note;
                 note.Title = TBEditItemTitle.Text;
-                
+
                 IList<Content> contents = GetContentFromChildren(StackPanelContent.Children);
                 IList<Content> addContent = new List<Content>();
                 bool hasDiffences = false;
@@ -451,17 +436,17 @@ namespace NotABookWPF.Windows
         #endregion
 
         #endregion
-        
+
         #endregion
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if(StackPanelItemPanel.DataContext != null)
+            if (StackPanelItemPanel.DataContext != null)
             {
                 SaveNoteData();
             }
         }
-      
+
         private void MenuItemInNotesRemoveNote_Click(object sender, RoutedEventArgs e)
         {
             db.Notes.Remove(ListBoxItems.SelectedItem as Note);
@@ -469,41 +454,3 @@ namespace NotABookWPF.Windows
         }
     }
 }
-//currentBook = new Book("My first book");
-//Book secondBook = new Book("Second book");
-//Book thirdBook = new Book("Third book");
-//db.Books.Add(currentBook);
-//db.Books.Add(secondBook);
-//db.Books.Add(thirdBook);
-//db.SaveChanges();
-//Category chocolateCategory = new Category(currentBook, "Chocolate");
-//Category flourCategory = new Category(currentBook, "Flour");
-//Category eggsCategory = new Category(currentBook, "Eggs");
-//Category potatoCategory = new Category(currentBook, "Potato");
-//Category tomatoCategory = new Category(currentBook, "Tomato");
-//Category chickenCategory = new Category(currentBook, "Chicken");
-
-//db.Categories.Add(chocolateCategory);
-//db.Categories.Add(flourCategory);
-//db.Categories.Add(eggsCategory);
-//db.Categories.Add(potatoCategory);
-//db.Categories.Add(tomatoCategory);
-//db.Categories.Add(chickenCategory);
-
-//Note chocolateBiscuit = new Note(currentBook, "Chocolate biscuit", new List<Content>() { new TextContent() { Content = "The best chocolate cake ever" } }, new List<Category>() { chocolateCategory, flourCategory, eggsCategory });
-//Note salatWithPotatoAndTomato = new Note(currentBook, "Salat with potat, tomatos and eggs", new List<Content>() { new TextContent() { Content = "Very healthy salat" } }, new ObservableCollection<Category>() { potatoCategory, tomatoCategory, eggsCategory });
-//Note chicken = new Note(currentBook, "Chicken", new List<Content>() { new TextContent() { Content = "Chicken like in KFC" } }, new ObservableCollection<Category>() { chickenCategory, eggsCategory });
-
-//db.Notes.Add(chocolateBiscuit);
-//db.Notes.Add(salatWithPotatoAndTomato);
-//db.Notes.Add(chicken);
-
-//db.LinkNoteCategories.Add(new LinkNoteCategory(chocolateBiscuit, chocolateCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(chocolateBiscuit, eggsCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(chocolateBiscuit, flourCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(salatWithPotatoAndTomato, potatoCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(salatWithPotatoAndTomato, tomatoCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(salatWithPotatoAndTomato, eggsCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(chicken, chickenCategory));
-//db.LinkNoteCategories.Add(new LinkNoteCategory(chicken, eggsCategory));
-//db.SaveChanges();

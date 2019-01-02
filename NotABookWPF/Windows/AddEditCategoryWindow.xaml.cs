@@ -1,18 +1,7 @@
-﻿using NotABookLibraryStandart.Models;
-using NotABookLibraryStandart.Models.BookElements;
+﻿using NotABookLibraryStandart.Models.BookElements;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace NotABookWPF.Windows
 {
@@ -21,19 +10,19 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class AddEditCategoryWindow : Window
     {
-        DataContext db;        
-        Category Category = null;
+        readonly DataContext db;
+        readonly Category Category = null;
         public AddEditCategoryWindow(DataContext dataContext)
-        {            
+        {
             InitializeComponent();
-            DataContext = Category;            
+            DataContext = Category;
             db = dataContext;
         }
         public AddEditCategoryWindow(DataContext dataContext, Category category)
         {
             InitializeComponent();
             Category = category;
-            DataContext = Category;            
+            DataContext = Category;
             db = dataContext;
         }
 
@@ -47,7 +36,7 @@ namespace NotABookWPF.Windows
                 }
                 else
                 {
-                    db.Categories.Add(new Category(CategoryTitleTextBox.Text));                    
+                    db.Categories.Add(new Category(CategoryTitleTextBox.Text));
                 }
                 db.SaveChanges();
                 Close();

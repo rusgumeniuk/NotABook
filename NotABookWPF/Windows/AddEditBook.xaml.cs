@@ -1,18 +1,7 @@
-﻿using NotABookLibraryStandart.Models;
-using NotABookLibraryStandart.Models.BookElements;
+﻿using NotABookLibraryStandart.Models.BookElements;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace NotABookWPF.Windows
 {
@@ -21,8 +10,8 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class AddEditBook : Window
     {
-        DataContext db;
-        Book Book = null;
+        readonly DataContext db;
+        readonly Book Book = null;
         public AddEditBook(DataContext dataContext, Book book = null)
         {
             InitializeComponent();
