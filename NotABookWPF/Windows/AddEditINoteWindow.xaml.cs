@@ -247,7 +247,7 @@ namespace NotABookWPF.Windows
 
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            (new AddEditCategoryWindow(db) { Title = "Create category" }).Show();
+            new AddEditBookElement(db, new Category()).Show();
         }
 
         private void CategoryInNoteListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -276,6 +276,11 @@ namespace NotABookWPF.Windows
                     CategoryInNoteListBox.ItemsSource = db.LinkNoteCategories.Local.Where(conn => conn.Note.Id.Equals((DataContext as Note).Id)).Select(conn => conn.Category);
                 }
             }
+        }
+
+        private void StackPanelContent_Drop(object sender, DragEventArgs e)
+        {
+
         }
     }
 }

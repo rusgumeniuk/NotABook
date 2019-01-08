@@ -73,7 +73,7 @@ namespace NotABookWPF.Windows
             ComboBoxCurrentBook.SelectedItem = currentBook;
             ListViewBooks.SelectedItem = currentBook;
 
-            TextBlockCountOfItems.Text = currentBook?.Notes.Count.ToString() + " ";
+            TextBlockCountOfItems.Content = currentBook?.Notes.Count.ToString() + " ";
             TBCurrentBook.Text = currentBook?.Title ?? "Undefind";
             HideNotePanel();
         }
@@ -112,8 +112,7 @@ namespace NotABookWPF.Windows
         #region Books stack panel
         private void TBEditBookTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            (sender as TextBox).IsEnabled = true;
-            MessageBox.Show("asd");
+            new AddEditBookElement(db, (sender as Label).DataContext as Book).Show();
         }
         private void ListViewBooks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -122,11 +121,7 @@ namespace NotABookWPF.Windows
                 currentBook = ListViewBooks.SelectedItem as Book;
                 UpdateCurrentBook();
             }
-        }
-        private void ListViewBooks_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            new AddEditBookElement(db, ListViewBooks.SelectedItem as Book).Show();            
-        }
+        }      
         private void TBEditBookTitle_LostFocus(object sender, RoutedEventArgs e)
         {
             (sender as TextBox).IsEnabled = false;
@@ -178,7 +173,7 @@ namespace NotABookWPF.Windows
                 else
                 {
                     IList<Note> result = currentBook?.FindNotes(TextBoxFindItem.Text, db.LinkNoteCategories.Local);
-                    TextBlockCountOfItems.Text = (result?.Count ?? 0).ToString() + " ";
+                    TextBlockCountOfItems.Content = (result?.Count ?? 0).ToString() + " ";
                     ListBoxItems.ItemsSource = result;
                 }
             }
