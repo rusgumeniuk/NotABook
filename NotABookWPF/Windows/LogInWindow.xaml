@@ -1,0 +1,81 @@
+﻿<Window x:Class="NotABookWPF.Windows.LogInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NotABookWPF.Windows"
+        mc:Ignorable="d"
+        Title="LogInWindow" Height="380" MinWidth="200" MinHeight="360" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Margin="20,10,20,10"
+            HorizontalAlignment="Center"
+            Content="Username"
+            />
+        <TextBox
+            Grid.Row="1"
+            Margin="20,10,20,10"
+            />
+        <Label
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            Content="Password"
+            />
+        <Grid
+            Grid.Row="3"            
+            Margin="20,10,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.95*"/>
+                <ColumnDefinition Width="0.05*"/>
+            </Grid.ColumnDefinitions>
+            <PasswordBox 
+                Name="PasswordBoxPass"
+                Grid.Column="0"                                  
+            />
+            <CheckBox
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Name="CheckBoxIsVisiblePassword"
+                Checked="CheckBoxIsVisiblePassword_Checked"
+                Unchecked="CheckBoxIsVisiblePassword_Unchecked"
+                />
+        </Grid>
+        
+        <Label 
+            Grid.Row="4"
+            Margin="20,10,20,10"
+            HorizontalAlignment="Center"
+            Content="Forgot password?"
+            />
+        <Button
+            Name="BtnLogIn"
+            Grid.Row="5"
+            Margin="50,20,50,10"
+            Padding="10"
+            MinWidth="50"
+            MaxWidth="300"
+            Click="BtnLogIn_Click"
+            Content="Log in"
+            />
+        <Button
+            Name="BtnSignUp"
+            Grid.Row="6"
+            Margin="50,20,50,10"
+            Padding="10"
+            MinWidth="50"
+            MaxWidth="300"
+            Click="BtnSignUp_Click"
+            Content="Sign up"
+            />
+    </Grid>
+</Window>

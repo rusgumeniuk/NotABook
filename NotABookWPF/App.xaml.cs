@@ -17,7 +17,7 @@ namespace NotABookWPF
         {
             NotABookLibraryStandart.Models.Base.ProjectType = NotABookLibraryStandart.Models.TypeOfRunningProject.WPF;
 
-            var window = new Windows.MainWindow();
+            var window = new Windows.LogInWindow();
             window.Show();
         }
     }
