@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NotABookLibraryStandart.Models.Roles
+﻿namespace NotABookLibraryStandart.Models.Roles
 {
-    public abstract class User : Entity, IUser
+    public class User : Entity
     {
-        public abstract bool LogIn(string email, string password);
-        public abstract bool SignUp(string email, string password);
+        public User(string username, string email, string[] roles)
+        {
+            Username = username;
+            Email = email;
+            Roles = roles;
+        }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string[] Roles { get; set; }
     }
 }
+
