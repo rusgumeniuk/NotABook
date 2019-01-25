@@ -25,6 +25,7 @@
         <TextBox
             Grid.Row="1"
             Margin="20,10,20,10"
+            Text="{Binding Username}"
             />
         <Label
             Grid.Row="2"
@@ -38,9 +39,10 @@
                 <ColumnDefinition Width="0.95*"/>
                 <ColumnDefinition Width="0.05*"/>
             </Grid.ColumnDefinitions>
-            <PasswordBox 
-                Name="PasswordBoxPass"
-                Grid.Column="0"                                  
+            <TextBox 
+                Name="TextBoxPassword"
+                Grid.Column="0"    
+                Text="{Binding Password}"
             />
             <CheckBox
                 Grid.Column="1"
@@ -63,9 +65,9 @@
             Margin="50,20,50,10"
             Padding="10"
             MinWidth="50"
-            MaxWidth="300"
-            Click="BtnLogIn_Click"
+            MaxWidth="300"            
             Content="Log in"
+            Command="{Binding LoginCommand, Mode=OneTime}"
             />
         <Button
             Name="BtnSignUp"
@@ -73,8 +75,7 @@
             Margin="50,20,50,10"
             Padding="10"
             MinWidth="50"
-            MaxWidth="300"
-            Click="BtnSignUp_Click"
+            MaxWidth="300"        
             Content="Sign up"
             />
     </Grid>

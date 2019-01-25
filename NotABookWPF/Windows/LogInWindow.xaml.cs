@@ -1,43 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+
+using NotABookViewModels;
+
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace NotABookWPF.Windows
 {
     /// <summary>
     /// Interaction logic for LogInWindow.xaml
     /// </summary>
-    public partial class LogInWindow : Window
+    public partial class LogInWindow : Window, IWindow
     {
-        public LogInWindow()
+        public ViewModelBase ViewModel
         {
+            get { return DataContext as ViewModelBase; }
+            set { DataContext = value; }
+        }
+        public LogInWindow(LogInWindowViewModel viewModel)
+        {
+            ViewModel = viewModel;
             InitializeComponent();
+            Messenger.Default.Register(this, new Action<string>(ProcessMessage));
         }
 
-        private void BtnSignUp_Click(object sender, RoutedEventArgs e)
+        public void ProcessMessage(string message)
         {
-
-        }
-
-        private void BtnLogIn_Click(object sender, RoutedEventArgs e)
-        {
-            new MainWindow().Show();
-            this.Close();
+            if (message == "unknown")
+            {
+                MessageBox.Show("Wrong username or password!");
+            }
+            else if (message == "user")
+            {
+                var window = new MainWindow();
+                window.Show();
+                this.Close();
+            }
+            else MessageBox.Show("IDK");
         }
 
         private void CheckBoxIsVisiblePassword_Checked(object sender, RoutedEventArgs e)
         {
-            PasswordBoxPass.OpacityMask = null;
+            
         }
 
         private void CheckBoxIsVisiblePassword_Unchecked(object sender, RoutedEventArgs e)
