@@ -10,19 +10,15 @@ namespace NotABookLibraryStandart.Models.Roles
     {
         private static readonly List<InternalUserData> _users = new List<InternalUserData>()
         {
-            new InternalUserData("Mark", "mark@company.com",
-            "MB5PYIsbI2YzCUe34Q5ZU2VferIoI4Ttd+ydolWV0OE=", new string[] { "Administrators" }),
-            new InternalUserData("John", "john@company.com",
-            "hMaLizwzOQ5LeOnMuj+C6W75Zl5CXXYbwDSHWW9ZOXc=", new string[] { })
+            new InternalUserData("Ruslan", "rus.gumeniuk@gmail.com",
+            "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", new string[] { "Administrators" }),
+            new InternalUserData("User", "user@company.com",
+            "xT50saU4tyGOzWY48EMaXSI7Bv89hJJn32sagaMuJzo=", new string[] { })
         };
         public User AuthenticateUser(string username, string password)
         {
-            InternalUserData userData = _users.FirstOrDefault(u => u.Username.Equals(username)
-                  && u.HashedPassword.Equals(CalculateHash(password, u.Username)));
-            if (userData == null)
-                throw new UnauthorizedAccessException("Access denied. Please provide some valid credentials.");
-
-            return new User(userData.Username, userData.Email, userData.Roles);
+            InternalUserData userData = _users.FirstOrDefault(u => u.Username.Equals(username) && u.HashedPassword.Equals(CalculateHash(password, u.Username)));
+            return userData != null ? new User(userData.Username, userData.Email, userData.Roles) : throw new UnauthorizedAccessException("Access denied. Please provide some valid credentials.");
         }
 
         private string CalculateHash(string clearTextPassword, string salt)
