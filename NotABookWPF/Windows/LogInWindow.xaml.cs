@@ -27,17 +27,12 @@ namespace NotABookWPF.Windows
 
         public void ProcessMessage(string message)
         {
-            if (message == "unknown")
-            {
-                MessageBox.Show("Wrong username or password!");
-            }
-            else if (message == "user")
+             if (message == "user")
             {
                 var window = new MainWindow();
                 window.Show();
                 this.Close();
-            }
-            else MessageBox.Show("IDK");
+            }            
         }
 
         private void CheckBoxIsVisiblePassword_Checked(object sender, RoutedEventArgs e)
