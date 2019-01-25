@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using NotABookLibraryStandart.Models.Roles;
+using NotABookViewModels;
+using System;
 using System.Windows;
 
 namespace NotABookWPF
@@ -12,12 +9,17 @@ namespace NotABookWPF
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
-       public App()
+    {      
+        protected override void OnStartup(StartupEventArgs e)
         {
             NotABookLibraryStandart.Models.Base.ProjectType = NotABookLibraryStandart.Models.TypeOfRunningProject.WPF;
+            Principal principal = new Principal();
+            AppDomain.CurrentDomain.SetThreadPrincipal(principal);
 
-            var window = new Windows.LogInWindow();
+            base.OnStartup(e);
+
+            LogInWindowViewModel viewModel = new LogInWindowViewModel(new AuthenticationService());           
+            var window = new Windows.LogInWindow(viewModel);
             window.Show();
         }
     }
