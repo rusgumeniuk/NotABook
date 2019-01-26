@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,6 +22,8 @@ namespace NotABookWPF.Windows
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
+    [PrincipalPermission(SecurityAction.Demand, Role = "Users")]
     public partial class MainWindow : Window
     {
         #region Init
