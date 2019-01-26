@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 
+using NotABookLibraryStandart.Models.Roles;
+
 using NotABookViewModels;
 
 using System;
@@ -27,19 +29,25 @@ namespace NotABookWPF.Windows
 
         public void ProcessMessage(string message)
         {
-             if (message == "user")
+            if (message == "logged")
             {
                 var window = new MainWindow();
                 window.Show();
                 this.Close();
-            }            
+            }
+            else if (message.Equals("SignUp"))
+            {
+                var window = new SignUpWindow(new SignUpWindowViewModel(new AuthenticationService()));
+                window.ShowDialog();
+            }
+            else if (message.Contains("Error"))
+                MessageBox.Show(message);
         }
 
         private void CheckBoxIsVisiblePassword_Checked(object sender, RoutedEventArgs e)
         {
-            
-        }
 
+        }
         private void CheckBoxIsVisiblePassword_Unchecked(object sender, RoutedEventArgs e)
         {
 
