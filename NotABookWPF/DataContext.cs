@@ -1,6 +1,7 @@
 ﻿using NotABookLibraryStandart.Models;
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
+using NotABookLibraryStandart.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,6 +21,7 @@ namespace NotABookWPF
         public DbSet<TextContent> TextContents{ get; set; }
         public DbSet<PhotoContent> PhotoContents { get; set; }
         public DbSet<LinkNoteCategory> LinkNoteCategories { get; set; }
+        public DbSet<User> Users { get; set; }
         public IList<Content> Contents
         {
             get
