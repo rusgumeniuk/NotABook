@@ -2,13 +2,13 @@
 {
     public class User : Entity
     {
-        public User(string username, string email, string[] roles)
+        internal User(string username, string email, string[] roles)
         {
             Username = username;
             Email = email;
             Roles = roles;
         }
-        public User(string username, string email, string hashedPassword, string[] roles) : this(username, email, roles)
+        internal User(string username, string email, string hashedPassword, string[] roles) : this(username, email, roles)
         {           
             HashedPassword = hashedPassword;
         }
