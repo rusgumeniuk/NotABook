@@ -8,9 +8,14 @@
             Email = email;
             Roles = roles;
         }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string[] Roles { get; set; }
+        public User(string username, string email, string hashedPassword, string[] roles) : this(username, email, roles)
+        {           
+            HashedPassword = hashedPassword;
+        }
+        public string Username { get; private set; }
+        public string Email { get; private set; }
+        public string HashedPassword { get; private set; }
+        public string[] Roles { get; private set; }
     }
 }
 
