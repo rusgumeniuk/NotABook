@@ -1,21 +1,20 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 using NotABookLibraryStandart.Models.Roles;
 
 using System;
 using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 
 namespace NotABookViewModels
 {
-    public class LogInWindowViewModel : ViewModelBase
+    public class LogInWindowViewModel : ViewModelCustomBase
     {
-        private readonly IAuthenticationService _authenticationService;
         private RelayCommand loginCommand;
         private RelayCommand logoutCommand;
+        private RelayCommand signUpCommand;
+
         public ICommand LoginCommand
         {
             get
@@ -34,6 +33,15 @@ namespace NotABookViewModels
                 return logoutCommand;
             }
         }
+        public ICommand SignUpCommand
+        {
+            get
+            {
+                if (signUpCommand == null)
+                    signUpCommand = new RelayCommand(ShowSignUpWindow);
+                return signUpCommand;
+            }
+        }
 
         public string Username { get; set; }
         public string Password { get; set; }
@@ -42,10 +50,7 @@ namespace NotABookViewModels
             get => Thread.CurrentPrincipal.Identity.IsAuthenticated;
         }
 
-        public LogInWindowViewModel(IAuthenticationService authenticationService)
-        {
-            _authenticationService = authenticationService;                        
-        }
+        public LogInWindowViewModel(IAuthenticationService authenticationService) : base(authenticationService) { }
 
         private bool CanLogin()
         {
@@ -71,15 +76,15 @@ namespace NotABookViewModels
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("Login failed! Please provide some valid credentials.");
+                Messenger.Default.Send("Error! Login failed! Please provide some valid credentials.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ERROR: {ex.Message}");
+                Messenger.Default.Send($"Error: {ex.Message}");
             }
             finally
             {
-                Messenger.Default.Send(IsAuthenticated ? "user" : "unknown");
+                Messenger.Default.Send(IsAuthenticated ? "logged" : "unknown");
             }
         }
         private bool CanLogout()
@@ -94,6 +99,10 @@ namespace NotABookViewModels
                 loginCommand.RaiseCanExecuteChanged();
                 logoutCommand.RaiseCanExecuteChanged();
             }
+        }
+        private void ShowSignUpWindow()
+        {
+            Messenger.Default.Send("SignUp");
         }
     }
 }
