@@ -1,0 +1,75 @@
+﻿<Window x:Class="NotABookWPF.Windows.SignUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NotABookWPF.Windows"
+        mc:Ignorable="d"
+        Title="SignUpWindow" Height="370" Width="300" MaxHeight="500" MinWidth="215">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Content="Username:"
+            Margin="20,10,20,10"
+            HorizontalAlignment="Center"/>
+
+        <TextBox
+            Grid.Row="1"
+            Text="{Binding Username}"
+            Margin="20,0,20,0"
+            />
+        <Label
+            Grid.Row="2"
+            Content="Email:"
+            Margin="20,10,20,10"
+            HorizontalAlignment="Center"
+            />
+        <TextBox
+            Grid.Row="3"
+            Text="{Binding Email}"
+            Margin="20,0,20,0"
+            />
+        <Label
+            Grid.Row="4"
+            Content="Password:"            
+            Margin="20,10,20,10"
+            HorizontalAlignment="Center"/>
+        <TextBox
+            Grid.Row="5"
+            Text="{Binding RealPassword}"
+            Margin="20,0,20,0"
+            />
+        <Label
+            Grid.Row="6"
+            Content="Replay password:"
+            Margin="20,10,20,10"
+            HorizontalAlignment="Center"/>
+        <TextBox
+            Grid.Row="7"
+            Text="{Binding ReplayPassword}"
+            Margin="20,0,20,0"
+            />       
+        <Button 
+            Grid.Row="9"
+            Name="Btn"
+            Content="Sign up"
+            Command="{Binding SignUpCommand, Mode=OneTime}"            
+            Margin="50,20,50,10"
+            Padding="10"
+            MinWidth="100"
+            MaxWidth="300"              
+            />        
+    </Grid>
+</Window>
