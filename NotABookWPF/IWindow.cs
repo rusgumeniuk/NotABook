@@ -1,10 +1,10 @@
-﻿using GalaSoft.MvvmLight;
+﻿using NotABookViewModels;
 
 namespace NotABookWPF
 {
     interface IWindow
     {
-        ViewModelBase ViewModel { get; set; }
+        ViewModelCustomBase ViewModel { get; set; }
         void ProcessMessage(string message);
     }
 }
