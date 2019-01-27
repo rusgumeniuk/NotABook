@@ -13,7 +13,7 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class SignUpWindow : Window, IWindow
     {
-        public ViewModelBase ViewModel
+        public ViewModelCustomBase ViewModel
         {
             get => DataContext as ViewModelCustomBase;
             set => DataContext = value;

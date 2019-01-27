@@ -15,9 +15,9 @@ namespace NotABookWPF.Windows
     /// </summary>
     public partial class LogInWindow : Window, IWindow
     {
-        public ViewModelBase ViewModel
+        public ViewModelCustomBase ViewModel
         {
-            get { return DataContext as ViewModelBase; }
+            get { return DataContext as ViewModelCustomBase; }
             set { DataContext = value; }
         }
         public LogInWindow(LogInWindowViewModel viewModel)
@@ -37,7 +37,7 @@ namespace NotABookWPF.Windows
             }
             else if (message.Equals("SignUp"))
             {
-                var window = new SignUpWindow(new SignUpWindowViewModel(new AuthenticationService()));
+                var window = new SignUpWindow(new SignUpWindowViewModel(ViewModel.Service));
                 window.ShowDialog();
             }
             else if (message.Contains("Error"))

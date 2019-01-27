@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-
+using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.Roles;
 
 using System;
@@ -44,7 +44,7 @@ namespace NotABookViewModels
             }
         }
 
-        public SignUpWindowViewModel(IAuthenticationService authenticationService) : base(authenticationService) { }
+        public SignUpWindowViewModel(IService service) : base(service) { }
         private bool CanSignUp()
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Email)
@@ -58,7 +58,7 @@ namespace NotABookViewModels
                 ErrorMessage = "Error! Your passwords not equal!";
                 return false;
             }
-            else if (_authenticationService.IsExistUser(Username, RealPassword))
+            else if (Service.GetUser(Username, RealPassword) != null)
             {
                 ErrorMessage = "Error! This user already exist!";
                 return false;
@@ -69,7 +69,7 @@ namespace NotABookViewModels
         {
             if (CanSignUp())
             {
-                _authenticationService.AddUser(Username, Email, RealPassword, new string[] { "Users" });
+                Service.AddUser( new User(Username, Email, RealPassword, new string[] { "Users" }));
                 Messenger.Default.Send("registered");
             }
             else

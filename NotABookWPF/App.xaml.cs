@@ -1,4 +1,6 @@
-﻿using NotABookLibraryStandart.Models.Roles;
+﻿using NotABookDataAccess;
+using NotABookLibraryStandart.DB;
+using NotABookLibraryStandart.Models.Roles;
 using NotABookViewModels;
 using System;
 using System.Windows;
@@ -17,8 +19,8 @@ namespace NotABookWPF
             AppDomain.CurrentDomain.SetThreadPrincipal(principal);
 
             base.OnStartup(e);
-
-            LogInWindowViewModel viewModel = new LogInWindowViewModel(new AuthenticationService());           
+                                 
+            LogInWindowViewModel viewModel = new LogInWindowViewModel(new Service(new Repository(new DataBaseContext())));           
             var window = new Windows.LogInWindow(viewModel);
             window.Show();
         }
