@@ -37,8 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -96,7 +96,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataContext.cs" />
     <Compile Include="IWindow.cs" />
     <Compile Include="Windows\AddEditBookElement.xaml.cs">
       <DependentUpon>AddEditBookElement.xaml</DependentUpon>
@@ -173,6 +172,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NotABookDataAccess\NotABookDataAccess.csproj">
+      <Project>{DAEE7F4A-A77D-4B6E-AD04-80FBC9B4B99D}</Project>
+      <Name>NotABookDataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NotABookLibraryStandart\NotABookLibraryStandart.csproj">
       <Project>{56e5237a-fe7b-4499-8c4c-462471766ad2}</Project>
       <Name>NotABookLibraryStandart</Name>

@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NotABookDataAccess\NotABookDataAccess.csproj" />
     <ProjectReference Include="..\NotABookLibraryStandart\NotABookLibraryStandart.csproj" />
   </ItemGroup>
 
