@@ -2,10 +2,10 @@
 {
     public interface IAuthenticationService
     {
-        User AuthenticateUser(string username, string password);
-        bool IsExistUser(string username, string password);
-        void AddUser(string username, string email, string hashedPassword, string[] roles);
-        bool RemoveUser(string username, string password);
-        bool RemoveUser(User user);
+        User GetUser(string username);
+        User GetUser(string username, string password);
+        bool IsExistUser(string username);
+        void AddUser(User user);        
+        void RemoveUser(User user);
     }
 }
