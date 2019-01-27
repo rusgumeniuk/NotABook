@@ -1,9 +1,6 @@
-﻿using NotABookLibraryStandart.Models.BookElements;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
-namespace NotABookLibraryStandart.Models
+namespace NotABookLibraryStandart.Models.BookElements
 {
     public class LinkNoteCategory : Entity
     {
