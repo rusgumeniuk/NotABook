@@ -21,9 +21,8 @@ namespace NotABookLibraryStandart.DB
             return _repository.GetAdmins() as IList<User>;
         }
         public IList<Book> FindBooks()
-        {
-            var books = _repository.GetBooks();
-            return books as IList<Book>;
+        {            
+            return _repository.GetBooks() as IList<Book>;
         }
         public IList<Book> FindBooksByUser(User user)
         {
@@ -68,6 +67,10 @@ namespace NotABookLibraryStandart.DB
         public IList<User> FindUsers()
         {
             return _repository.GetUsers() as IList<User>;
+        }
+        public IList<Category> FindCategoriesByNote(Note note)
+        {
+            return _repository.GetCategoriesByNote(note) as IList<Category>;
         }
         #endregion
 
@@ -149,6 +152,6 @@ namespace NotABookLibraryStandart.DB
         public int SaveChanges()
         {
             return _repository.Save();
-        }
+        }        
     }
 }

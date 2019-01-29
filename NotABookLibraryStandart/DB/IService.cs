@@ -22,6 +22,7 @@ namespace NotABookLibraryStandart.DB
         IList<LinkNoteCategory> FindLinksNoteCategory(Note note);
         IList<LinkNoteCategory> FindLinksNoteCategory(Category category);
         IList<Content> FindContentsByNote(Note note);
+        IList<Category> FindCategoriesByNote(Note note);
 
         void AddBook(Book book);
         void AddNote(Note note);
