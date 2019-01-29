@@ -1,5 +1,6 @@
-﻿using NotABookLibraryStandart.Models;
-using NotABookLibraryStandart.Models.BookElements;
+﻿using GalaSoft.MvvmLight.Messaging;
+
+using NotABookViewModels;
 
 using System;
 using System.Windows;
@@ -9,47 +10,25 @@ namespace NotABookWPF.Windows
     /// <summary>
     /// Interaction logic for AddEditBookElement.xaml
     /// </summary>
-    public partial class AddEditBookElement : Window
+    public partial class AddEditBookElement : Window, IWindow
     {
-        readonly bool isCreating;
-        readonly DataContext db;
-        public AddEditBookElement(DataContext database, BookElement bookElement)
+        public ViewModelCustomBase ViewModel
+        {
+            get { return DataContext as ViewModelCustomBase; }
+            set { DataContext = value; }
+        }
+        public AddEditBookElement(AddEditBookElementViewModel viewModel)
         {
             InitializeComponent();
-            db = database;
-            DataContext = bookElement;
-            isCreating = bookElement.Title == null;
-            TitleTextBox.Text = (DataContext as BookElement)?.Title ?? String.Empty;
-            Title = !isCreating ? ("Editing '" + bookElement.Title + "'") : ("Adding new " + bookElement?.GetType().Name.ToLowerInvariant());
+            ViewModel = viewModel;
+            Messenger.Default.Register(this, new Action<string>(ProcessMessage));
         }
-        private void BtnCancelSave_Click(object sender, RoutedEventArgs e)
+        public void ProcessMessage(string message)
         {
-            this.Close();
-        }
-        private void BtnSaveCategory_Click(object sender, RoutedEventArgs e)
-        {
-            if (!String.IsNullOrWhiteSpace(TitleTextBox.Text.Trim()))
-            {
-                if (!isCreating)
-                {
-                    (DataContext as BookElement).Title = TitleTextBox.Text.Trim();
-                }
-                else
-                {
-                    if (DataContext is Category)
-                    {
-                        db.Categories.Add(new Category(TitleTextBox.Text));
-                    }
-                    else if (DataContext is Book)
-                    {
-                        db.Books.Add(new Book(TitleTextBox.Text));
-                    }
-                }
-                db.SaveChanges();
-                Close();
-            }
-            else
-                MessageBox.Show("Oooops, title can not be empty!");
+            if (message.Equals("NotValidTitle"))
+                MessageBox.Show("Please input valid Title");
+            else if (message.Equals("BookElemChanged") || message.Equals("CancelBookElement"))
+                this.Close();
         }
     }
 }
