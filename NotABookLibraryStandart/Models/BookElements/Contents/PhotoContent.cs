@@ -1,8 +1,12 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
@@ -17,12 +21,12 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             {
                 using (var memoryStream = new MemoryStream(BytesOfPhoto))
                 {
-                    return Image.FromStream(memoryStream);
+                    return System.Drawing.Image.FromStream(memoryStream);
                 }
             }
             set
             {
-                if (value is Image image)
+                if (value is Image)
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
                     using (MemoryStream memoryStream = new MemoryStream())
@@ -95,7 +99,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             return bitmapImage;
         }
 
-        public static byte[] ImageToBytes(System.Windows.Controls.Image image)
+        public static byte[] ImageToBytes(Image image)
         {
             if (image.Source is BitmapSource bitmapSource)
             {
