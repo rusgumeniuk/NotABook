@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.Roles;
 
@@ -50,10 +51,7 @@ namespace NotABookViewModels
             get => Thread.CurrentPrincipal.Identity.IsAuthenticated;
         }
 
-        public LogInWindowViewModel(IService service) : base(service)
-        {
-            
-        }
+        public LogInWindowViewModel(IService service) : base(service) { }
 
         private bool CanLogin()
         {
@@ -63,7 +61,7 @@ namespace NotABookViewModels
         {
             try
             {
-                if(string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Password))
                     throw new UnauthorizedAccessException("Access denied. Please provide some valid credentials.");
                 //Validate credentials through the authentication service
                 User user = Service.GetUser(Username, Password.Trim());
