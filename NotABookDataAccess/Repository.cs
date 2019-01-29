@@ -114,6 +114,10 @@ namespace NotABookDataAccess
         {
             return db.Users.Local;
         }
+        public IEnumerable<Category> GetCategoriesByNote(Note note)
+        {
+            return db.LinkNoteCategories.Where(link => link.Note.Equals(note)).Select(link => link.Category);
+        }
 
         public User GetUser(string username)
         {

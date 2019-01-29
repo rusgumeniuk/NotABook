@@ -22,6 +22,7 @@ namespace NotABookLibraryStandart.DB
         IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Note note);
         IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Category category);
         IEnumerable<Content> GetContentsByNote(Note note);
+        IEnumerable<Category> GetCategoriesByNote(Note note);
 
         void Add(User user);
         void Add(Book book);
@@ -35,7 +36,7 @@ namespace NotABookLibraryStandart.DB
         void Remove(Book book);
         void Remove(Note note);
         void Remove(Category category);
-        void Remove(LinkNoteCategory linkNoteCategory);        
+        void Remove(LinkNoteCategory linkNoteCategory);
         void Remove(Content content);
 
         int Save();
