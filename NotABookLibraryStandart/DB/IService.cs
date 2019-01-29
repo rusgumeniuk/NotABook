@@ -21,19 +21,21 @@ namespace NotABookLibraryStandart.DB
         IList<Category> FindCategoriesByUser(User user);
         IList<LinkNoteCategory> FindLinksNoteCategory(Note note);
         IList<LinkNoteCategory> FindLinksNoteCategory(Category category);
-        IList<Content> FindContentsByNote(Note note);                        
-        
+        IList<Content> FindContentsByNote(Note note);
+
         void AddBook(Book book);
         void AddNote(Note note);
         void AddCategory(Category category);
         void AddLinkNoteCategory(LinkNoteCategory linkNoteCategory);
         void AddLinkNoteCategory(Note note, Category category);
         void AddContent(Content content);
-        
+
         void RemoveBook(Book book);
         void RemoveNote(Note note);
         void RemoveCategory(Category category);
-        void RemoveLinkNoteCategory(LinkNoteCategory linkNoteCategory);        
-        void RemoveContent(Content content);        
+        void RemoveLinkNoteCategory(LinkNoteCategory linkNoteCategory);
+        void RemoveContent(Content content);
+
+        int SaveChanges();
     }
 }

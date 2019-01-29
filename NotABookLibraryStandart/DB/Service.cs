@@ -22,7 +22,8 @@ namespace NotABookLibraryStandart.DB
         }
         public IList<Book> FindBooks()
         {
-            return _repository.GetBooks() as IList<Book>;
+            var books = _repository.GetBooks();
+            return books as IList<Book>;
         }
         public IList<Book> FindBooksByUser(User user)
         {
@@ -95,7 +96,7 @@ namespace NotABookLibraryStandart.DB
         {
             _repository.Add(note);
         }
-        
+
         #endregion
 
         #region Remove
@@ -145,5 +146,9 @@ namespace NotABookLibraryStandart.DB
         }
         #endregion
 
+        public int SaveChanges()
+        {
+            return _repository.Save();
+        }
     }
 }
