@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.Roles;
 
@@ -69,12 +70,11 @@ namespace NotABookViewModels
         {
             if (CanSignUp())
             {
-                Service.AddUser( new User(Username, Email, RealPassword, new string[] { "Users" }));
+                Service.AddUser(new User(Username, Email, RealPassword, new string[] { "Users" }));
                 Messenger.Default.Send("registered");
             }
             else
                 Messenger.Default.Send(ErrorMessage);
-
         }
     }
 }

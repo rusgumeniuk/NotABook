@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
+
 using NotABookLibraryStandart.DB;
-using NotABookLibraryStandart.Models.Roles;
 
 namespace NotABookViewModels
 {

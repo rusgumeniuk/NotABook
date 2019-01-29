@@ -2,13 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using NotABookViewModels;
 
 namespace NotABookWPF.Windows
 {
     /// <summary>
     /// Interaction logic for FAQWindow.xaml
     /// </summary>
-    public partial class FAQWindow : Window
+    public partial class FAQWindow : Window, IWindow
     {
         readonly ObservableCollection<Node> Nodes;
         private static readonly IDictionary<string, string> bookElementFAQ = new Dictionary<string, string>()
@@ -24,9 +25,16 @@ namespace NotABookWPF.Windows
             ["Book elements"] = bookElementFAQ
         };
 
-        public FAQWindow()
+        public ViewModelCustomBase ViewModel
+        {
+            get { return DataContext as ViewModelCustomBase; }
+            set { DataContext = value; }
+        }
+
+        public FAQWindow(FAQWindowViewModel viewModel)
         {
             InitializeComponent();
+            ViewModel = viewModel;
             Nodes = new ObservableCollection<Node>();
 
             foreach (var item in dict)
@@ -50,6 +58,11 @@ namespace NotABookWPF.Windows
         private void FAQTree_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             faqTextBox.Text = (FAQTree.SelectedItem as Node).Value;
+        }
+
+        public void ProcessMessage(string message)
+        {
+            throw new System.NotImplementedException();
         }
     }
     public class Node

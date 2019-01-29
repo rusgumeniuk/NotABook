@@ -1,7 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
-
-using NotABookLibraryStandart.Models.Roles;
+﻿using GalaSoft.MvvmLight.Messaging;
 
 using NotABookViewModels;
 
@@ -31,7 +28,7 @@ namespace NotABookWPF.Windows
         {
             if (message == "logged")
             {
-                var window = new MainWindow();
+                var window = new MainWindow(new MainWindowViewModel(ViewModel.Service));
                 window.Show();
                 this.Close();
             }
