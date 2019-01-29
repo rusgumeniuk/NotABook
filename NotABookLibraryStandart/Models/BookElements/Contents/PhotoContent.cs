@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Media.Imaging;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
@@ -77,6 +78,37 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         public override bool IsContainsText(string text)
         {
             return ImageTitle?.ToUpperInvariant().Contains(text.ToUpperInvariant()) ?? false || (GenerateString()?.ToUpperInvariant().Contains(text.ToUpperInvariant()) ?? false);
+        }
+
+        public static bool IsImageExtension(string extension)
+        {
+            return extension.Equals(".jpg") || extension.Equals(".png");
+        }
+
+        public static BitmapImage BytesToImage(byte[] bytes)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = new MemoryStream(bytes);
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+
+        public static byte[] ImageToBytes(System.Windows.Controls.Image image)
+        {
+            if (image.Source is BitmapSource bitmapSource)
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                using (var stream = new MemoryStream())
+                {
+                    encoder.Save(stream);
+                    return stream.ToArray();
+                }
+            }
+            return null;
         }
     }
 }
