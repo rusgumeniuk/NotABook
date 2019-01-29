@@ -3,8 +3,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="800" Closing="Window_Closing">
+        Title="MainWindow"
+        Height="400"
+        Width="800">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,26 +24,30 @@
             HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="10,0,10,0" Margin="1">
             <MenuItem Header="File">
                 <MenuItem Header="Create book element">
-                    <MenuItem x:Name="MenuItemCreateBook" Header="New book" Click="MenuItemCreateBook_Click"/>
-                    <MenuItem x:Name="MenuItemCreateNote" Header="New note" Click="MenuItemCreateNote_Click"/>
-                    <MenuItem x:Name="MenuItemCreateCategory" Header="New category" Click="MenuItemCreateCategory_Click"/>
+                    <MenuItem x:Name="MenuItemCreateBook" Header="New book" Command="{Binding AddEditBookCommand}"/>
+                    <MenuItem x:Name="MenuItemCreateNote" Header="New note" Command="{Binding AddEditNoteCommand}"/>
+                    <MenuItem x:Name="MenuItemCreateCategory" Header="New category" Command="{Binding AddEditCategoryCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Syncronize"/>
                 <Separator/>
-                <MenuItem Header="Exit" Name="MenuItemExit" Click="MenuItemExit_Click"/>
+                <MenuItem Header="Exit" Name="MenuItemExit" Command="{Binding ClosingCommand}"/>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Undo"/>
             </MenuItem>
             <MenuItem Header="About">
-                <MenuItem Header="FAQ" Name = "MenuItemFAQ" Click="MenuItemFAQ_Click"/>
-                <MenuItem Header="About" Name = "MenuItemAbout" Click="MenuItemAbout_Click"/>
+                <MenuItem Header="FAQ" Name = "MenuItemFAQ" Command="{Binding FaqCommand}"/>
+                <MenuItem Header="About" Name = "MenuItemAbout" Command="{Binding AboutCommand}"/>
             </MenuItem>
         </Menu>
         <ToolBar 
             Grid.Row="1"
             Height="Auto">
-            <Button Name="BtnNewNote" Content="New note" Click="BtnNewNote_Click" Margin="10,0,10,0" Padding="10,0,10,0"/>
+            <Button
+                Content="New note"
+                Command="{Binding AddEditNoteCommand}"
+                Margin="10,0,10,0"
+                Padding="10,0,10,0"/>
             <Separator/>
             <TextBox Foreground="LightGray" Margin="10,0,10,0" Padding="20,0,20,0" Text="Find note"/>
         </ToolBar>
@@ -45,7 +57,7 @@
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.8*"/>
                 <ColumnDefinition Width="1.5*"/>
-            </Grid.ColumnDefinitions>     
+            </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Margin="5,0,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -61,7 +73,7 @@
                 <TextBlock      
                     Grid.Row="1"
                     HorizontalAlignment="Center"                    
-                    Name="TBCurrentBook" 
+                    Text="{Binding CurrentBook}"
                     FontStretch="ExtraExpanded" 
                     FontStyle="Normal" 
                     FontWeight="ExtraBold"
@@ -72,31 +84,38 @@
                     Padding="20,10,20,0"
                     Text="All books:"/>
                 <ListView
-                    Grid.Row="3"
-                    x:Name="ListViewBooks"                           
-                    SelectionChanged="ListViewBooks_SelectionChanged"                    
+                    Grid.Row="3"                                                                     
+                    SelectedItem="{Binding SelectedBook}"
+                    ItemsSource="{Binding Books}"
                     SelectionMode="Extended"                    
                     HorizontalContentAlignment="Stretch"
                     VerticalAlignment="Stretch"     
                     BorderBrush="White"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ScrollViewer.CanContentScroll="True"
-                    >
+                    ScrollViewer.CanContentScroll="True">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectBookCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Label  
+                            <Label                                  
                                 Name="TBEditBookTitle" 
-                                Content="{Binding Title}"                                      
-                                LostFocus="TBEditBookTitle_LostFocus" 
-                                MouseDoubleClick="TBEditBookTitle_MouseDoubleClick"
+                                Content="{Binding Title}"                                                                                                      
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"                                    
                                 >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding AddEditBookCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Label.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Click="MenuItemDeleteBook_Click_1"/>
-                                        <MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Click="MenuItemEditBook_Click"/>
-                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove notes" CommandParameter="{Binding .}" Click="MenuItemRemoveItems_Click"/>
+                                        <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Command="{Binding RemoveBookCommand}"/>
+                                        <MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Command="{Binding AddEditBookCommand}"/>
+                                        <MenuItem Name="MenuItemRemoveItems" Header="Remove notes" CommandParameter="{Binding .}"/>
                                     </ContextMenu>
                                 </Label.ContextMenu>
                             </Label>
@@ -113,38 +132,57 @@
                 <TextBox 
                     Grid.Row="0"
                     Name="TextBoxFindItem" 
-                    Text="Find item" 
-                    GotFocus="TextBoxFindItem_GotFocus" 
-                    LostFocus="TextBoxFindItem_LostFocus" 
+                    Text="{Binding FindNoteText}"                                         
                     Margin="5"
-                    Padding="5"
-                    TextChanged="TextBoxFindItem_TextChanged"/>
+                    Padding="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="LostFocus">
+                            <i:InvokeCommandAction Command="{Binding LostFocusCommand}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="TextChanged">
+                            <i:InvokeCommandAction Command="{Binding FindNoteCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
                 <StackPanel
                     Grid.Row="1">
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                         <Label Content="Count of notes: "/>
-                        <Label FontStyle="Oblique" Name="TextBlockCountOfItems" HorizontalAlignment="Stretch"/>
+                        <Label FontStyle="Oblique" Content="{Binding CountOfFinding}" HorizontalAlignment="Stretch"/>
                         <Label Content="from" Margin="10,0,0,0" HorizontalAlignment="Left"/>
                     </StackPanel>
                     <ComboBox
                         Name="ComboBoxCurrentBook"                    
-                        SelectionChanged="ComboBoxCurrentBook_SelectionChanged"
+                        ItemsSource="{Binding Books}"
+                        SelectedItem="{Binding CurrentBook}"                        
                         IsEditable="True"
-                        StaysOpenOnEdit="True"/>
+                        StaysOpenOnEdit="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding SelectBookCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
                 </StackPanel>
                 <ListBox           
-                    Grid.Row="2"                    
-                        x:Name="ListBoxItems"                    
-                        Margin="5,10,5,0"
-                        MouseDoubleClick="ListBoxItems_MouseDoubleClick"                                   
-                        MouseLeftButtonUp="ListBoxItems_MouseLeftButtonUp"                    
-                        SelectionMode="Extended"
-                        HorizontalContentAlignment="Stretch"   
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"                            
-                        >
+                    Grid.Row="2"                                                       
+                    ItemsSource="{Binding Notes}"
+                    SelectedItem="{Binding CurrentNote}"                    
+                    Margin="5,10,5,0"                   
+                    SelectionMode="Extended"
+                    HorizontalContentAlignment="Stretch"   
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding AddEditNoteCommand}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding SelectNoteCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Name="MenuItemInNotesRemoveNote" Header="Remove note" Command="{Binding .}" Click="MenuItemInNotesRemoveNote_Click"/>
+                            <MenuItem Name="MenuItemInNotesRemoveNote" Header="Remove note" Command="{Binding RemoveNoteCommand}"/>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
@@ -159,10 +197,12 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-
             </Grid>
-
-            <Grid Grid.Column="2" x:Name="StackPanelItemPanel" Margin="5" Visibility="Collapsed">
+            <Grid 
+                Grid.Column="2" 
+                DataContext="{Binding CurrentNote}"
+                Margin="5"
+                Visibility="{Binding NotePanelVisibility}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.9*"/>
                     <RowDefinition Height="0.1*"/>
@@ -170,26 +210,22 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Grid 
-                    Grid.Row="0">
+                <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>                    
+                    </Grid.RowDefinitions>
                     <TextBox
                         Grid.Row="0"                        
-                        Name="TBEditItemTitle" Text="{Binding Title}" FontStyle="Italic"/>
-                    <StackPanel 
-                        Grid.Row="1"                        
-                        Orientation="Horizontal">
+                        Text="{Binding Title}"
+                        FontStyle="Italic"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <TextBlock Text="Date of last changing: "/>
                         <TextBlock Name="TBDateOfLastChanging" Text="{Binding DateOfLastChanging}"/>
                     </StackPanel>
-                    <StackPanel
-                        Grid.Row="2"                        
-                        Orientation="Horizontal">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <TextBlock Text="Date of creating: "/>
                         <TextBlock Name="TBDateOfCreating" Text="{Binding DateOfCreating}"/>
                     </StackPanel>
@@ -201,7 +237,9 @@
                         </Grid.ColumnDefinitions>
                         <Expander
                             Grid.Column="0"
-                            x:Name="CategoryExpander" ExpandDirection="Right" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            ExpandDirection="Right"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="0.4*"/>
@@ -214,8 +252,16 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="Categories of this note:" HorizontalAlignment="Center"/>
-                                    <ListBox Grid.Row="1" x:Name="CategoryInNoteListBox"
-                                          MouseLeftButtonUp="CategoryInNoteListBox_MouseLeftButtonUp"   />
+                                    <ListBox 
+                                        Grid.Row="1" 
+                                        ItemsSource="{Binding NoteCategories}"                                          
+                                        SelectedItem="{Binding SelectedCategory}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                                <i:InvokeCommandAction Command="{Binding RemoveCategoryFromNoteCommand}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ListBox>
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
@@ -223,14 +269,21 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="All categories:" HorizontalAlignment="Center"/>
-                                    <ListView Grid.Row="1" x:Name="AllCategoriesListBox"
-                                           MouseLeftButtonUp="AllCategoriesListBox_MouseLeftButtonUp"                                                                                       
-                                           />
+                                    <ListView
+                                        Grid.Row="1"
+                                        ItemsSource="{Binding Categories}"                                           
+                                        SelectedItem="{Binding SelectedCategory}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                                <i:InvokeCommandAction Command="{Binding AddCategoryToNoteCommand}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ListView>
                                 </Grid>
-                                <Button Grid.Row="2"
-                                    x:Name="BtnCreateCategory" 
+                                <Button 
+                                    Grid.Row="2"                                     
                                     Content="Create new category" 
-                                    Click="BtnCreateCategory_Click" 
+                                    Command="{Binding AddEditCategoryCommand}"
                                     VerticalAlignment="Bottom" 
                                     Margin="5" />
                             </Grid>
@@ -240,23 +293,32 @@
                             HorizontalAlignment="Stretch"
                             CanContentScroll="True"
                             VerticalScrollBarVisibility="Auto">
-                            <Grid HorizontalAlignment="Stretch"                                    
-                                Name="StackPanelContent"
-                                MouseRightButtonUp="StackPanelContent_MouseRightButtonUp"                
-                                >
+                            <Grid HorizontalAlignment="Stretch">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseRightButtonUp">
+                                        <i:InvokeCommandAction Command="{Binding RemoveContentCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>                                    
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
+                                <Grid.Children>
+                                    <ItemsControl ItemsSource="{Binding Controls}"/>
+                                </Grid.Children>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
                 </Grid>
                 <Button
                     Grid.Row="1"
-                    Content="Додати зображення" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Name="BtnAttachImage" Click="BtnAttachImage_Click"/>
+                    Command="{Binding AttachCommand}"
+                    Content="Додати зображення"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Width="120"/>
             </Grid>
         </Grid>
     </Grid>

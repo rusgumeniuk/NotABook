@@ -13,14 +13,14 @@
             <Button 
                 x:Name="BtnCancelSave" 
                 Content="Cancel" 
-                Click="BtnCancelSave_Click" 
+                Command="{Binding SaveCommand}"
                 Margin="10"
                 Padding="40,0,40,0"
                 HorizontalAlignment="Center"/>
             <Button 
                 x:Name="BtnSaveCategory" 
                 Content="Save" 
-                Click="BtnSaveCategory_Click" 
+                Command="{Binding CancelCommand}"
                 Margin="10"
                 Padding="40,0,40,0"
                 HorizontalAlignment="Center"/>
