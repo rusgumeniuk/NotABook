@@ -26,14 +26,33 @@ namespace NotABookViewModels
         public ObservableCollection<Category> Categories { get; set; }
         public ObservableCollection<Category> NoteCategories { get; set; }
         public Book CurrentBook { get; set; }
-        public Note CurrentNote { get; set; } = new Note("Cool", new List<Content>() { new TextContent() { Content = "Hello here" } });
+        public Note CurrentNote { get; set; }
         public Category SelectedCategory { get; set; }
         public string FindNoteText { get; set; } = "Find note";
         public string CountOfFinding { get; set; }
+        public string NoteTitle
+        {
+            get => CurrentNote?.Title;
+        }
+        public string NoteCreateDate
+        {
+            get => CurrentNote?.DateOfCreating.ToLocalTime().ToString();
+        }
+        public string NoteEditDate
+        {
+            get => CurrentNote?.DateOfLastChanging.ToLocalTime().ToString();
+        }
+        public string BookTitle
+        {
+            get => CurrentBook?.Title;
+            set => CurrentBook.Title = value;
+        }
 
         public byte NotePanelVisibility { get; set; } = 2;
         public UIElement SelectedContent { get; set; }
         public ObservableCollection<UIElement> Controls { get; set; } = new ObservableCollection<UIElement>();
+
+        public Frame NoteFrame { get; set; }
         public bool IsStackPanelContainsTextBox
         {
             get => Controls.FirstOrDefault(control => control is TextBox) != null;
@@ -166,11 +185,12 @@ namespace NotABookViewModels
         public void SelectNote()
         {
             SaveNoteDataAndHide();
-            SaveNoteDataAndHide();
             InputContentsToStackPanel();
             AddTextBoxIfNoContent();
             NotePanelVisibility = 0;
-
+            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
+            Messenger.Default.Send("UpdateNoteFrame");
+            
         }
         public void SelectBook()
         {
@@ -197,7 +217,7 @@ namespace NotABookViewModels
 
         public void SaveNoteDataAndHide()
         {
-            CurrentNote = null;
+            Service.SaveChanges();
             Controls.Clear();
             NotePanelVisibility = 2;
         }
@@ -283,8 +303,8 @@ namespace NotABookViewModels
 
         private void UpdateDataFromDB()
         {
-            Books = Service.FindBooks() as ObservableCollection<Book>;
-            Categories = Service.FindCategories() as ObservableCollection<Category>;
+            Books = new ObservableCollection<Book>(Service.FindBooks());
+            Categories = new ObservableCollection<Category>(Service.FindCategories());
             Notes = CurrentBook.Notes;
         }
         private void UpdateBookData()
