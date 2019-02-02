@@ -1,3 +1,6 @@
+using Moq;
+
+using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
 
@@ -70,6 +73,17 @@ namespace NotABookTests.ModelTests
             Assert.True(firstBook.ChangeBook(note, newBook));
             Assert.Collection(newBook.Notes, nt => nt.Equals(note));
             Assert.Empty(firstBook.Notes);
+        }
+
+        [Fact]
+        public void FindNotesByBook_WhenNotesNotEmpty_ReturnsTrue()
+        {
+            firstBook.Notes.Add(note);
+            var mock = new Mock<IService>();
+            mock.Setup(service => service.FindNotesByBook(firstBook)).Returns(firstBook.Notes);
+            var db = mock.Object;
+
+            Assert.NotEmpty(db.FindNotesByBook(firstBook));
         }
     }
 }
