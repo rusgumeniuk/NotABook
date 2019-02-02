@@ -4,6 +4,7 @@ using NotABookLibraryStandart.Models.Roles;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NotABookLibraryStandart.DB
 {
@@ -70,7 +71,12 @@ namespace NotABookLibraryStandart.DB
         }
         public IList<Category> FindCategoriesByNote(Note note)
         {
-            return _repository.GetCategoriesByNote(note) as IList<Category>;
+        //    var r = _repository.GetCategoriesByNote(note);
+        //    var list = r as IList<Category>;
+        //    var aaa = r as List<Category>;
+        //    var ilist = r.ToArray();
+        //    var llist = r.ToList();
+            return _repository.GetCategoriesByNote(note).ToList();
         }
         #endregion
 

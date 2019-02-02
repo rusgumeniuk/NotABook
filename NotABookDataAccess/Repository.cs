@@ -116,7 +116,16 @@ namespace NotABookDataAccess
         }
         public IEnumerable<Category> GetCategoriesByNote(Note note)
         {
-            return db.LinkNoteCategories.Where(link => link.Note.Equals(note)).Select(link => link.Category);
+            //var all = ;
+            //var varia = db.LinkNoteCategories.Where(link => link.Note.Id == note.Id);
+            
+            //var sec = varia.Select(li => li.Category);
+            //var res = sec as IEnumerable<Category>;
+            //var resAll = all as IEnumerable<Category>;
+            //int co = res.Count();
+            //int varco = varia.Count();
+
+            return db.LinkNoteCategories.Where(link => link.Note.Id == note.Id).Select(conn => conn.Category) as IEnumerable<Category>;
         }
 
         public User GetUser(string username)
