@@ -44,7 +44,7 @@ namespace NotABookViewModels
             AllCategories = new ObservableCollection<Category>(Service.FindCategories());
             isCreating = note == null;
 
-            CurrentNote = note ?? new Note();
+            CurrentNote = note ?? new Note(String.Empty);
             Title = note?.Title ?? String.Empty;
             NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
             DateOfCreating = CurrentNote.DateOfCreating;
