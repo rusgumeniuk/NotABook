@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NotABookLibraryStandart.Models.BookElements;
+
+using System;
 using System.ComponentModel;
-using System.Text;
-using NotABookLibraryStandart.Exceptions;
-using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABookLibraryStandart.Models
 {
     /// <summary>
-    /// Represents elements of the book (for example, category, item)
+    /// Represents element of the book (category, note or book)
     /// </summary>
     public abstract class BookElement : Entity, INotifyPropertyChanged
     {
@@ -25,32 +23,18 @@ namespace NotABookLibraryStandart.Models
             }
         }
 
-        public BookElement() : base()
-        {
-            DateOfCreating = DateTime.Now;
-            DateOfLastChanging = DateTime.Now;           
-        }
-        public BookElement( string title) : base(title)
+        public BookElement(string title) : base(title)
         {
             DateOfCreating = DateTime.Now;
             DateOfLastChanging = DateTime.Now;
         }
 
-        protected void UpdateDateOfLastChanging()
+        public virtual bool IsContainsText(string text)
         {
-            this.DateOfLastChanging = DateTime.Now;
-        }
-
-        /// <summary>
-        /// The method that update date of last changing after any operation with obj
-        /// </summary>
-        protected static void UpdateDateOfLastChanging(BookElement bookElement, Book book)
-        {
-            bookElement?.UpdateDateOfLastChanging();
+            return Title.ToUpperInvariant().Contains(text.ToUpperInvariant());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         public virtual void OnPropertyChanged(Book currentBook, string prop = "")
         {
             if (PropertyChanged != null)
@@ -59,6 +43,23 @@ namespace NotABookLibraryStandart.Models
                 UpdateDateOfLastChanging();
                 currentBook?.UpdateDateOfLastChanging();
             }
+        }
+        protected void UpdateDateOfLastChanging()
+        {
+            this.DateOfLastChanging = DateTime.Now;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            return (obj as BookElement).Title.Equals(Title) || Id.Equals((obj as BookElement).Id);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() | Id.GetHashCode() ^ Title.GetHashCode();
         }
     }
 }

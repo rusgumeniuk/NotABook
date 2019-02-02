@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NotABookLibraryStandart.Exceptions;
+
+using System;
 using System.Collections.Generic;
-using System.Text;
-using NotABookLibraryStandart.Exceptions;
 using System.Collections.ObjectModel;
-using NotABookLibraryStandart.Models.BookElements;
+using System.Linq;
 
 namespace NotABookLibraryStandart.Models.BookElements
 {
@@ -12,45 +12,31 @@ namespace NotABookLibraryStandart.Models.BookElements
     /// </summary>
     public class Book : BookElement
     {
-        #region Fields       
-
-        private ObservableCollection<Note> notes = new ObservableCollection<Note>();        
-
-        public Book()
-        {
-        }
-
-        public Book(string title) : base(title)
-        {
-        }
-        #endregion
-
-        #region Propereties            
+        private ObservableCollection<Note> notes = new ObservableCollection<Note>();
         public ObservableCollection<Note> Notes
         {
-            get => this.notes;
+            get => this.notes ?? (notes = new ObservableCollection<Note>());
             set
             {
                 this.notes = value;
                 UpdateDateOfLastChanging();
             }
         }
+        
+        public Book(string title) : base(title) { }
 
-        #endregion
-
-        #region Constr       
-
-        #endregion
-
-        #region Methods
-
-        public bool RemoveBookElement(BookElement bookElement)
+        public bool ChangeBook(Note note, Book newBook)
         {
-            if (bookElement is Note)
-                return notes.Remove(bookElement as Note);
-
-            return false;
+            if (!Notes.Contains(note) || this.Equals(newBook))
+                throw new ArgumentException("Oooops, wrong argument!");
+            else
+            {
+                Notes.Remove(note);
+                newBook.Notes.Add(note);
+            }
+            return !Notes.Contains(note) && newBook.Notes.Contains(note);
         }
+
         /// <summary>
         /// Represents a list of notes which contain text in Title, categories or contents
         /// </summary>
@@ -79,39 +65,6 @@ namespace NotABookLibraryStandart.Models.BookElements
         }
 
         /// <summary>
-        /// Removes all elements of the book and remove book from the Books
-        /// </summary>
-        /// <returns></returns>
-        public bool Delete()
-        {
-            //if (IsBookIsNotNullAndInBooks(this))
-            //{
-            //    RemoveAllElementsOfBook(this);
-            //   // Book.Books.Remove(this);
-
-            //    return IndexOfBookInBooks(this) == -1;
-            //}
-            return false;
-        }
-
-        /// <summary>
-        /// Removes all elements of the book and remove book from the Books
-        /// </summary>
-        /// <param name="book"> book to delete</param>
-        /// <returns></returns>
-        public static bool DeleteBook(Book book)
-        {
-            //if (IsBookIsNotNullAndInBooks(book))
-            //{
-            //    //RemoveAllElementsOfBook(book);
-            //    ////Book.Books.Remove(book);
-
-            //    //return IndexOfBookInBooks(book) == -1;
-            //}
-            return false;
-        }                
-
-        /// <summary>
         /// Indicates whether the book contains note
         /// </summary>
         /// <param name="book">book in which we try to find note</param>
@@ -132,22 +85,16 @@ namespace NotABookLibraryStandart.Models.BookElements
         ///   /// <exception cref="ElementIsNotInCollectionException">when book doesn't contain note</exception>
         /// <exception cref="EmptyGuidException">when noteId is empty</exception>
         /// <returns></returns>
-        public static bool IsBookContainsItem(Book book, Guid noteId)
+        public static bool IsBookContainsNote(Book book, Guid noteId)
         {
             return book.GetIndexOfNoteByID(noteId) > -1 ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new ElementIsNotInCollectionException());
         }
 
-        /// <summary>
-        /// Indicates whether the book is not null
-        /// </summary>        
-        /// <param name="book">The book to test</param>
-        /// <exception cref="BookNullException">When book is null and Xamarin mode is off</exception>
-        /// <returns>true if book is not null. Else if Xamarin mode is on - false.</returns>
-        public static bool IsBookIsNotNull(Book book)
+        public override bool IsContainsText(string text)
         {
-            return book != null ? true : (ProjectType == TypeOfRunningProject.Xamarin ? false : throw new BookNullException());
-        }  
-      
+            return base.IsContainsText(text) || Notes.FirstOrDefault(note => note.IsContainsText(text)) != null;
+        }
+
         public int GetIndexOfNoteByID(Guid noteId)
         {
             if (IsGuidIsNotEmpty(noteId))
@@ -159,32 +106,5 @@ namespace NotABookLibraryStandart.Models.BookElements
             }
             return -1;
         }
-        public static int GetIndexOfNoteyID(Book book, Guid noteId)
-        {
-            if (Book.IsBookIsNotNull(book) && IsGuidIsNotEmpty(noteId))
-            {
-                for (int i = 0; i < book.Notes.Count; ++i)
-                {
-                    if (book.Notes[i].Id == noteId)
-                        return i;
-                }
-            }
-            return -1;
-        }         
-
-        public static bool ClearNotesList(Book book)
-        {
-            if (Book.IsBookIsNotNull(book))
-            {
-                book.Notes.Clear();
-            }
-            return book.Notes.Count == 0;
-        }      
-
-        public static bool RemoveAllElementsOfBook(Book book)
-        {
-            return Book.IsBookIsNotNull(book) ? ClearNotesList(book) : false;
-        }
-        #endregion
     }
 }
