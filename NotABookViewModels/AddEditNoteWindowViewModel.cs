@@ -53,7 +53,7 @@ namespace NotABookViewModels
 
             CurrentNote = note ?? new Note();
             Title = note?.Title ?? String.Empty;
-            NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
             DateOfCreating = CurrentNote.DateOfCreating;
             DateOfLastChanging = CurrentNote.DateOfLastChanging;
             InputContentsToStackPanel();
