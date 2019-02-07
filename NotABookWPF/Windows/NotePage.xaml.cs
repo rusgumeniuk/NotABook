@@ -37,7 +37,7 @@ namespace NotABookWPF.Windows
         public void ProcessMessage(string message)
         {
             if (message.Equals("NewCateg"))
-                new AddEditBookElement(new AddEditBookElementViewModel(ViewModel.Service, new Category())).ShowDialog();
+                new AddEditBookElement(new AddEditBookElementViewModel(ViewModel.Service, new Category(String.Empty))).ShowDialog();
             else if (message.Equals("NoteAlreadyMarked"))
                 MessageBox.Show("Note already marked by this category!");
             else if (message.Equals("WrongFile"))

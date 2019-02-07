@@ -70,7 +70,7 @@ namespace NotABookViewModels
         {
             if (CanSignUp())
             {
-                Service.AddUser(new User(Username, Email, RealPassword, new string[] { "Users" }));
+                Service.AddUser(new User(Username, Email, RealPassword, "Users" ));
                 Messenger.Default.Send("registered");
             }
             else
