@@ -9,7 +9,7 @@ namespace NotABookDataAccess
 {
     public class DataBaseContext : DbContext
     {
-        public DataBaseContext() : base("NotabookCon") { }
+        public DataBaseContext() : base("NotabookConn") { }
         public DbSet<Note> Notes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Book> Books { get; set; }
