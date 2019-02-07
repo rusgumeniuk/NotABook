@@ -22,7 +22,9 @@ namespace NotABookLibraryStandart.Models.BookElements
                 UpdateDateOfLastChanging();
             }
         }
-        
+
+        private Book() { }
+
         public Book(string title) : base(title) { }
 
         public bool ChangeBook(Note note, Book newBook)

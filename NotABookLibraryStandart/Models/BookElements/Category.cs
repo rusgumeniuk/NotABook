@@ -10,6 +10,7 @@ namespace NotABookLibraryStandart.Models.BookElements
     /// </summary>
     public class Category : BookElement
     {        
+        private Category() { }
         public Category(string title) : base(title) { }                   
     }
 

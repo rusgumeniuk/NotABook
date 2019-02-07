@@ -53,6 +53,7 @@ namespace NotABookLibraryStandart.Models.BookElements
         #endregion
 
         #region ctors
+        private Note() { }
         public Note(string title) : base(title) { }
         public Note(string title, IList<Content> contents) : this(title)
         {

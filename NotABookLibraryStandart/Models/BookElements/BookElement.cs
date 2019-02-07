@@ -23,6 +23,7 @@ namespace NotABookLibraryStandart.Models
             }
         }
 
+        protected BookElement() { }
         public BookElement(string title) : base(title)
         {
             DateOfCreating = DateTime.Now;
