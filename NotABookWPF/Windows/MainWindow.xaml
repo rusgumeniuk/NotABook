@@ -199,7 +199,7 @@
                 </ListBox>
             </Grid>
             <Frame Grid.Column="2" Margin="5"
-                   Source="{Binding Path=NoteFrame, UpdateSourceTrigger=LostFocus}"/>
+                   Name="NoteFrame"/>
         </Grid>
     </Grid>
 </Window>

@@ -20,10 +20,11 @@ namespace NotABookWPF.Windows
             set { DataContext = value; }
         }
 
-        public AddEditINoteWindow(AddEditNoteWindowViewModel viewModel)
+        public AddEditINoteWindow(NotePageViewModel viewModel)
         {
             InitializeComponent();
             ViewModel = viewModel;
+            NoteFrame.Navigate(new NotePage(ViewModel as NotePageViewModel));
             Messenger.Default.Register(this, new Action<string>(ProcessMessage));
         }
 

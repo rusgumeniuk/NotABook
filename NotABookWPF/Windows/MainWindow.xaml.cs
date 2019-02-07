@@ -24,16 +24,7 @@ namespace NotABookWPF.Windows
         {
             InitializeComponent();
             ViewModel = viewModel;
-            var newFrame = new System.Windows.Controls.Frame();
-            newFrame.Navigate(new NotePage(new NotePageViewModel(ViewModel.Service,
-            (ViewModel as MainWindowViewModel).CurrentBook,
-            (ViewModel as MainWindowViewModel).CurrentNote)));
-
-            (ViewModel as MainWindowViewModel).NoteFrame = newFrame;
-
-            //= new NotePage(new NotePageViewModel(ViewModel.Service,
-            //(ViewModel as MainWindowViewModel).CurrentBook,
-            //(ViewModel as MainWindowViewModel).CurrentNote));
+            NoteFrame.Navigate(new NotePage(new NotePageViewModel(ViewModel.Service, (ViewModel as MainWindowViewModel).CurrentBook, (ViewModel as MainWindowViewModel).CurrentNote)));
             Messenger.Default.Register(this, new Action<string>(ProcessMessage));
         }
 
@@ -42,7 +33,7 @@ namespace NotABookWPF.Windows
             if (message.Equals("AddEditNote"))
             {
                 new AddEditINoteWindow(
-                    new AddEditNoteWindowViewModel(
+                    new NotePageViewModel(
                         ViewModel.Service,
                         (ViewModel as MainWindowViewModel).CurrentBook,
                         (ViewModel as MainWindowViewModel).CurrentNote)
@@ -73,15 +64,7 @@ namespace NotABookWPF.Windows
             else if (message.Equals("UpdateMain"))
                 this.InitializeComponent();
             else if (message.Equals("UpdateNoteFrame"))
-            {
-                var newFrame = new System.Windows.Controls.Frame();
-                newFrame.Navigate(new NotePage(new NotePageViewModel(
-                    ViewModel.Service,
-                    (ViewModel as MainWindowViewModel).CurrentBook,
-                    (ViewModel as MainWindowViewModel).CurrentNote
-                    )));
-                (ViewModel as MainWindowViewModel).NoteFrame = newFrame;
-            }
+                NoteFrame.Navigate(new NotePage(new NotePageViewModel(ViewModel.Service, (ViewModel as MainWindowViewModel).CurrentBook, (ViewModel as MainWindowViewModel).CurrentNote)));
         }
     }
 }
