@@ -14,7 +14,8 @@ namespace NotABookLibraryStandart.Models.Roles
         IIdentity IPrincipal.Identity => this.Identity;
         public bool IsInRole(string role)
         {
-            return true;// identity.Roles.Contains(role);
+            bool tf = identity.Roles.Contains(role);
+            return tf;
         }
     }
 }

@@ -14,13 +14,13 @@ namespace NotABookLibraryStandart.Models.Roles
         {
             Id = Guid.NewGuid();
         }
-        public User(string username, string email, string[] roles) : this()
+        public User(string username, string email, string roles) : this()
         {
             Username = username;
             Email = email;
             Roles = roles;
         }
-        public User(string username, string email, string hashedPassword, string[] roles) : this(username, email, roles)
+        public User(string username, string email, string hashedPassword, string roles) : this(username, email, roles)
         {
             HashedPassword = hashedPassword;
         }        
@@ -28,7 +28,7 @@ namespace NotABookLibraryStandart.Models.Roles
         public string Username { get; set; }
         public string Email { get; set; }
         public string HashedPassword { get; set; }
-        public string[] Roles { get; set; }
+        public string Roles { get; set; }
         public IList<Book> Books = new ObservableCollection<Book>();
         public IList<Category> Categories = new ObservableCollection<Category>();
 
