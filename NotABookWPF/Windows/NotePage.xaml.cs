@@ -33,6 +33,7 @@ namespace NotABookWPF.Windows
             InitializeComponent();
             ViewModel = viewModel;
             Messenger.Default.Register(this, new Action<string>(ProcessMessage));
+            this.ShowsNavigationUI = false;
         }       
         public void ProcessMessage(string message)
         {
