@@ -61,15 +61,18 @@ namespace NotABookViewModels
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Password))
-                    throw new UnauthorizedAccessException("Access denied. Please provide some valid credentials.");
-                //Validate credentials through the authentication service
-                User user = Service.GetUser(Username, Password.Trim());
-
+                User user;
                 //Get the current principal object
                 if (!(Thread.CurrentPrincipal is Principal Principal))
                     throw new ArgumentException("The application's default thread principal must be set to a Principal object on startup.");
-
+#if (RELEASE)
+                 if (string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Password))
+                    throw new UnauthorizedAccessException("Access denied. Please provide some valid credentials.");
+                //Validate credentials through the authentication service
+                user = Service.GetUser(Username, Password.Trim());
+#else
+                user = new User("Ruslan", "rus.gumeniuk@gmail.com", "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", "Administrators");
+#endif
                 //Authenticate the user
                 Principal.Identity = new Identity(user.Username, user.Email, user.Roles);
 
