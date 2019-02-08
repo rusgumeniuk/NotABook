@@ -28,32 +28,32 @@ namespace NotABookDataAccess
 
         public void Add(User user)
         {
-            db.Users.Add(user);
+            db.Users.Local.Add(user);
             Save();
         }
         public void Add(Book book)
         {
-            db.Books.Add(book);
+            db.Books.Local.Add(book);
             Save();
         }
         public void Add(Note note)
         {
-            db.Notes.Add(note);
+            db.Notes.Local.Add(note);
             Save();
         }
         public void Add(Category category)
         {
-            db.Categories.Add(category);
+            db.Categories.Local.Add(category);
             Save();
         }
         public void Add(LinkNoteCategory linkNoteCategory)
         {
-            db.LinkNoteCategories.Add(linkNoteCategory);
+            db.LinkNoteCategories.Local.Add(linkNoteCategory);
             Save();
         }
         public void Add(Note note, Category category)
         {
-            db.LinkNoteCategories.Add(new LinkNoteCategory(note, category));
+            db.LinkNoteCategories.Local.Add(new LinkNoteCategory(note, category));
             Save();
         }
         public void Add(Content content)
@@ -64,7 +64,7 @@ namespace NotABookDataAccess
 
         public IEnumerable<User> GetAdmins()
         {
-            return db.Users.Where(user => user.Roles.Contains("Administators"));
+            return db.Users.Local.Where(user => user.Roles.Contains("Administators"));
         }
         public IEnumerable<Book> GetBooks()
         {
@@ -72,7 +72,7 @@ namespace NotABookDataAccess
         }
         public IEnumerable<Book> GetBooksByUser(User user)
         {
-            return db.Users.FirstOrDefault(us => us.Equals(user))?.Books;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user))?.Books;
         }
         public IEnumerable<Category> GetCategories()
         {
@@ -80,7 +80,7 @@ namespace NotABookDataAccess
         }
         public IEnumerable<Category> GetCategoriesByUser(User user)
         {
-            return db.Users.FirstOrDefault(us => us.Equals(user))?.Categories;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user))?.Categories;
         }
         public IEnumerable<Content> GetContents()
         {
@@ -88,7 +88,7 @@ namespace NotABookDataAccess
         }
         public IEnumerable<Content> GetContentsByNote(Note note)
         {
-            return db.Notes.FirstOrDefault(nt => nt.Equals(note))?.NoteContents;
+            return db.Notes.Local.FirstOrDefault(nt => nt.Equals(note))?.NoteContents;
         }
         public IEnumerable<LinkNoteCategory> GetLinksNoteCategory()
         {
@@ -96,11 +96,11 @@ namespace NotABookDataAccess
         }
         public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Note note)
         {
-            return db.LinkNoteCategories.Where(link => link.Note.Equals(note));
+            return db.LinkNoteCategories.Local.Where(link => link.Note.Equals(note));
         }
         public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Category category)
         {
-            return db.LinkNoteCategories.Where(link => link.Category.Equals(category));
+            return db.LinkNoteCategories.Local.Where(link => link.Category.Equals(category));
         }
         public IEnumerable<Note> GetNotes()
         {
@@ -108,7 +108,7 @@ namespace NotABookDataAccess
         }
         public IEnumerable<Note> GetNotesByBook(Book book)
         {
-            return db.Books.FirstOrDefault(bk => bk.Equals(book))?.Notes;
+            return db.Books.Local.FirstOrDefault(bk => bk.Equals(book))?.Notes;
         }
         public IEnumerable<User> GetUsers()
         {
@@ -116,25 +116,16 @@ namespace NotABookDataAccess
         }
         public IEnumerable<Category> GetCategoriesByNote(Note note)
         {
-            //var all = ;
-            //var varia = db.LinkNoteCategories.Where(link => link.Note.Id == note.Id);
-            
-            //var sec = varia.Select(li => li.Category);
-            //var res = sec as IEnumerable<Category>;
-            //var resAll = all as IEnumerable<Category>;
-            //int co = res.Count();
-            //int varco = varia.Count();
-
-            return db.LinkNoteCategories.Where(link => link.Note.Id == note.Id).Select(conn => conn.Category) as IEnumerable<Category>;
+            return db.LinkNoteCategories.Local.Where(link => link.Note.Id == note.Id).Select(conn => conn.Category);
         }
 
         public User GetUser(string username)
         {
-            return db.Users.FirstOrDefault(user => user.Username.Equals(username));
+            return db.Users.Local.FirstOrDefault(user => user.Username.Equals(username));
         }
         public User GetUser(string username, string password)
         {
-            return db.Users.FirstOrDefault(user => user.Username.Equals(username) && user.HashedPassword.Equals(password));
+            return db.Users.Local.FirstOrDefault(user => user.Username.Equals(username) && user.HashedPassword.Equals(password));
         }
 
         public bool IsExistUser(string username)
@@ -144,27 +135,27 @@ namespace NotABookDataAccess
 
         public void Remove(User user)
         {
-            db.Users.Remove(user);
+            db.Users.Local.Remove(user);
             Save();
         }
         public void Remove(Book book)
         {
-            db.Books.Remove(book);
+            db.Books.Local.Remove(book);
             Save();
         }
         public void Remove(Note note)
         {
-            db.Notes.Remove(note);
+            db.Notes.Local.Remove(note);
             Save();
         }
         public void Remove(Category category)
         {
-            db.Categories.Remove(category);
+            db.Categories.Local.Remove(category);
             Save();
         }
         public void Remove(LinkNoteCategory linkNoteCategory)
         {
-            db.LinkNoteCategories.Remove(linkNoteCategory);
+            db.LinkNoteCategories.Local.Remove(linkNoteCategory);
             Save();
         }
         public void Remove(Content content)
