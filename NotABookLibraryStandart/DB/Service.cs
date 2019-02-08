@@ -19,63 +19,58 @@ namespace NotABookLibraryStandart.DB
         #region Find
         public IList<User> FindAdmins()
         {
-            return _repository.GetAdmins() as IList<User>;
+            return _repository.GetAdmins().ToList();
         }
         public IList<Book> FindBooks()
-        {            
-            return _repository.GetBooks() as IList<Book>;
+        {
+            return _repository.GetBooks().ToList();
         }
         public IList<Book> FindBooksByUser(User user)
         {
-            return _repository.GetBooksByUser(user) as IList<Book>;
+            return _repository.GetBooksByUser(user).ToList();
         }
         public IList<Category> FindCategories()
         {
-            return _repository.GetCategories() as IList<Category>;
+            return _repository.GetCategories().ToList();
         }
         public IList<Category> FindCategoriesByUser(User user)
         {
-            return _repository.GetCategoriesByUser(user) as IList<Category>;
+            return _repository.GetCategoriesByUser(user).ToList();
         }
         public IList<Content> FindContents()
         {
-            return _repository.GetContents() as IList<Content>;
+            return _repository.GetContents().ToList();
         }
         public IList<Content> FindContentsByNote(Note note)
         {
-            return _repository.GetContentsByNote(note) as IList<Content>;
+            return _repository.GetContentsByNote(note).ToList();
         }
         public IList<LinkNoteCategory> FindLinksNoteCategory()
         {
-            return _repository.GetLinksNoteCategory() as IList<LinkNoteCategory>;
+            return _repository.GetLinksNoteCategory().ToList();
         }
         public IList<LinkNoteCategory> FindLinksNoteCategory(Category category)
         {
-            return _repository.GetLinksNoteCategory(category) as IList<LinkNoteCategory>;
+            return _repository.GetLinksNoteCategory(category).ToList();
         }
         public IList<LinkNoteCategory> FindLinksNoteCategory(Note note)
         {
-            return _repository.GetLinksNoteCategory(note) as IList<LinkNoteCategory>;
+            return _repository.GetLinksNoteCategory(note).ToList();
         }
         public IList<Note> FindNotes()
         {
-            return _repository.GetNotes() as IList<Note>;
+            return _repository.GetNotes().ToList();
         }
         public IList<Note> FindNotesByBook(Book book)
         {
-            return _repository.GetNotesByBook(book) as IList<Note>;
+            return _repository.GetNotesByBook(book).ToList();
         }
         public IList<User> FindUsers()
         {
-            return _repository.GetUsers() as IList<User>;
+            return _repository.GetUsers().ToList();
         }
         public IList<Category> FindCategoriesByNote(Note note)
         {
-        //    var r = _repository.GetCategoriesByNote(note);
-        //    var list = r as IList<Category>;
-        //    var aaa = r as List<Category>;
-        //    var ilist = r.ToArray();
-        //    var llist = r.ToList();
             return _repository.GetCategoriesByNote(note).ToList();
         }
         #endregion
@@ -158,6 +153,6 @@ namespace NotABookLibraryStandart.DB
         public int SaveChanges()
         {
             return _repository.Save();
-        }        
+        }
     }
 }
