@@ -1,7 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 
-using NotABookLibraryStandart.Models.BookElements;
-
 using NotABookViewModels;
 
 using System;
@@ -30,15 +28,8 @@ namespace NotABookWPF.Windows
 
         public void ProcessMessage(string message)
         {
-            if (message.Equals("NewCateg"))
-                new AddEditBookElement(new AddEditBookElementViewModel(ViewModel.Service, new Category(String.Empty))).ShowDialog();
-            else if (message.Equals("NoteAlreadyMarked"))
-                MessageBox.Show("Note already marked by this category!");
-            else if (message.Equals("WrongFile"))
-                MessageBox.Show("Please select jpg or pgn file!");
-            else if (message.Equals("NoteEditFinish"))
+            if (message.Equals("NoteEditFinish"))
                 this.Close();
-
         }
     }
 }

@@ -221,7 +221,7 @@ namespace NotABookViewModels
         }
         private void CreateCategory()
         {
-            Messenger.Default.Send("NewCateg");
+            Messenger.Default.Send("NewCategory");
         }
         private void AddCategory()
         {
@@ -231,7 +231,7 @@ namespace NotABookViewModels
             else
             {
                 Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
-                NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+                NoteCategories.Add(SelectedCategory);
                 Service.SaveChanges();
             }
         }
@@ -242,7 +242,7 @@ namespace NotABookViewModels
                     Service.FindLinksNoteCategory()
                         .FirstOrDefault(link => link.Note.Equals(CurrentNote) && link.Category.Equals(SelectedCategory))
                 );
-            NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+            NoteCategories.Remove(SelectedCategory);
             Service.SaveChanges();
         }
     }

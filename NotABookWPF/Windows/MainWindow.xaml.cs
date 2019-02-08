@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-
+using NotABookLibraryStandart.Models.BookElements;
 using NotABookViewModels;
 
 using System;
@@ -30,7 +30,15 @@ namespace NotABookWPF.Windows
 
         public void ProcessMessage(string message)
         {
-            if (message.Equals("AddEditNote"))
+            if (message.Equals("CreateNote"))
+            {
+                new AddEditINoteWindow(
+                                    new NotePageViewModel(
+                                        ViewModel.Service,
+                                        (ViewModel as MainWindowViewModel).CurrentBook))
+                                        .ShowDialog();
+            }                                      
+            else if (message.Equals("EditNote"))
             {
                 new AddEditINoteWindow(
                     new NotePageViewModel(
@@ -39,28 +47,28 @@ namespace NotABookWPF.Windows
                         (ViewModel as MainWindowViewModel).CurrentNote)
                     ).Show();
             }
-            else if (message.Equals("AddEditCategory"))
+            else if (message.Equals("EditCategory"))
             {
                 new AddEditBookElement(
-                                   new AddEditBookElementViewModel(
-                                       ViewModel.Service,
-                                       (ViewModel as MainWindowViewModel).SelectedCategory
-                                       )).Show();
+                    new AddEditBookElementViewModel(
+                        ViewModel.Service,
+                        (ViewModel as MainWindowViewModel).SelectedCategory
+                        )).ShowDialog();
             }
-            else if (message.Equals("AddEditBook"))
+            else if (message.Equals("CreateCategory"))
+                new AddEditBookElement(new AddEditBookElementViewModel(ViewModel.Service, new Category(String.Empty))).ShowDialog();
+            else if (message.Equals("EditBook"))
             {
                 new AddEditBookElement(
                    new AddEditBookElementViewModel(
                        ViewModel.Service,
                        (ViewModel as MainWindowViewModel).CurrentBook
-                       )).Show();
+                       )).ShowDialog();
             }
+            else if (message.Equals("CreateBook"))
+                new AddEditBookElement(new AddEditBookElementViewModel(ViewModel.Service, new Book(String.Empty))).ShowDialog();
             else if (message.Equals("AboutPage"))
-                MessageBox.Show("Hello! \n I Ruslan Humeniuk.\n I am KPI student and this is my first WPF project");
-            else if (message.Equals("NoteAlreadyMarked"))
-                MessageBox.Show("Note already marked by this category!");
-            else if (message.Equals("WrongFile"))
-                MessageBox.Show("Please select jpg or pgn file!");
+                MessageBox.Show("Hello! \n I am Ruslan Humeniuk.\n I am KPI student and this is my first WPF project");
             else if (message.Equals("UpdateMain"))
                 this.InitializeComponent();
             else if (message.Equals("UpdateNoteFrame"))

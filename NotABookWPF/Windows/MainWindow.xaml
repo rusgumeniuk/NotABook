@@ -24,9 +24,9 @@
             HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="10,0,10,0" Margin="1">
             <MenuItem Header="File">
                 <MenuItem Header="Create book element">
-                    <MenuItem x:Name="MenuItemCreateBook" Header="New book" Command="{Binding AddEditBookCommand}"/>
-                    <MenuItem x:Name="MenuItemCreateNote" Header="New note" Command="{Binding AddEditNoteCommand}"/>
-                    <MenuItem x:Name="MenuItemCreateCategory" Header="New category" Command="{Binding AddEditCategoryCommand}"/>
+                    <MenuItem Header="New book" Command="{Binding CreateBookCommand}"/>
+                    <MenuItem Header="New note" Command="{Binding CreateNoteCommand}"/>
+                    <MenuItem Header="New category" Command="{Binding CreateCategoryCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Syncronize"/>
                 <Separator/>
@@ -45,7 +45,7 @@
             Height="Auto">
             <Button
                 Content="New note"
-                Command="{Binding AddEditNoteCommand}"
+                Command="{Binding CreateNoteCommand}"
                 Margin="10,0,10,0"
                 Padding="10,0,10,0"/>
             <Separator/>
@@ -108,13 +108,13 @@
                                 >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
-                                        <i:InvokeCommandAction Command="{Binding AddEditBookCommand}"/>
+                                        <i:InvokeCommandAction Command="{Binding EditBookCommand}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <Label.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Name="MenuItemDeleteBook" Header="Delete book" CommandParameter="{Binding .}" Command="{Binding RemoveBookCommand}"/>
-                                        <MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Command="{Binding AddEditBookCommand}"/>
+                                        <MenuItem Name="MenuItemEditBook" Header="Edit book" CommandParameter="{Binding .}" Command="{Binding EditBookCommand}"/>
                                         <MenuItem Name="MenuItemRemoveItems" Header="Remove notes" CommandParameter="{Binding .}"/>
                                     </ContextMenu>
                                 </Label.ContextMenu>
@@ -174,7 +174,7 @@
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding AddEditNoteCommand}"/>
+                            <i:InvokeCommandAction Command="{Binding EditNoteCommand}"/>
                         </i:EventTrigger>
                         <i:EventTrigger EventName="MouseLeftButtonUp">
                             <i:InvokeCommandAction Command="{Binding SelectNoteCommand}"/>
