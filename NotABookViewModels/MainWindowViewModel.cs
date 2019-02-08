@@ -61,17 +61,20 @@ namespace NotABookViewModels
 
         public MainWindowViewModel(IService service) : base(service)
         {
-            Books = Service.FindBooks() as ObservableCollection<Book>;
+            Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.Count > 0 ? Books[1] : null;
             Notes = CurrentBook?.Notes;
-            Categories = Service.FindCategories() as ObservableCollection<Category>;
+            Categories = new ObservableCollection<Category>(Service.FindCategories());
         }
 
         #region Commands
         #region fields and prop
-        private RelayCommand addEditNoteCommand;
-        private RelayCommand addEditCategoryCommand;
-        private RelayCommand addEditBookCommand;
+        private RelayCommand createNoteCommand;
+        private RelayCommand createCategoryCommand;
+        private RelayCommand createBookCommand;
+        private RelayCommand editNoteCommand;
+        private RelayCommand editCategoryCommand;
+        private RelayCommand editBookCommand;
         private RelayCommand findNoteCommand;
         private RelayCommand selectNoteCommand;
         private RelayCommand selectBookCommand;
@@ -87,17 +90,29 @@ namespace NotABookViewModels
         private RelayCommand removeCategoryFromNoteCommand;
         private RelayCommand lostFocusCommand;
 
-        public ICommand AddEditNoteCommand
+        public ICommand CreateNoteCommand
         {
-            get => addEditNoteCommand ?? (addEditNoteCommand = new RelayCommand(AddEditNote));
+            get => createNoteCommand ?? (createNoteCommand = new RelayCommand(CreateNote));
+        }        
+        public ICommand CreateCategoryCommand
+        {
+            get => createCategoryCommand ?? (createCategoryCommand = new RelayCommand(CreateCategory));
         }
-        public ICommand AddEditCategoryCommand
+        public ICommand CreateBookCommand
         {
-            get => addEditCategoryCommand ?? (addEditCategoryCommand = new RelayCommand(AddEditCategory));
+            get => createBookCommand ?? (createBookCommand = new RelayCommand(CreateBook));
         }
-        public ICommand AddEditBookCommand
+        public ICommand EditNoteCommand
         {
-            get => addEditBookCommand ?? (addEditBookCommand = new RelayCommand(AddEditBook));
+            get => editNoteCommand ?? (editNoteCommand = new RelayCommand(EditNote));
+        }
+        public ICommand EditCategoryCommand
+        {
+            get => editCategoryCommand ?? (editCategoryCommand = new RelayCommand(EditCategory));
+        }
+        public ICommand EditBookCommand
+        {
+            get => editBookCommand ?? (editBookCommand = new RelayCommand(EditBook));
         }
         public ICommand FindNoteCommand
         {
@@ -158,17 +173,29 @@ namespace NotABookViewModels
         #endregion
 
         #region Command methods
-        public void AddEditNote()
+        public void CreateNote()
         {
-            Messenger.Default.Send("AddEditNote");
+            Messenger.Default.Send("CreateNote");
         }
-        public void AddEditCategory()
+        public void CreateCategory()
         {
-            Messenger.Default.Send("AddEditCategory");
+            Messenger.Default.Send("CreateCategory");
         }
-        public void AddEditBook()
+        public void CreateBook()
         {
-            Messenger.Default.Send("AddEditBook");
+            Messenger.Default.Send("CreateBook");
+        }
+        public void EditNote()
+        {
+            Messenger.Default.Send("EditNote");
+        }
+        public void EditCategory()
+        {
+            Messenger.Default.Send("EditCategory");
+        }
+        public void EditBook()
+        {
+            Messenger.Default.Send("EditBook");
         }
         public void FindNote()
         {
@@ -179,7 +206,7 @@ namespace NotABookViewModels
             {
                 IList<Note> result = CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory());
                 CountOfFinding = (result?.Count ?? 0).ToString() + " ";
-                Notes = result as ObservableCollection<Note>;
+                Notes = new ObservableCollection<Note>(result);
             }
         }
         public void SelectNote()
@@ -190,7 +217,7 @@ namespace NotABookViewModels
             NotePanelVisibility = 0;
             NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
             Messenger.Default.Send("UpdateNoteFrame");
-            
+
         }
         public void SelectBook()
         {
@@ -275,7 +302,7 @@ namespace NotABookViewModels
             else
             {
                 Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
-                NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+                NoteCategories = new ObservableCollection<Category>(Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category));
                 Service.SaveChanges();
             }
         }
@@ -286,7 +313,7 @@ namespace NotABookViewModels
                    Service.FindLinksNoteCategory()
                        .FirstOrDefault(link => link.Note.Equals(CurrentNote) && link.Category.Equals(SelectedCategory))
                );
-            NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+            NoteCategories = new ObservableCollection<Category>(Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category));
             Service.SaveChanges();
         }
         public void LostFocus()
