@@ -20,24 +20,61 @@ namespace NotABookViewModels
 {
     public class NotePageViewModel : ViewModelCustomBase
     {
+        private readonly Note CurrentNote;
+        private readonly bool isCreating = true;
         public string Title { get; set; }
         public ObservableCollection<Category> NoteCategories { get; set; }
         public DateTime DateOfCreating { get; set; }
         public DateTime DateOfLastChanging { get; set; }
         public ObservableCollection<Category> AllCategories { get; set; }
         public Book Book { get; set; }
-
-        private readonly Note CurrentNote;
-        private readonly bool isCreating = true;
-
         public Category SelectedCategory { get; set; }
         public UIElement SelectedContent { get; set; }
-
         public ObservableCollection<UIElement> Controls { get; set; } = new ObservableCollection<UIElement>();
         public bool IsStackPanelContainsTextBox
         {
             get => Controls.FirstOrDefault(control => control is TextBox) != null;
         }
+
+        #region Commands
+        private RelayCommand closingCommand;
+        private RelayCommand attachCommand;
+        private RelayCommand removeContentCommand;
+        private RelayCommand createCategoryCommand;
+        private RelayCommand addCategoryCommand;
+        private RelayCommand removeCategoryCommand;
+        private RelayCommand saveInfoCommand;
+
+        public ICommand ClosingCommand
+        {
+            get => closingCommand ?? (closingCommand = new RelayCommand(SaveDataAndClose));
+        }
+        public ICommand AttachCommand
+        {
+            get => attachCommand ?? (attachCommand = new RelayCommand(AttachImage));
+        }
+        public ICommand RemoveContentCommand
+        {
+            get => removeContentCommand ?? (removeContentCommand = new RelayCommand(RemoveContent));
+        }
+        public ICommand CreateCategoryCommand
+        {
+            get => createCategoryCommand ?? (createCategoryCommand = new RelayCommand(CreateCategory));
+        }
+        public ICommand AddCategoryCommand
+        {
+            get => addCategoryCommand ?? (addCategoryCommand = new RelayCommand(AddCategory));
+        }
+        public ICommand RemoveCategoryCommand
+        {
+            get => removeCategoryCommand ?? (removeCategoryCommand = new RelayCommand(RemoveCategory));
+        }
+        public ICommand SaveInfoCommand
+        {
+            get => saveInfoCommand ?? (saveInfoCommand = new RelayCommand(SaveNoteData));
+        }
+        #endregion
+
         public NotePageViewModel(IService service, Book currentBook, Note note = null) : base(service)
         {
             Book = currentBook;
@@ -66,7 +103,6 @@ namespace NotABookViewModels
                 }
             }
         }
-
         private void AddTextBoxIfNoContent()
         {
             if (CurrentNote.IsHasNotContent && !IsStackPanelContainsTextBox)
@@ -74,10 +110,25 @@ namespace NotABookViewModels
                 Controls.Add(new TextBox() { BorderBrush = System.Windows.Media.Brushes.White, MinLines = 5 });
             }
         }
-
-
-
-        public void SaveNoteData()
+        private void SaveNoteData()
+        {
+            SaveNoteContents();
+            UpdateNoteTitle();
+        }
+        private void UpdateNoteTitle()
+        {
+            if (!String.IsNullOrWhiteSpace(Title) || !CurrentNote.IsHasNotContent)
+            {
+                if (String.IsNullOrWhiteSpace(Title))
+                {
+                    CurrentNote.Title = CurrentNote.TitleFromContent;
+                }
+                if (isCreating)
+                    Book.Notes.Add(CurrentNote);
+                Service.SaveChanges();
+            }
+        }
+        private void SaveNoteContents()
         {
             IList<Content> contents = GetContentFromChildren();
             IList<Content> addContents = new List<Content>();
@@ -113,7 +164,6 @@ namespace NotABookViewModels
                 Service.SaveChanges();
             }
         }
-
         private IList<Content> GetContentFromChildren()
         {
             IList<Content> contents = new List<Content>();
@@ -133,52 +183,9 @@ namespace NotABookViewModels
             }
             return contents;
         }
-
-        private RelayCommand closingCommand;
-        private RelayCommand attachCommand;
-        private RelayCommand removeContentCommand;
-        private RelayCommand createCategoryCommand;
-        private RelayCommand addCategoryCommand;
-        private RelayCommand removeCategoryCommand;
-
-        public ICommand ClosingCommand
-        {
-            get => closingCommand ?? (closingCommand = new RelayCommand(SaveDataAndClose));
-        }
-        public ICommand AttachCommand
-        {
-            get => attachCommand ?? (attachCommand = new RelayCommand(AttachImage));
-        }
-        public ICommand RemoveContentCommand
-        {
-            get => removeContentCommand ?? (removeContentCommand = new RelayCommand(RemoveContent));
-        }
-        public ICommand CreateCategoryCommand
-        {
-            get => createCategoryCommand ?? (createCategoryCommand = new RelayCommand(CreateCategory));
-        }
-        public ICommand AddCategoryCommand
-        {
-            get => addCategoryCommand ?? (addCategoryCommand = new RelayCommand(AddCategory));
-        }
-        public ICommand RemoveCategoryCommand
-        {
-            get => removeCategoryCommand ?? (removeCategoryCommand = new RelayCommand(RemoveCategory));
-        }
-
         private void SaveDataAndClose()
         {
             SaveNoteData();
-            if (!String.IsNullOrWhiteSpace(Title) || !CurrentNote.IsHasNotContent)
-            {
-                if (String.IsNullOrWhiteSpace(Title))
-                {
-                    CurrentNote.Title = CurrentNote.TitleFromContent;
-                }
-                if (isCreating)
-                    Book.Notes.Add(CurrentNote);
-                Service.SaveChanges();
-            }
             Messenger.Default.Send("NoteEditFinish");
         }
         private void AttachImage()
