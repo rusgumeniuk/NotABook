@@ -12,6 +12,9 @@
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
         </i:EventTrigger>
+        <i:EventTrigger EventName="LostFocus">
+            <i:InvokeCommandAction Command="{Binding SaveInfoCommand}"/>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
