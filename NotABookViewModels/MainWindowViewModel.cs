@@ -1,16 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
-using Microsoft.Win32;
-
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
-using NotABookLibraryStandart.Models.BookElements.Contents;
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,49 +18,28 @@ namespace NotABookViewModels
     {
         #region Bind fields
         public ObservableCollection<Book> Books { get; set; }
-        public ObservableCollection<Note> Notes { get; set; }
-        public ObservableCollection<Category> Categories { get; set; }
-        public ObservableCollection<Category> NoteCategories { get; set; }
+        public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
         public Book CurrentBook { get; set; }
         public Note CurrentNote { get; set; }
         public Category SelectedCategory { get; set; }
         public string FindNoteText { get; set; } = "Find note";
         public string CountOfFinding { get; set; }
-        public string NoteTitle
-        {
-            get => CurrentNote?.Title;
-        }
-        public string NoteCreateDate
-        {
-            get => CurrentNote?.DateOfCreating.ToLocalTime().ToString();
-        }
-        public string NoteEditDate
-        {
-            get => CurrentNote?.DateOfLastChanging.ToLocalTime().ToString();
-        }
         public string BookTitle
         {
-            get => CurrentBook?.Title;
-            set => CurrentBook.Title = value;
+            get => CurrentBook?.Title ?? "Select or create some book" ;
         }
-
-        public byte NotePanelVisibility { get; set; } = 2;
-        public UIElement SelectedContent { get; set; }
-        public ObservableCollection<UIElement> Controls { get; set; } = new ObservableCollection<UIElement>();
-
-        public Frame NoteFrame { get; set; }
-        public bool IsStackPanelContainsTextBox
+        public byte NotePanelVisibility
         {
-            get => Controls.FirstOrDefault(control => control is TextBox) != null;
-        }
+            get => (byte)(CurrentNote == null ? 2 : 1);
+        }        
+     
         #endregion
 
         public MainWindowViewModel(IService service) : base(service)
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
-            CurrentBook = Books.Count > 0 ? Books[1] : null;
+            CurrentBook = Books.FirstOrDefault(book => book.Title.Equals("Рецепти"));
             Notes = CurrentBook?.Notes;
-            Categories = new ObservableCollection<Category>(Service.FindCategories());
         }
 
         #region Commands
@@ -80,20 +55,15 @@ namespace NotABookViewModels
         private RelayCommand selectBookCommand;
         private RelayCommand removeNoteCommand;
         private RelayCommand removeCategoryCommand;
-        private RelayCommand removeBookCommand;
-        private RelayCommand closingCommand;
-        private RelayCommand attachCommand;
-        private RelayCommand removeContentCommand;
+        private RelayCommand removeBookCommand;        
         private RelayCommand faqCommand;
         private RelayCommand aboutCommand;
-        private RelayCommand addCategoryToNoteCommand;
-        private RelayCommand removeCategoryFromNoteCommand;
         private RelayCommand lostFocusCommand;
 
         public ICommand CreateNoteCommand
         {
             get => createNoteCommand ?? (createNoteCommand = new RelayCommand(CreateNote));
-        }        
+        }
         public ICommand CreateCategoryCommand
         {
             get => createCategoryCommand ?? (createCategoryCommand = new RelayCommand(CreateCategory));
@@ -138,18 +108,6 @@ namespace NotABookViewModels
         {
             get => removeBookCommand ?? (removeBookCommand = new RelayCommand(RemoveBook));
         }
-        public ICommand ClosingCommand
-        {
-            get => closingCommand ?? (closingCommand = new RelayCommand(SaveNoteDataAndHide));
-        }
-        public ICommand AttachCommand
-        {
-            get => attachCommand ?? (attachCommand = new RelayCommand(AttachImage));
-        }
-        public ICommand RemoveContentCommand
-        {
-            get => removeContentCommand ?? (removeContentCommand = new RelayCommand(RemoveContent));
-        }
         public ICommand FaqCommand
         {
             get => faqCommand ?? (faqCommand = new RelayCommand(ShowFAQ));
@@ -157,14 +115,6 @@ namespace NotABookViewModels
         public ICommand AboutCommand
         {
             get => aboutCommand ?? (aboutCommand = new RelayCommand(ShowAbout));
-        }
-        public ICommand AddCategoryToNoteCommand
-        {
-            get => addCategoryToNoteCommand ?? (addCategoryToNoteCommand = new RelayCommand(AddCategoryToNote));
-        }
-        public ICommand RemoveCategoryFromNoteCommand
-        {
-            get => removeCategoryFromNoteCommand ?? (removeCategoryFromNoteCommand = new RelayCommand(RemoveCategoryFromNote));
         }
         public ICommand LostFocusCommand
         {
@@ -199,7 +149,6 @@ namespace NotABookViewModels
         }
         public void FindNote()
         {
-            SaveNoteDataAndHide();
             if (String.IsNullOrWhiteSpace(FindNoteText))
                 Notes = CurrentBook.Notes;
             else
@@ -210,14 +159,8 @@ namespace NotABookViewModels
             }
         }
         public void SelectNote()
-        {
-            SaveNoteDataAndHide();
-            InputContentsToStackPanel();
-            AddTextBoxIfNoContent();
-            NotePanelVisibility = 0;
-            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
+        {            
             Messenger.Default.Send("UpdateNoteFrame");
-
         }
         public void SelectBook()
         {
@@ -241,51 +184,6 @@ namespace NotABookViewModels
             UpdateDataFromDB();
             UpdateBookData();
         }
-
-        public void SaveNoteDataAndHide()
-        {
-            Service.SaveChanges();
-            Controls.Clear();
-            NotePanelVisibility = 2;
-        }
-        private void AttachImage()
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            if (dialog.ShowDialog() == true)
-            {
-                var extension = System.IO.Path.GetExtension(dialog.FileName);
-
-                if (PhotoContent.IsImageExtension(extension))
-                {
-                    Image myImage = new Image();
-                    byte[] imageByte = File.ReadAllBytes(dialog.FileName);
-                    myImage.Source = PhotoContent.BytesToImage(imageByte);
-                    string name = System.IO.Path.GetFileName(dialog.FileName);
-
-                    Controls.Add(myImage);
-
-                    (CurrentNote).NoteContents
-                        .Add(new PhotoContent()
-                        { Content = PhotoContent.ImageToBytes(myImage), ImageTitle = name }
-                        );
-                    Controls.Add(new TextBox() { BorderBrush = System.Windows.Media.Brushes.White, MinLines = 5 });
-                }
-                else
-                {
-                    Messenger.Default.Send("WrongFile");
-                }
-            }
-        }
-        private void RemoveContent()
-        {
-            var lol = SelectedContent is TextBox ? (SelectedContent as TextBox).Text : (SelectedContent as Image).Source.ToString();
-            var result = MessageBox.Show("Delete content " + lol + "?", "Remove content", MessageBoxButton.OKCancel);
-            if (result == MessageBoxResult.OK)
-            {
-                Controls.Remove(SelectedContent);
-                AddTextBoxIfNoContent();
-            }
-        }
         public void ShowFAQ()
         {
             throw new NotImplementedException();
@@ -295,34 +193,14 @@ namespace NotABookViewModels
             Messenger.Default.Send("AboutPage");
         }
 
-        public void AddCategoryToNote()
-        {
-            if (NoteCategories.Contains(SelectedCategory))
-                Messenger.Default.Send("NoteAlreadyMarked");
-            else
-            {
-                Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
-                NoteCategories = new ObservableCollection<Category>(Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category));
-                Service.SaveChanges();
-            }
-        }
-        public void RemoveCategoryFromNote()
-        {
-            Service
-               .RemoveLinkNoteCategory(
-                   Service.FindLinksNoteCategory()
-                       .FirstOrDefault(link => link.Note.Equals(CurrentNote) && link.Category.Equals(SelectedCategory))
-               );
-            NoteCategories = new ObservableCollection<Category>(Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category));
-            Service.SaveChanges();
-        }
+
         public void LostFocus()
         {
             if (Notes.Count < 1)
             {
                 FindNoteText = "Find note";
                 UpdateBookData();
-                SaveNoteDataAndHide();
+
             }
         }
         #endregion
@@ -331,36 +209,12 @@ namespace NotABookViewModels
         private void UpdateDataFromDB()
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
-            Categories = new ObservableCollection<Category>(Service.FindCategories());
             Notes = CurrentBook.Notes;
         }
         private void UpdateBookData()
         {
-            UpdateDataFromDB();
-            SaveNoteDataAndHide();
+            Notes = CurrentBook.Notes;
             CountOfFinding = CurrentBook?.Notes.Count.ToString() + " ";
-        }
-
-        private void InputContentsToStackPanel()
-        {
-            if ((CurrentNote).IsHasNotContent)
-                AddTextBoxIfNoContent();
-            else
-            {
-                foreach (var content in (CurrentNote).NoteContents)
-                {
-                    Controls.Add(content is TextContent ?
-                    new TextBox() { Text = (content as TextContent).Content as string, BorderBrush = System.Windows.Media.Brushes.White, MinLines = 5 }
-                    : (UIElement)new System.Windows.Controls.Image() { Source = PhotoContent.BytesToImage((content as PhotoContent).BytesOfPhoto) });
-                }
-            }
-        }
-        private void AddTextBoxIfNoContent()
-        {
-            if ((CurrentNote).IsHasNotContent && !IsStackPanelContainsTextBox)
-            {
-                Controls.Add(new TextBox() { BorderBrush = System.Windows.Media.Brushes.White, MinLines = 5 });
-            }
         }
     }
 }

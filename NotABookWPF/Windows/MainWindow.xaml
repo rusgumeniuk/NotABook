@@ -73,7 +73,7 @@
                 <TextBlock      
                     Grid.Row="1"
                     HorizontalAlignment="Center"                    
-                    Text="{Binding Path=BookTitle, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                    Text="{Binding Path=BookTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     FontStretch="ExtraExpanded" 
                     FontStyle="Normal" 
                     FontWeight="ExtraBold"
@@ -84,8 +84,9 @@
                     Padding="20,10,20,0"
                     Text="All books:"/>
                 <ListView
-                    Grid.Row="3"                                                                     
-                    SelectedItem="{Binding Path=CurrentBook, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                    Grid.Row="3"            
+                    Margin="5,0,5,10"
+                    SelectedItem="{Binding CurrentBook}"
                     ItemsSource="{Binding Books, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                     SelectionMode="Extended"                    
                     HorizontalContentAlignment="Stretch"
@@ -94,7 +95,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.CanContentScroll="True">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
+                        <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding SelectBookCommand}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -166,7 +167,7 @@
                 </StackPanel>
                 <ListBox           
                     Grid.Row="2"                                                       
-                    ItemsSource="{Binding Path=Notes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"                    
+                    ItemsSource="{Binding Path=Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                    
                     SelectedItem="{Binding Path=CurrentNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                    
                     Margin="5,10,5,0"                   
                     SelectionMode="Extended"
