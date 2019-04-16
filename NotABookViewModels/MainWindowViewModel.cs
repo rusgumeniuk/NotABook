@@ -192,8 +192,6 @@ namespace NotABookViewModels
         {
             Messenger.Default.Send("AboutPage");
         }
-
-
         public void LostFocus()
         {
             if (Notes.Count < 1)
@@ -209,11 +207,12 @@ namespace NotABookViewModels
         private void UpdateDataFromDB()
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
-            Notes = CurrentBook.Notes;
+            CurrentBook = Books.FirstOrDefault(book => book.Title.Equals(CurrentBook.Title));
+            Notes = CurrentBook?.Notes;
         }
         private void UpdateBookData()
         {
-            Notes = CurrentBook.Notes;
+            Notes = CurrentBook?.Notes;
             CountOfFinding = CurrentBook?.Notes.Count.ToString() + " ";
         }
     }
