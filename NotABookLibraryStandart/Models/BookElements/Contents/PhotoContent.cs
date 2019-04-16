@@ -1,8 +1,13 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
@@ -16,12 +21,12 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
             {
                 using (var memoryStream = new MemoryStream(BytesOfPhoto))
                 {
-                    return Image.FromStream(memoryStream);
+                    return System.Drawing.Image.FromStream(memoryStream);
                 }
             }
             set
             {
-                if (value is Image image)
+                if (value is Image)
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
                     using (MemoryStream memoryStream = new MemoryStream())
@@ -77,6 +82,37 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
         public override bool IsContainsText(string text)
         {
             return ImageTitle?.ToUpperInvariant().Contains(text.ToUpperInvariant()) ?? false || (GenerateString()?.ToUpperInvariant().Contains(text.ToUpperInvariant()) ?? false);
+        }
+
+        public static bool IsImageExtension(string extension)
+        {
+            return extension.Equals(".jpg") || extension.Equals(".png");
+        }
+
+        public static BitmapImage BytesToImage(byte[] bytes)
+        {
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = new MemoryStream(bytes);
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+
+        public static byte[] ImageToBytes(Image image)
+        {
+            if (image.Source is BitmapSource bitmapSource)
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                using (var stream = new MemoryStream())
+                {
+                    encoder.Save(stream);
+                    return stream.ToArray();
+                }
+            }
+            return null;
         }
     }
 }

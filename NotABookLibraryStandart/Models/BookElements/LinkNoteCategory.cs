@@ -1,12 +1,13 @@
-﻿using NotABookLibraryStandart.Models.BookElements;
+﻿using System;
 
-using System;
-
-namespace NotABookLibraryStandart.Models
+namespace NotABookLibraryStandart.Models.BookElements
 {
     public class LinkNoteCategory : Entity
     {
-        public LinkNoteCategory() : base() { }
+        public Note Note { get; set; }
+        public Category Category { get; set; }
+        private LinkNoteCategory() { }
+
         public LinkNoteCategory(Note note, Category category) : base()
         {
             Note = note ?? throw new ArgumentNullException(nameof(note));
@@ -16,8 +17,5 @@ namespace NotABookLibraryStandart.Models
         {
             return new LinkNoteCategory(note, category);
         }
-
-        public Note Note { get; set; }
-        public Category Category { get; set; }
     }
 }

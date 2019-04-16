@@ -1,0 +1,29 @@
+﻿<Window x:Class="NotABookWPF.Windows.AddEditBookElement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NotABookWPF.Windows"
+        mc:Ignorable="d"
+        Title="AddEditBookElement" Height="150" Width="300">
+    <StackPanel Margin="10">
+        <TextBlock Text="Title" Margin="10,0,10,0"/>
+        <TextBox x:Name="TitleTextBox" Text="{Binding Title}" Margin="10"/>
+        <StackPanel Orientation="Horizontal">
+            <Button 
+                x:Name="BtnCancelSave" 
+                Content="Cancel" 
+                Command="{Binding CancelCommand}"
+                Margin="10"
+                Padding="40,0,40,0"
+                HorizontalAlignment="Center"/>
+            <Button 
+                x:Name="BtnSaveCategory" 
+                Content="Save" 
+                Command="{Binding SaveCommand}"
+                Margin="10"
+                Padding="40,0,40,0"
+                HorizontalAlignment="Center"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
