@@ -49,6 +49,10 @@ namespace NotABookLibraryStandart.DB
         {
             return _repository.GetLinksNoteCategory().ToList();
         }
+        public IList<LinkNoteCategory> FindLinksNoteCategory(Book book)
+        {
+            return _repository.GetLinksNoteCategory(book).ToList();
+        }
         public IList<LinkNoteCategory> FindLinksNoteCategory(Category category)
         {
             return _repository.GetLinksNoteCategory(category).ToList();

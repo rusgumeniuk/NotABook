@@ -19,6 +19,7 @@ namespace NotABookLibraryStandart.DB
         IList<Book> FindBooksByUser(User user);
         IList<Note> FindNotesByBook(Book book);
         IList<Category> FindCategoriesByUser(User user);
+        IList<LinkNoteCategory> FindLinksNoteCategory(Book book);
         IList<LinkNoteCategory> FindLinksNoteCategory(Note note);
         IList<LinkNoteCategory> FindLinksNoteCategory(Category category);
         IList<Content> FindContentsByNote(Note note);
