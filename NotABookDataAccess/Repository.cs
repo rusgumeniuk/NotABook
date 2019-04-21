@@ -94,7 +94,7 @@ namespace NotABookDataAccess
         {
             return db.LinkNoteCategories.Local;
         }
-        public IEnumerable<LinkNoteCategory> GetLinkNoteCategory(Book book)
+        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Book book)
         {
             return db.LinkNoteCategories.Local.Where(link => book.Notes.Contains(link.Note));
         }
