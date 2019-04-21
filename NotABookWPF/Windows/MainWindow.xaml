@@ -160,7 +160,7 @@
                     Grid.Row="0"
                     Margin="5"
                     Padding="5"
-                    Text="{Binding Path=FindNoteText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                    Text="{Binding Path=FindNoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="LostFocus">
                             <i:InvokeCommandAction Command="{Binding LostFocusCommand}" />
@@ -168,6 +168,9 @@
                         <i:EventTrigger EventName="TextChanged">
                             <i:InvokeCommandAction Command="{Binding FindNoteCommand}" />
                         </i:EventTrigger>
+                        <!--<i:EventTrigger EventName="GotFocus">
+                            <i:InvokeCommandAction Command="{Binding GotFocusTBCommand}" />
+                        </i:EventTrigger>-->
                     </i:Interaction.Triggers>
                 </TextBox>
                 <StackPanel Grid.Row="1">
@@ -175,19 +178,20 @@
                         <Label Content="Count of notes: " />
                         <Label
                             HorizontalAlignment="Stretch"
-                            Content="{Binding CountOfFinding}"
+                            Content="{Binding ElementName=NoteList, Path=Items.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             FontStyle="Oblique" />
-                        <Label
+                        <!--<Label
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
-                            Content="from" />
+                            Content="from" />-->
                     </StackPanel>
                     <ComboBox
                         Name="ComboBoxCurrentBook"
                         IsEditable="True"
                         ItemsSource="{Binding Books}"
                         SelectedItem="{Binding ElementName=BookList, Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                        StaysOpenOnEdit="True">
+                        StaysOpenOnEdit="True"
+                        Visibility="Collapsed">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <i:InvokeCommandAction Command="{Binding SelectBookCommand}" />
@@ -196,12 +200,13 @@
                     </ComboBox>
                 </StackPanel>
                 <ListBox
+                    Name="NoteList"
                     Grid.Row="2"
                     Margin="5,10,5,0"
                     HorizontalContentAlignment="Stretch"
-                    ItemsSource="{Binding ElementName=BookList, Path=SelectedItem.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    SelectedItem="{Binding Path=CurrentNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding CurrentNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
