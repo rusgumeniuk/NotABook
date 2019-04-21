@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace NotABookViewModels
@@ -23,23 +21,13 @@ namespace NotABookViewModels
         public Note CurrentNote { get; set; }
         public Category SelectedCategory { get; set; }
         public string FindNoteText { get; set; } = "Find note";
-        public string CountOfFinding { get; set; }
-        public string BookTitle
-        {
-            get => CurrentBook?.Title ?? "Select or create some book" ;
-        }
-        public byte NotePanelVisibility
-        {
-            get => (byte)(CurrentNote == null ? 2 : 1);
-        }        
-     
         #endregion
 
         public MainWindowViewModel(IService service) : base(service)
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals("Рецепти"));
-            Notes = CurrentBook?.Notes;
+            UpdateNoteList(CurrentBook?.Notes);
         }
 
         #region Commands
@@ -55,7 +43,7 @@ namespace NotABookViewModels
         private RelayCommand selectBookCommand;
         private RelayCommand removeNoteCommand;
         private RelayCommand removeCategoryCommand;
-        private RelayCommand removeBookCommand;        
+        private RelayCommand removeBookCommand;
         private RelayCommand faqCommand;
         private RelayCommand aboutCommand;
         private RelayCommand lostFocusCommand;
@@ -149,40 +137,37 @@ namespace NotABookViewModels
         }
         public void FindNote()
         {
-            if (String.IsNullOrWhiteSpace(FindNoteText))
-                Notes = CurrentBook.Notes;
-            else
-            {
-                IList<Note> result = CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory());
-                CountOfFinding = (result?.Count ?? 0).ToString() + " ";
-                Notes = new ObservableCollection<Note>(result);
-            }
+            UpdateNoteList(
+                String.IsNullOrWhiteSpace(FindNoteText) ?
+                CurrentBook?.Notes :
+                CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory())
+                );
         }
         public void SelectNote()
-        {            
+        {
             Messenger.Default.Send("UpdateNoteFrame");
         }
         public void SelectBook()
         {
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveNote()
         {
             Service.RemoveNote(CurrentNote);
             UpdateDataFromDB();
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveCategory()
         {
             Service.RemoveCategory(SelectedCategory);
             UpdateDataFromDB();
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveBook()
         {
             Service.RemoveBook(CurrentBook);
             UpdateDataFromDB();
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void ShowFAQ()
         {
@@ -197,7 +182,7 @@ namespace NotABookViewModels
             if (Notes.Count < 1)
             {
                 FindNoteText = "Find note";
-                UpdateBookData();
+                UpdateNoteList(CurrentBook?.Notes);
 
             }
         }
@@ -208,12 +193,21 @@ namespace NotABookViewModels
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals(CurrentBook.Title));
-            Notes = CurrentBook?.Notes;
+            UpdateNoteList(CurrentBook?.Notes);
         }
-        private void UpdateBookData()
+        private void UpdateNoteList(IList<Note> notes)
         {
-            Notes = CurrentBook?.Notes;
-            CountOfFinding = CurrentBook?.Notes.Count.ToString() + " ";
+            Notes.Clear();
+            AddRange(notes);
+        }
+
+        private void AddRange(IList<Note> items)
+        {
+            if (items == null || items.Count < 1) return;
+            foreach (var item in items)
+            {
+                Notes.Add(item);
+            }
         }
     }
 }
