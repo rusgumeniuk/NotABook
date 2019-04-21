@@ -140,7 +140,7 @@ namespace NotABookViewModels
             UpdateNoteList(
                 String.IsNullOrWhiteSpace(FindNoteText) ?
                 CurrentBook?.Notes :
-                CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory())
+                CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory(CurrentBook))
                 );
         }
         public void SelectNote()
