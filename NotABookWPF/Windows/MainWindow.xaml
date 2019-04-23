@@ -63,8 +63,14 @@
             <TextBox
                 Margin="10,0,10,0"
                 Padding="20,0,20,0"
-                Foreground="LightGray"
-                Text="Find note" />
+                Foreground="LightSkyBlue"
+                Text="{Binding FindAllNoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction Command="{Binding FindAllNotesCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
         </ToolBar>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
