@@ -15,20 +15,22 @@ namespace NotABookViewModels
     public class MainWindowViewModel : ViewModelCustomBase
     {
         #region Bind fields
+        private const string FIND_ALL_NOTES_TEXT = "Find all notes";
+        private const string FIND_NOTE_TEXT = "Find note";
         public ObservableCollection<Book> Books { get; set; }
         public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
         public Book CurrentBook { get; set; }
         public Note CurrentNote { get; set; }
         public Category SelectedCategory { get; set; }
-        public string FindNoteText { get; set; } = "Find note";
-        public string FindAllNoteText { get; set; } = "Find all notes";
+        public string FindNoteText { get; set; } = FIND_NOTE_TEXT;
+        public string FindAllNoteText { get; set; } = FIND_ALL_NOTES_TEXT;
         #endregion
 
         public MainWindowViewModel(IService service) : base(service)
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals("Рецепти"));
-            UpdateNoteList(CurrentBook?.Notes);
+            UpdateCurrentBookData();
         }
 
         #region Commands
@@ -144,7 +146,7 @@ namespace NotABookViewModels
         public void FindNote()
         {
             UpdateNoteList(
-                String.IsNullOrWhiteSpace(FindNoteText) ?
+                String.IsNullOrWhiteSpace(FindNoteText) || String.IsNullOrWhiteSpace(FIND_NOTE_TEXT) ?
                 CurrentBook?.Notes :
                 CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory(CurrentBook))
                 );
@@ -152,7 +154,7 @@ namespace NotABookViewModels
         public void FindAllNotes()
         {
             UpdateNoteList(
-                String.IsNullOrWhiteSpace(FindAllNoteText) ?
+                String.IsNullOrWhiteSpace(FindAllNoteText) || String.IsNullOrWhiteSpace(FIND_ALL_NOTES_TEXT) ?
                 CurrentBook?.Notes :
                 Service.FindAllNotesByWord(FindAllNoteText)
                 );
@@ -163,7 +165,7 @@ namespace NotABookViewModels
         }
         public void SelectBook()
         {
-            UpdateNoteList(CurrentBook?.Notes);
+            UpdateCurrentBookData();
         }
         public void RemoveNote()
         {
@@ -207,14 +209,20 @@ namespace NotABookViewModels
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals(CurrentBook.Title));
-            UpdateNoteList(CurrentBook?.Notes);
+            UpdateCurrentBookData();
         }
+        private void UpdateCurrentBookData()
+        {
+            UpdateNoteList(CurrentBook?.Notes);
+            FindNoteText = FIND_NOTE_TEXT;
+            FindAllNoteText = FIND_ALL_NOTES_TEXT;
+        }
+
         private void UpdateNoteList(IList<Note> notes)
         {
             Notes.Clear();
             AddRange(notes);
         }
-
         private void AddRange(IList<Note> items)
         {
             if (items == null || items.Count < 1) return;
