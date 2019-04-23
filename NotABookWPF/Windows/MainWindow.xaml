@@ -216,7 +216,7 @@
                     Grid.ColumnSpan="2"
                     Margin="5,10.2,4.2,0.4"
                     HorizontalContentAlignment="Stretch"
-                    ItemsSource="{Binding Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     SelectedItem="{Binding CurrentNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Extended">
