@@ -1,124 +1,126 @@
-﻿<Page x:Class="NotABookWPF.Windows.NotePage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-      xmlns:local="clr-namespace:NotABookWPF.Windows"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="NotePage">
+﻿<Page
+    x:Class="NotABookWPF.Windows.NotePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:NotABookWPF.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="NotePage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="LostFocus">
-            <i:InvokeCommandAction Command="{Binding SaveInfoCommand}"/>
+            <i:InvokeCommandAction Command="{Binding SaveInfoCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.20*"/>
-            <RowDefinition Height="0.05*"/>
-            <RowDefinition Height="0.05*"/>
-            <RowDefinition Height="0.60*"/>
-            <RowDefinition Height="0.10*"/>
+            <RowDefinition Height="0.20*" />
+            <RowDefinition Height="0.05*" />
+            <RowDefinition Height="0.05*" />
+            <RowDefinition Height="0.60*" />
+            <RowDefinition Height="0.10*" />
         </Grid.RowDefinitions>
         <TextBox
             Grid.Row="0"
-            Text="{Binding Title}"
-            FontStyle="Italic"/>
+            FontStyle="Italic"
+            Text="{Binding Path=CurrentNote.Title, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBlock Text="Date of last changing: "/>
-            <TextBlock Text="{Binding DateOfLastChanging}"/>
+            <TextBlock Text="Date of last changing: " />
+            <TextBlock Text="{Binding Path=CurrentNote.DateOfLastChanging, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <TextBlock Text="Date of creating: "/>
-            <TextBlock Text="{Binding DateOfCreating}"/>
+            <TextBlock Text="Date of creating: " />
+            <TextBlock Text="{Binding Path=CurrentNote.DateOfCreating, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Expander
-                Grid.Column="0"
-                ExpandDirection="Right">
+            <Expander Grid.Column="0" ExpandDirection="Right">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.4*"/>
-                        <RowDefinition Height="0.4*"/>
-                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.4*" />
+                        <RowDefinition Height="0.4*" />
+                        <RowDefinition Height="0.2*" />
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock
                             Grid.Row="0"
-                            Text="Categories of this note:"
-                            HorizontalAlignment="Center"/>
+                            HorizontalAlignment="Center"
+                            Text="Categories of this note:" />
                         <ListBox
-                            Grid.Row="1"                                                        
+                            Grid.Row="1"
                             ItemsSource="{Binding NoteCategories}"
                             SelectedItem="{Binding SelectedCategory}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                    <i:InvokeCommandAction Command="{Binding RemoveCategoryCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding RemoveCategoryCommand}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ListBox>
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="All categories:" HorizontalAlignment="Center"/>
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Center"
+                            Text="All categories:" />
                         <ListView
-                            Grid.Row="1" 
+                            Grid.Row="1"
                             ItemsSource="{Binding AllCategories}"
                             SelectedItem="{Binding SelectedCategory}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                    <i:InvokeCommandAction Command="{Binding AddCategoryCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding AddCategoryCommand}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ListView>
                     </Grid>
-                    <Button  
-                        Grid.Row="2"                        
-                        Content="Create new category" 
+                    <Button
+                        Grid.Row="2"
+                        Margin="5"
+                        VerticalAlignment="Bottom"
                         Command="{Binding CreateCategoryCommand}"
-                        VerticalAlignment="Bottom" 
-                        Margin="5" />
+                        Content="Create new category" />
                 </Grid>
             </Expander>
-            <ScrollViewer                 
+            <ScrollViewer
                 Grid.Column="1"
                 HorizontalAlignment="Stretch"
-                VerticalScrollBarVisibility="Auto"
-                CanContentScroll="True">
-                <Grid
-                    HorizontalAlignment="Stretch"                                                      
-                    AllowDrop="True">
+                CanContentScroll="True"
+                VerticalScrollBarVisibility="Auto">
+                <Grid HorizontalAlignment="Stretch" AllowDrop="True">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseRightButtonUp">
-                            <i:InvokeCommandAction Command="{Binding RemoveContentCommand}"/>
+                            <i:InvokeCommandAction Command="{Binding RemoveContentCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <Grid.Children>
-                        <ItemsControl ItemsSource="{Binding Controls}"/>
+                        <ItemsControl ItemsSource="{Binding Controls}" />
                     </Grid.Children>
                 </Grid>
             </ScrollViewer>
         </Grid>
-        <Button Grid.Row="4"
-                Content="Додати зображення"
-                Command="{Binding AttachCommand}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Width="120"/>
+        <Button
+            Grid.Row="4"
+            Width="120"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding AttachCommand}"
+            Content="Додати зображення" />
     </Grid>
 </Page>
