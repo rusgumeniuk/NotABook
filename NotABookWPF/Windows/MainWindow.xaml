@@ -65,6 +65,9 @@
                 Padding="20,0,20,0"
                 Foreground="LightSkyBlue"
                 Text="{Binding FindAllNoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="DarkBlue" />
+                </TextBox.BorderBrush>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged">
                         <i:InvokeCommandAction Command="{Binding FindAllNotesCommand}" />
@@ -156,6 +159,10 @@
                 </ListView>
             </Grid>
             <Grid Grid.Column="1" Margin="5,0,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="209*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -164,7 +171,8 @@
                 <TextBox
                     Name="TextBoxFindItem"
                     Grid.Row="0"
-                    Margin="5"
+                    Grid.ColumnSpan="2"
+                    Margin="5,5,4.2,4.6"
                     Padding="5"
                     Text="{Binding Path=FindNoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Triggers>
@@ -174,22 +182,19 @@
                         <i:EventTrigger EventName="TextChanged">
                             <i:InvokeCommandAction Command="{Binding FindNoteCommand}" />
                         </i:EventTrigger>
-                        <!--<i:EventTrigger EventName="GotFocus">
-                            <i:InvokeCommandAction Command="{Binding GotFocusTBCommand}" />
-                        </i:EventTrigger>-->
                     </i:Interaction.Triggers>
                 </TextBox>
-                <StackPanel Grid.Row="1">
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0.4,-0.8,249.4">
                     <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
                         <Label Content="Count of notes: " />
                         <Label
                             HorizontalAlignment="Stretch"
                             Content="{Binding ElementName=NoteList, Path=Items.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             FontStyle="Oblique" />
-                        <!--<Label
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            Content="from" />-->
                     </StackPanel>
                     <ComboBox
                         Name="ComboBoxCurrentBook"
@@ -208,7 +213,8 @@
                 <ListBox
                     Name="NoteList"
                     Grid.Row="2"
-                    Margin="5,10,5,0"
+                    Grid.ColumnSpan="2"
+                    Margin="5,10.2,4.2,0.4"
                     HorizontalContentAlignment="Stretch"
                     ItemsSource="{Binding Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
