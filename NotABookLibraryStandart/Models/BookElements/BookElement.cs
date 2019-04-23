@@ -60,7 +60,7 @@ namespace NotABookLibraryStandart.Models
         }
         public override int GetHashCode()
         {
-            return base.GetHashCode() | Id.GetHashCode() ^ Title.GetHashCode();
+            return base.GetHashCode() | Id.GetHashCode() ^ Title?.GetHashCode() ?? 99;
         }
     }
 }

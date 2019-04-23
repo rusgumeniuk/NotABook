@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace NotABookViewModels
@@ -17,29 +15,22 @@ namespace NotABookViewModels
     public class MainWindowViewModel : ViewModelCustomBase
     {
         #region Bind fields
+        private const string FIND_ALL_NOTES_TEXT = "Find all notes";
+        private const string FIND_NOTE_TEXT = "Find note";
         public ObservableCollection<Book> Books { get; set; }
         public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
         public Book CurrentBook { get; set; }
         public Note CurrentNote { get; set; }
         public Category SelectedCategory { get; set; }
-        public string FindNoteText { get; set; } = "Find note";
-        public string CountOfFinding { get; set; }
-        public string BookTitle
-        {
-            get => CurrentBook?.Title ?? "Select or create some book" ;
-        }
-        public byte NotePanelVisibility
-        {
-            get => (byte)(CurrentNote == null ? 2 : 1);
-        }        
-     
+        public string FindNoteText { get; set; } = FIND_NOTE_TEXT;
+        public string FindAllNoteText { get; set; } = FIND_ALL_NOTES_TEXT;
         #endregion
 
         public MainWindowViewModel(IService service) : base(service)
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals("Рецепти"));
-            Notes = CurrentBook?.Notes;
+            UpdateCurrentBookData();
         }
 
         #region Commands
@@ -51,11 +42,12 @@ namespace NotABookViewModels
         private RelayCommand editCategoryCommand;
         private RelayCommand editBookCommand;
         private RelayCommand findNoteCommand;
+        private RelayCommand findAllNotesCommand;
         private RelayCommand selectNoteCommand;
         private RelayCommand selectBookCommand;
         private RelayCommand removeNoteCommand;
         private RelayCommand removeCategoryCommand;
-        private RelayCommand removeBookCommand;        
+        private RelayCommand removeBookCommand;
         private RelayCommand faqCommand;
         private RelayCommand aboutCommand;
         private RelayCommand lostFocusCommand;
@@ -87,6 +79,10 @@ namespace NotABookViewModels
         public ICommand FindNoteCommand
         {
             get => findNoteCommand ?? (findNoteCommand = new RelayCommand(FindNote));
+        }
+        public ICommand FindAllNotesCommand
+        {
+            get => findAllNotesCommand ?? (findAllNotesCommand = new RelayCommand(FindAllNotes));
         }
         public ICommand SelectNoteCommand
         {
@@ -149,40 +145,45 @@ namespace NotABookViewModels
         }
         public void FindNote()
         {
-            if (String.IsNullOrWhiteSpace(FindNoteText))
-                Notes = CurrentBook.Notes;
-            else
-            {
-                IList<Note> result = CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory());
-                CountOfFinding = (result?.Count ?? 0).ToString() + " ";
-                Notes = new ObservableCollection<Note>(result);
-            }
+            UpdateNoteList(
+                String.IsNullOrWhiteSpace(FindNoteText) || String.IsNullOrWhiteSpace(FIND_NOTE_TEXT) ?
+                CurrentBook?.Notes :
+                CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory(CurrentBook))
+                );
+        }
+        public void FindAllNotes()
+        {
+            UpdateNoteList(
+                String.IsNullOrWhiteSpace(FindAllNoteText) || String.IsNullOrWhiteSpace(FIND_ALL_NOTES_TEXT) ?
+                CurrentBook?.Notes :
+                Service.FindAllNotesByWord(FindAllNoteText)
+                );
         }
         public void SelectNote()
-        {            
+        {
             Messenger.Default.Send("UpdateNoteFrame");
         }
         public void SelectBook()
         {
-            UpdateBookData();
+            UpdateCurrentBookData();
         }
         public void RemoveNote()
         {
             Service.RemoveNote(CurrentNote);
             UpdateDataFromDB();
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveCategory()
         {
             Service.RemoveCategory(SelectedCategory);
             UpdateDataFromDB();
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveBook()
         {
             Service.RemoveBook(CurrentBook);
             UpdateDataFromDB();
-            UpdateBookData();
+            UpdateNoteList(CurrentBook?.Notes);
         }
         public void ShowFAQ()
         {
@@ -197,7 +198,7 @@ namespace NotABookViewModels
             if (Notes.Count < 1)
             {
                 FindNoteText = "Find note";
-                UpdateBookData();
+                UpdateNoteList(CurrentBook?.Notes);
 
             }
         }
@@ -208,12 +209,27 @@ namespace NotABookViewModels
         {
             Books = new ObservableCollection<Book>(Service.FindBooks());
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals(CurrentBook.Title));
-            Notes = CurrentBook?.Notes;
+            UpdateCurrentBookData();
         }
-        private void UpdateBookData()
+        private void UpdateCurrentBookData()
         {
-            Notes = CurrentBook?.Notes;
-            CountOfFinding = CurrentBook?.Notes.Count.ToString() + " ";
+            UpdateNoteList(CurrentBook?.Notes);
+            FindNoteText = FIND_NOTE_TEXT;
+            FindAllNoteText = FIND_ALL_NOTES_TEXT;
+        }
+
+        private void UpdateNoteList(IList<Note> notes)
+        {
+            Notes.Clear();
+            AddRange(notes);
+        }
+        private void AddRange(IList<Note> items)
+        {
+            if (items == null || items.Count < 1) return;
+            foreach (var item in items)
+            {
+                Notes.Add(item);
+            }
         }
     }
 }

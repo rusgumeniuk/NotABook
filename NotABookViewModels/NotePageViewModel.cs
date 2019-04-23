@@ -20,12 +20,10 @@ namespace NotABookViewModels
 {
     public class NotePageViewModel : ViewModelCustomBase
     {
-        private readonly Note CurrentNote;
+        #region Props
+        public Note CurrentNote { get; set; }
         private readonly bool isCreating = true;
-        public string Title { get; set; }
         public ObservableCollection<Category> NoteCategories { get; set; }
-        public DateTime DateOfCreating { get; set; }
-        public DateTime DateOfLastChanging { get; set; }
         public ObservableCollection<Category> AllCategories { get; set; }
         public Book Book { get; set; }
         public Category SelectedCategory { get; set; }
@@ -35,6 +33,8 @@ namespace NotABookViewModels
         {
             get => Controls.FirstOrDefault(control => control is TextBox) != null;
         }
+
+        #endregion
 
         #region Commands
         private RelayCommand closingCommand;
@@ -80,15 +80,12 @@ namespace NotABookViewModels
             Book = currentBook;
             AllCategories = new ObservableCollection<Category>(Service.FindCategories());
             isCreating = note == null;
-
             CurrentNote = note ?? new Note(String.Empty);
-            Title = note?.Title ?? String.Empty;
             NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
-            DateOfCreating = CurrentNote.DateOfCreating;
-            DateOfLastChanging = CurrentNote.DateOfLastChanging;
             InputContentsToStackPanel();
         }
 
+        #region Methods
         private void InputContentsToStackPanel()
         {
             if (CurrentNote.IsHasNotContent)
@@ -117,9 +114,9 @@ namespace NotABookViewModels
         }
         private void UpdateNoteTitle()
         {
-            if (!String.IsNullOrWhiteSpace(Title) || !CurrentNote.IsHasNotContent)
+            if (!String.IsNullOrWhiteSpace(CurrentNote.Title) || !CurrentNote.IsHasNotContent)
             {
-                if (String.IsNullOrWhiteSpace(Title))
+                if (String.IsNullOrWhiteSpace(CurrentNote.Title))
                 {
                     CurrentNote.Title = CurrentNote.TitleFromContent;
                 }
@@ -232,14 +229,16 @@ namespace NotABookViewModels
         }
         private void AddCategory()
         {
-            if (NoteCategories.Contains(SelectedCategory))
-                Messenger.Default.Send("NoteAlreadyMarked");
-            //MessageBox.Show("Note already marked by this category!");
-            else
+            if (SelectedCategory != null)
             {
-                Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
-                NoteCategories.Add(SelectedCategory);
-                Service.SaveChanges();
+                if (NoteCategories.Contains(SelectedCategory))
+                    Messenger.Default.Send("NoteAlreadyMarked");
+                else
+                {
+                    Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
+                    NoteCategories.Add(SelectedCategory);
+                    Service.SaveChanges();
+                }
             }
         }
         private void RemoveCategory()
@@ -252,5 +251,6 @@ namespace NotABookViewModels
             NoteCategories.Remove(SelectedCategory);
             Service.SaveChanges();
         }
+        #endregion
     }
 }

@@ -49,6 +49,10 @@ namespace NotABookLibraryStandart.DB
         {
             return _repository.GetLinksNoteCategory().ToList();
         }
+        public IList<LinkNoteCategory> FindLinksNoteCategory(Book book)
+        {
+            return _repository.GetLinksNoteCategory(book).ToList();
+        }
         public IList<LinkNoteCategory> FindLinksNoteCategory(Category category)
         {
             return _repository.GetLinksNoteCategory(category).ToList();
@@ -56,6 +60,14 @@ namespace NotABookLibraryStandart.DB
         public IList<LinkNoteCategory> FindLinksNoteCategory(Note note)
         {
             return _repository.GetLinksNoteCategory(note).ToList();
+        }
+        public IList<Note> FindAllNotesByWord(string text)
+        {
+            return _repository.GetLinksNoteCategory()
+                .Where(link => link.Note.IsContainsText(text) || link.Category.IsContainsText(text))
+                .Select(link => link.Note)
+                .Union(_repository.GetNotes().Where(note => note.IsContainsText(text)))
+                .ToList();                
         }
         public IList<Note> FindNotes()
         {

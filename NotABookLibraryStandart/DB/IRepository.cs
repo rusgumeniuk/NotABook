@@ -19,6 +19,7 @@ namespace NotABookLibraryStandart.DB
         IEnumerable<Book> GetBooksByUser(User user);
         IEnumerable<Note> GetNotesByBook(Book book);
         IEnumerable<Category> GetCategoriesByUser(User user);
+        IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Book book);
         IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Note note);
         IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Category category);
         IEnumerable<Content> GetContentsByNote(Note note);
