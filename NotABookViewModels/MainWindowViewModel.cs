@@ -21,6 +21,7 @@ namespace NotABookViewModels
         public Note CurrentNote { get; set; }
         public Category SelectedCategory { get; set; }
         public string FindNoteText { get; set; } = "Find note";
+        public string FindAllNoteText { get; set; } = "Find all notes";
         #endregion
 
         public MainWindowViewModel(IService service) : base(service)
@@ -39,6 +40,7 @@ namespace NotABookViewModels
         private RelayCommand editCategoryCommand;
         private RelayCommand editBookCommand;
         private RelayCommand findNoteCommand;
+        private RelayCommand findAllNotesCommand;
         private RelayCommand selectNoteCommand;
         private RelayCommand selectBookCommand;
         private RelayCommand removeNoteCommand;
@@ -75,6 +77,10 @@ namespace NotABookViewModels
         public ICommand FindNoteCommand
         {
             get => findNoteCommand ?? (findNoteCommand = new RelayCommand(FindNote));
+        }
+        public ICommand FindAllNotesCommand
+        {
+            get => findAllNotesCommand ?? (findAllNotesCommand = new RelayCommand(FindAllNotes));
         }
         public ICommand SelectNoteCommand
         {
@@ -141,6 +147,14 @@ namespace NotABookViewModels
                 String.IsNullOrWhiteSpace(FindNoteText) ?
                 CurrentBook?.Notes :
                 CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory(CurrentBook))
+                );
+        }
+        public void FindAllNotes()
+        {
+            UpdateNoteList(
+                String.IsNullOrWhiteSpace(FindAllNoteText) ?
+                CurrentBook?.Notes :
+                Service.FindAllNotesByWord(FindAllNoteText)
                 );
         }
         public void SelectNote()
