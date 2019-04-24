@@ -1,6 +1,6 @@
 ﻿using NotABookViewModels;
 
-namespace NotABookWPF
+namespace NotABookViewModels
 {
     interface IWindow
     {
