@@ -9,30 +9,31 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABook.Pages.ItemPages
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AddEditItemPage : ContentPage
+	public partial class AddEditNotePage : ContentPage
 	{
-        Item CurrentItem = null;
+        Note CurrentItem = null;
         ObservableCollection<Category> SelectedCategories { get; set; } = new ObservableCollection<Category>();               
         
-		public AddEditItemPage ()
+		public AddEditNotePage ()
 		{
-			InitializeComponent ();                        
-            PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+			InitializeComponent ();
+            DisplayAlert("Non implemented", "Error", "ok");//PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
             PickerSelectedCategories.ItemsSource = SelectedCategories;
         }
 
-        public AddEditItemPage(Item item)
+        public AddEditNotePage(Note item)
         {
             InitializeComponent();
             CurrentItem = item;
             BindingContext = CurrentItem;
-            SelectedCategories = item.GetCategories(App.currentBook);
-            
-            PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+            DisplayAlert("Non implemented", "Error", "ok");//SelectedCategories = item.GetCategories(App.currentBook);
+
+            DisplayAlert("Non implemented", "Error", "ok");//PickerAllCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
             PickerSelectedCategories.ItemsSource = SelectedCategories;
         }
 
@@ -78,13 +79,14 @@ namespace NotABook.Pages.ItemPages
                 
             if(CurrentItem == null)
             {
-                Item newItem = new Item(App.currentBook, EntryTitle.Text, Description.CreateDescription(App.currentBook, EntryDescription.Text), SelectedCategories);
+                await DisplayAlert("Non implemented", "Error", "ok");//Item newItem = new Item(App.currentBook, EntryTitle.Text, Description.CreateDescription(App.currentBook, EntryDescription.Text), SelectedCategories);
             }
             else
             {
-                CurrentItem.Title = EntryTitle.Text;
-                CurrentItem.Description = Description.CreateDescription(App.currentBook, EntryDescription.Text);
-                CurrentItem.SetCategories(App.currentBook, SelectedCategories);
+                await DisplayAlert("Non implemented", "Error", "ok");//
+                //CurrentItem.Title = EntryTitle.Text;
+                //CurrentItem.Description = Description.CreateDescription(App.currentBook, EntryDescription.Text);
+                //CurrentItem.SetCategories(App.currentBook, SelectedCategories);
             }
 
             await Navigation.PopAsync();

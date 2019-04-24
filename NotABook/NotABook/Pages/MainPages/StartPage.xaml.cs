@@ -28,7 +28,7 @@ namespace NotABook.Pages.MainPages
 
         private void DownList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem is Pages.MainPages.MasterPageItem item)
+            if (e.SelectedItem is Pages.MainPages.MasterPageNote item)
             {
                 Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
                 masterPage.downList.SelectedItem = null;
@@ -37,7 +37,7 @@ namespace NotABook.Pages.MainPages
         }
         private void UpList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem is Pages.MainPages.MasterPageItem item)
+            if (e.SelectedItem is Pages.MainPages.MasterPageNote item)
             {
                 Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
                 masterPage.upList.SelectedItem = null;

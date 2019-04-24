@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABook.Pages.DetailPages.HelpedPages
 {

@@ -8,45 +8,46 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABook.Pages.ItemPages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ItemCarouselPage : CarouselPage
+    public partial class NoteCarouselPage : CarouselPage
     {
         Book CurBook { get; set; }
-        public ItemCarouselPage(Book currentBook)
+        public NoteCarouselPage(Book currentBook)
         {
             InitializeComponent();
-            ItemsSource = App.ItemsList;
+            ItemsSource = App.currentBook.Notes;
             CurBook = NotABook.App.currentBook;
             this.BindingContext = this;                                
         }
 
-        public ItemCarouselPage(Book currBook, Category category)
+        public NoteCarouselPage(Book currBook, Category category)
         {
             InitializeComponent();
-            ItemsSource = category.ItemsWithThisCategory;
+            DisplayAlert("Non implemented", "Error", "ok");//ItemsSource = category.ItemsWithThisCategory;
             CurBook = currBook;
             this.BindingContext = this;            
         }
 
-        public ItemCarouselPage(Book curBook, Item item)
+        public NoteCarouselPage(Book curBook, Note item)
         {
             InitializeComponent();
-            ItemsSource = NotABook.App.ItemsList;
+            ItemsSource = NotABook.App.currentBook.Notes;
             CurBook = curBook;
             this.BindingContext = this;                      
         }
 
         private async void BtnEdit_Clicked(object sender, EventArgs e)
-        {           
-            await Navigation.PushAsync(new ItemPages.AddEditItemPage(SelectedItem as Item));
+        {
+            await DisplayAlert("Non implemented", "Error", "ok");//await Navigation.PushAsync(new ItemPages.AddEditItemPage(SelectedItem as Item));
         }
 
        async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Deleting item", (((Button)sender).CommandParameter as Item).Delete(App.currentBook) ? "Deleted" : "oops, is not deleted", "ok");
+            await DisplayAlert("Non implemented", "Error", "ok");//await DisplayAlert("Deleting item", (((Button)sender).CommandParameter as Item).Delete(App.currentBook) ? "Deleted" : "oops, is not deleted", "ok");
             await Navigation.PopAsync();
             //try
             //{

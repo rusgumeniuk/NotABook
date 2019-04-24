@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="NotABook.Pages.MainPages.LogInPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Margin="20,10,20,10"
+            HorizontalTextAlignment="Center"
+            Text="Username" />
+        <Editor
+            Grid.Row="1"
+            Margin="20,10,20,10"
+            Text="{Binding Username}" />
+        <Label
+            Grid.Row="2"
+            HorizontalTextAlignment="Center"
+            Text="Password" />
+        <Grid Grid.Row="3" Margin="20,10,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.95*" />
+                <ColumnDefinition Width="0.05*" />
+            </Grid.ColumnDefinitions>
+            <Editor
+                x:Name="EditorPassword"
+                Grid.Column="0"
+                Text="{Binding Password}" />
+            <Switch x:Name="CheckBoxIsVisiblePassword" Grid.Column="1" />
+        </Grid>
+
+        <Label
+            Grid.Row="4"
+            Margin="20,10,20,10"
+            HorizontalTextAlignment="Center"
+            Text="Forgot password?" />
+        <Button
+            x:Name="BtnLogIn"
+            Grid.Row="5"
+            Margin="50,20,50,10"
+            Command="{Binding LoginCommand, Mode=OneTime}"
+            Text="Log in" />
+        <Button
+            x:Name="BtnSignUp"
+            Grid.Row="6"
+            Margin="50,20,50,10"
+            Command="{Binding SignUpCommand, Mode=OneTime}"
+            Text="Sign up" />
+    </Grid>
+</ContentPage>

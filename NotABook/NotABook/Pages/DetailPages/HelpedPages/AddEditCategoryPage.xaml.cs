@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABook.Pages.DetailPages.HelpedPages
 {
@@ -42,10 +43,11 @@ namespace NotABook.Pages.DetailPages.HelpedPages
             }
             else
             {
-                Category category = new Category(App.currentBook)
-                {
-                    Title = entryTitle.Text
-                };
+                await DisplayAlert("Non implemented", "Error", "ok");
+                //Category category = new Category()
+                //{
+                //    Title = entryTitle.Text
+                //};
             }
             await Navigation.PopAsync();
             //try

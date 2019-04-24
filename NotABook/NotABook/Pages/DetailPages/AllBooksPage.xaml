@@ -9,7 +9,7 @@
             <Label x:Name="LBLTEst" Text="Master branch"/>
             <ListView
                 x:Name="bookList"
-                ItemsSource="{Static local:App.Books}"
+                
                 ItemTapped="BookList_ItemTapped"
                 HasUnevenRows="True">
                 <ListView.ItemTemplate>

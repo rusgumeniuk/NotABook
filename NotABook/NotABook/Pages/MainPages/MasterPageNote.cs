@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NotABook.Pages.MainPages
 {
-   public class MasterPageItem
+   public class MasterPageNote
     {
         public string Title { get; set; }
 

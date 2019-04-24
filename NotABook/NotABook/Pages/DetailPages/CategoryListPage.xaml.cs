@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using NotABookLibraryStandart.Models;
+using NotABookLibraryStandart.Models.BookElements;
 
 namespace NotABook.Pages.DetailPages
 {
@@ -21,14 +22,14 @@ namespace NotABook.Pages.DetailPages
 		{
 			InitializeComponent ();
             //BindingContext = this;
-            ListOfCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
+            DisplayAlert("Non implemented", "Error", "ok");//ListOfCategories.ItemsSource = App.currentBook?.CategoriesOfBook ?? new ObservableCollection<Category>();
         }
 
         async private void ListOfCategories_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if(e.Item is Category selectedCategory)
             {
-                await Navigation.PushAsync(new ItemsOfBookPage(selectedCategory));
+                await Navigation.PushAsync(new NotesOfBookPage(selectedCategory));
             }
         }
 
@@ -43,9 +44,10 @@ namespace NotABook.Pages.DetailPages
                 "Do u want to delete category?",
                 "Yes", "NO"))
             {
-                await DisplayAlert("Deleting of category", 
-                                    (((MenuItem)sender).CommandParameter as Category).DeleteCategoryStr(App.currentBook),
-                                     "OK");
+                await DisplayAlert("Non implemented", "Error", "ok");
+                //await DisplayAlert("Deleting of category", 
+                //                    (((MenuItem)sender).CommandParameter as Category).DeleteCategoryStr(App.currentBook),
+                //                     "OK");
             }
         }
 
@@ -55,9 +57,10 @@ namespace NotABook.Pages.DetailPages
                 "Do u want to delete all connections?",
                 "Yes", "NO"))
             {
-                await DisplayAlert("Deleting connections",
-                    (((MenuItem)sender).CommandParameter as Category).RemoveCategoryFromAllItemsStr(App.currentBook),
-                    "OK");
+                await DisplayAlert("Non implemented", "Error", "ok");
+                //await DisplayAlert("Deleting connections",
+                //    (((MenuItem)sender).CommandParameter as Category).RemoveCategoryFromAllItemsStr(App.currentBook),
+                //    "OK");
             }
         }
 
