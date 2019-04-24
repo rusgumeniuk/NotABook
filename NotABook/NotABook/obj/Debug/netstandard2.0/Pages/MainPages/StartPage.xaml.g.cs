@@ -16,10 +16,10 @@ namespace NotABook.Pages.MainPages {
     [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Pages\\MainPages\\StartPage.xaml")]
     public partial class StartPage : global::Xamarin.Forms.MasterDetailPage {
         
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::NotABook.Pages.MainPages.MasterPage masterPage;
         
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private void InitializeComponent() {
             global::Xamarin.Forms.Xaml.Extensions.LoadFromXaml(this, typeof(StartPage));
             masterPage = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::NotABook.Pages.MainPages.MasterPage>(this, "masterPage");
