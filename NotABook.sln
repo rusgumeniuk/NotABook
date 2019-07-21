@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookLibraryStandart", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookViewModels", "NotABookViewModels\NotABookViewModels.csproj", "{2C4B6431-43DB-4FB2-8094-308993DF688F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotABookDataAccess", "NotABookDataAccess\NotABookDataAccess.csproj", "{DAEE7F4A-A77D-4B6E-AD04-80FBC9B4B99D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookDataAccess", "NotABookDataAccess\NotABookDataAccess.csproj", "{DAEE7F4A-A77D-4B6E-AD04-80FBC9B4B99D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotABookTests", "NotABookTests\NotABookTests.csproj", "{66E5A703-3F58-49C7-ABD6-F0E78C541DFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookTests", "NotABookTests\NotABookTests.csproj", "{66E5A703-3F58-49C7-ABD6-F0E78C541DFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
