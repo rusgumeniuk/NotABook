@@ -1,4 +1,5 @@
 ﻿using NotABookLibraryStandart.Models.BookElements;
+using System.ComponentModel.DataAnnotations;
 
 using System;
 using System.ComponentModel;
@@ -12,7 +13,7 @@ namespace NotABookLibraryStandart.Models
     {
         public DateTime DateOfCreating { get; private set; }
         public DateTime DateOfLastChanging { get; internal set; }
-
+        [Required(ErrorMessage ="Title can not be empty!")]
         public override string Title
         {
             get => base.Title;
