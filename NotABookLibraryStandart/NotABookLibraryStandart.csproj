@@ -16,6 +16,7 @@
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="EntityFramework.SqlServerCompact" Version="6.2.0" />
     <PackageReference Include="Microsoft.Xaml" Version="4.0.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
 
