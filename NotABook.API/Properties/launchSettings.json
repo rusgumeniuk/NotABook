@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:6666",
-      "sslPort": 44349
+      "applicationUrl": "http://localhost:50279",
+      "sslPort": 44372
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -19,7 +19,7 @@
     "NotABook.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/books",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
