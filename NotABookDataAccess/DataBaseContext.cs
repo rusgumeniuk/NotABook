@@ -1,15 +1,18 @@
-﻿using NotABookLibraryStandart.Models.BookElements;
+﻿using Microsoft.EntityFrameworkCore;
+using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
 using NotABookLibraryStandart.Models.Roles;
-
 using System.Collections.Generic;
-using System.Data.Entity;
+
 
 namespace NotABookDataAccess
 {
     public class DataBaseContext : DbContext
     {
-        public DataBaseContext() : base("NotabookConn") { }
+        public DataBaseContext()
+        {
+            Database.EnsureCreated();
+        }
         public DbSet<Note> Notes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -25,6 +28,11 @@ namespace NotABookDataAccess
                 result.AddRange(PhotoContents);
                 return result;
             }
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=NotABookDB;Trusted_Connection=True;");
         }
     }
 }
