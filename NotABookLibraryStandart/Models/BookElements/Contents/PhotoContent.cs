@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -9,6 +10,7 @@ namespace NotABookLibraryStandart.Models.BookElements.Contents
 {
     public class PhotoContent : Content
     {
+        [IgnoreDataMember]
         public byte[] BytesOfPhoto { get; set; }
         public string ImageTitle { get; set; }
         public object Content
