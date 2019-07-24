@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NotABook.API.Controllers
 {
@@ -20,10 +16,10 @@ namespace NotABook.API.Controllers
             };
 
         private IService _service;
-        //public CategoriesController(IService service)
-        //{
-        //    _service = service;
-        //}
+        public CategoriesController(IService service)
+        {
+            _service = service;
+        }
         // GET: api/Categories
         [HttpGet]
         public IActionResult Get()

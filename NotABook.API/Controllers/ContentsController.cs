@@ -21,10 +21,10 @@ namespace NotABook.API.Controllers
         };
 
         private IService _service;
-        //public ContentsController(IService service)
-        //{
-        //    _service = service;
-        //}
+        public ContentsController(IService service)
+        {
+            _service = service;
+        }
         // GET: api/Contents
         [HttpGet]
         public IActionResult Get()

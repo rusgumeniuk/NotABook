@@ -15,12 +15,12 @@ namespace NotABook.API.Controllers
     public class BooksController : ControllerBase
     {
         private static IList<Book> list = new ObservableCollection<Book>();
-
+        
         private IService _service;
-        //public BooksController(IService service)
-        //{
-        //    _service = service;
-        //}
+        public BooksController(IService service)
+        {
+            _service = service;
+        }
         static BooksController()
         {
             list.Add(new Book("First book"));
@@ -30,7 +30,8 @@ namespace NotABook.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(list);
+            IList<Book> books = _service.FindBooks();
+            return Ok(books);
         }
 
         // GET: api/Book/5

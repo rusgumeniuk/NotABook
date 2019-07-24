@@ -17,10 +17,10 @@ namespace NotABook.API.Controllers
         };
 
         private IService _service;
-        //public NotesController(IService service)
-        //{
-        //    _service = service;
-        //}
+        public NotesController(IService service)
+        {
+            _service = service;
+        }
         // GET: api/Notes
         [HttpGet]
         public IActionResult Get()

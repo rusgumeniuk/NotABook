@@ -18,10 +18,10 @@ namespace NotABook.API.Controllers
                 new User("Second", "f@gmail.com", "administators") };
 
         private IService _service;
-        //public UsersController(IService service)
-        //{
-        //    _service = service;
-        //}
+        public UsersController(IService service)
+        {
+            _service = service;
+        }
         // GET: api/Users
         [HttpGet]
         public IActionResult Get()
