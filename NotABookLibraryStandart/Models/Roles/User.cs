@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -19,12 +20,26 @@ namespace NotABookLibraryStandart.Models.Roles
         public string Roles { get; set; }
 
         public IList<Book> Books = new ObservableCollection<Book>();
-        public IList<Category> Categories = new ObservableCollection<Category>();
+        public IList<Category> Categories = new ObservableCollection<Category>();      
+        private IEnumerable<Note> GetAllNotes
+        {
+            get
+            {
+                ISet<Note> notes = new HashSet<Note>();
+
+                foreach (var book in Books)
+                {
+                    notes.UnionWith(book.Notes);
+                }
+
+                return notes;
+            }
+        }
 
         public User()
         {
             Id = Guid.NewGuid();
-            Books.Add(new Book("Your first book"));
+            Books.Add(new Book("Your first book"));            
         }
         public User(string username, string email, string roles) : this()
         {
@@ -57,15 +72,15 @@ namespace NotABookLibraryStandart.Models.Roles
         {
             Books.Remove(book);
             if(Books.Count == 0)
-                Books.Add(new Book("Default book"));
+                Books.Add(new Book("Default book"));            
         }
         public bool Add(Book book)
         {
             if (Books.Contains(book))
                 return false;
-            Books.Add(book);
+            Books.Add(book);            
             return Books.Contains(book);
-        }
+        }      
     }
 }
 
