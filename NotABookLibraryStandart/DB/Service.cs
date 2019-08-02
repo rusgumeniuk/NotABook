@@ -21,120 +21,108 @@ namespace NotABookLibraryStandart.DB
         {
             return _repository.GetAdmins().ToList();
         }
-        public IList<Book> FindBooks()
+        public IList<Book> FindBooks(User user)
         {
-            return _repository.GetBooks().ToList();
+            return _repository.GetBooks(user).ToList();
         }
-        public IList<Book> FindBooksByUser(User user)
+        public IList<Category> FindCategories(User user)
         {
-            return _repository.GetBooksByUser(user).ToList();
+            return _repository.GetCategories(user).ToList();
         }
-        public IList<Category> FindCategories()
+        public IList<Content> FindContentsByNote(User user, Note note)
         {
-            return _repository.GetCategories().ToList();
+            return _repository.GetContentsByNote(user, note).ToList();
         }
-        public IList<Category> FindCategoriesByUser(User user)
+        public IList<LinkNoteCategory> FindLinksNoteCategory(User user)
         {
-            return _repository.GetCategoriesByUser(user).ToList();
+            return _repository.GetLinksNoteCategory(user).ToList();
         }
-        public IList<Content> FindContents()
+        public IList<LinkNoteCategory> FindLinksNoteCategory(User user, Book book)
         {
-            return _repository.GetContents().ToList();
+            return _repository.GetLinksNoteCategory(user, book).ToList();
         }
-        public IList<Content> FindContentsByNote(Note note)
+        public IList<LinkNoteCategory> FindLinksNoteCategory(User user, Category category)
         {
-            return _repository.GetContentsByNote(note).ToList();
+            return _repository.GetLinksNoteCategory(user, category).ToList();
         }
-        public IList<LinkNoteCategory> FindLinksNoteCategory()
+        public IList<LinkNoteCategory> FindLinksNoteCategory(User user, Note note)
         {
-            return _repository.GetLinksNoteCategory().ToList();
+            return _repository.GetLinksNoteCategory(user, note).ToList();
         }
-        public IList<LinkNoteCategory> FindLinksNoteCategory(Book book)
+        public IList<Note> FindAllNotesByWord(User user, string text)
         {
-            return _repository.GetLinksNoteCategory(book).ToList();
-        }
-        public IList<LinkNoteCategory> FindLinksNoteCategory(Category category)
-        {
-            return _repository.GetLinksNoteCategory(category).ToList();
-        }
-        public IList<LinkNoteCategory> FindLinksNoteCategory(Note note)
-        {
-            return _repository.GetLinksNoteCategory(note).ToList();
-        }
-        public IList<Note> FindAllNotesByWord(string text)
-        {
-            return _repository.GetLinksNoteCategory()
+            return _repository.GetLinksNoteCategory(user)
                 .Where(link => link.Note.IsContainsText(text) || link.Category.IsContainsText(text))
                 .Select(link => link.Note)
-                .Union(_repository.GetNotes().Where(note => note.IsContainsText(text)))
+                .Union(_repository.GetNotes(user).Where(note => note.IsContainsText(text)))
                 .ToList();                
         }
-        public IList<Note> FindNotes()
+        public IList<Note> FindNotes(User user)
         {
-            return _repository.GetNotes().ToList();
+            return _repository.GetNotes(user).ToList();
         }
-        public IList<Note> FindNotesByBook(Book book)
+        public IList<Note> FindNotesByBook(User user, Book book)
         {
-            return _repository.GetNotesByBook(book).ToList();
+            return _repository.GetNotesByBook(user, book).ToList();
         }
         public IList<User> FindUsers()
         {
             return _repository.GetUsers().ToList();
         }
-        public IList<Category> FindCategoriesByNote(Note note)
+        public IList<Category> FindCategoriesByNote(User user, Note note)
         {
-            return _repository.GetCategoriesByNote(note).ToList();
+            return _repository.GetCategoriesByNote(user, note).ToList();
         }
         #endregion
 
         #region Add
-        public void AddBook(Book book)
+        public void AddBook(User user, Book book)
         {
-            _repository.Add(book);
+            _repository.Add(user, book);
         }
-        public void AddCategory(Category category)
+        public void AddCategory(User user, Category category)
         {
-            _repository.Add(category);
+            _repository.Add(user, category);
         }
-        public void AddContent(Content content)
+        public void AddContent(User user, Note note, Content content)
         {
-            _repository.Add(content);
+            _repository.Add(user, note, content);
         }
-        public void AddLinkNoteCategory(LinkNoteCategory linkNoteCategory)
+        public void AddLinkNoteCategory(User user, LinkNoteCategory linkNoteCategory)
         {
-            _repository.Add(linkNoteCategory);
+            _repository.Add(user, linkNoteCategory);
         }
-        public void AddLinkNoteCategory(Note note, Category category)
+        public void AddLinkNoteCategory(User user, Note note, Category category)
         {
-            _repository.Add(note, category);
+            _repository.Add(user, note, category);
         }
-        public void AddNote(Note note)
+        public void AddNote(User user, Book book, Note note)
         {
-            _repository.Add(note);
+            _repository.Add(user, book, note);
         }
 
         #endregion
 
         #region Remove
-        public void RemoveBook(Book book)
+        public void RemoveBook(User user, Book book)
         {
-            _repository.Remove(book);
+            _repository.Remove(user, book);
         }
-        public void RemoveCategory(Category category)
+        public void RemoveCategory(User user, Category category)
         {
-            _repository.Remove(category);
+            _repository.Remove(user, category);
         }
-        public void RemoveContent(Content content)
+        public void RemoveContent(User user, Note note, Content content)
         {
-            _repository.Remove(content);
+            _repository.Remove(user, note, content);
         }
-        public void RemoveLinkNoteCategory(LinkNoteCategory linkNoteCategory)
+        public void RemoveLinkNoteCategory(User user, LinkNoteCategory linkNoteCategory)
         {
-            _repository.Remove(linkNoteCategory);
+            _repository.Remove(user, linkNoteCategory);
         }
-        public void RemoveNote(Note note)
+        public void RemoveNote(User user, Note note)
         {
-            _repository.Remove(note);
+            _repository.Remove(user, note);
         }
         #endregion
 

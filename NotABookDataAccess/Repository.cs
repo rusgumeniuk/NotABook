@@ -16,14 +16,10 @@ namespace NotABookDataAccess
             this.db = database;
             InitDB();
         }
+
         public void InitDB()
         {
-            db.Users.ToArray();
-            db.Books.ToArray();
-            db.Notes.ToArray();
-            db.Categories.ToArray();
-            db.LinkNoteCategories.ToArray();
-            db.Contents.ToArray();
+            db.Users.ToArray();          
         }
 
         public void Add(User user)
@@ -31,96 +27,84 @@ namespace NotABookDataAccess
             db.Users.Local.Add(user);
             Save();
         }
-        public void Add(Book book)
+        public void Add(User user, Book book)
         {
-            db.Books.Local.Add(book);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.Add(book);
             Save();
         }
-        public void Add(Note note)
+        public void Add(User user, Book book, Note note)
         {
-            db.Notes.Local.Add(note);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.FirstOrDefault(bk => bk.Equals(book)).Notes.Add(note);
             Save();
         }
-        public void Add(Category category)
+        public void Add(User user, Category category)
         {
-            db.Categories.Local.Add(category);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Categories.Add(category);
             Save();
         }
-        public void Add(LinkNoteCategory linkNoteCategory)
+        public void Add(User user, LinkNoteCategory linkNoteCategory)
         {
-            db.LinkNoteCategories.Local.Add(linkNoteCategory);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Add(linkNoteCategory);
             Save();
         }
-        public void Add(Note note, Category category)
+        public void Add(User user, Note note, Category category)
         {
-            db.LinkNoteCategories.Local.Add(new LinkNoteCategory(note, category));
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Add(new LinkNoteCategory(note, category));
             Save();
         }
-        public void Add(Content content)
+        public void Add(User user, Note note, Content content)
         {
-            db.Contents.Add(content);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.FirstOrDefault(book => book.Notes.Contains(note)).Notes.First(nt => nt.Equals(note)).AddContent(content);
             Save();
         }
 
+        public IEnumerable<User> GetUsers()
+        {
+            return db.Users.Local;
+        }       
         public IEnumerable<User> GetAdmins()
         {
             return db.Users.Local.Where(user => user.Roles.Contains("Administators"));
         }
-        public IEnumerable<Book> GetBooks()
+        public IEnumerable<Book> GetBooks(User user)
         {
-            return db.Books.Local;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books;
+        }        
+        public IEnumerable<Note> GetNotes(User user)
+        {
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).GetAllNotes;
         }
-        public IEnumerable<Book> GetBooksByUser(User user)
+        public IEnumerable<Category> GetCategories(User user)
         {
-            return db.Users.Local.FirstOrDefault(us => us.Equals(user))?.Books;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).Categories;
         }
-        public IEnumerable<Category> GetCategories()
+        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(User user)
         {
-            return db.Categories.Local;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories;
         }
-        public IEnumerable<Category> GetCategoriesByUser(User user)
+        public IEnumerable<Note> GetNotesByBook(User user, Book book)
         {
-            return db.Users.Local.FirstOrDefault(us => us.Equals(user))?.Categories;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.FirstOrDefault(bk => bk.Equals(book)).Notes;
         }
-        public IEnumerable<Content> GetContents()
+        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(User user, Book book)
         {
-            return db.Contents;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Where(link => book.Notes.Contains(link.Note));
         }
-        public IEnumerable<Content> GetContentsByNote(Note note)
+        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(User user, Note note)
         {
-            return db.Notes.Local.FirstOrDefault(nt => nt.Equals(note))?.NoteContents;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Where(link => link.Note.Equals(note));
         }
-        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory()
+        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(User user, Category category)
         {
-            return db.LinkNoteCategories.Local;
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Where(link => link.Category.Equals(category));
         }
-        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Book book)
+        public IEnumerable<Content> GetContentsByNote(User user, Note note)
         {
-            return db.LinkNoteCategories.Local.Where(link => book.Notes.Contains(link.Note));
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.First(bk => bk.Notes.Contains(note)).Notes.First(nt => nt.Equals(note)).NoteContents;
         }
-        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Note note)
+        public IEnumerable<Category> GetCategoriesByNote(User user, Note note)
         {
-            return db.LinkNoteCategories.Local.Where(link => link.Note.Equals(note));
-        }
-        public IEnumerable<LinkNoteCategory> GetLinksNoteCategory(Category category)
-        {
-            return db.LinkNoteCategories.Local.Where(link => link.Category.Equals(category));
-        }
-        public IEnumerable<Note> GetNotes()
-        {
-            return db.Notes.Local;
-        }
-        public IEnumerable<Note> GetNotesByBook(Book book)
-        {
-            return db.Books.Local.FirstOrDefault(bk => bk.Equals(book))?.Notes;
-        }
-        public IEnumerable<User> GetUsers()
-        {
-            return db.Users.Local;
-        }
-        public IEnumerable<Category> GetCategoriesByNote(Note note)
-        {
-            return db.LinkNoteCategories.Local.Where(link => link.Note.Id == note.Id).Select(conn => conn.Category);
+            return db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Where(link => link.Note.Id == note.Id).Select(link => link.Category);
         }
 
         public User GetUser(string username)
@@ -141,30 +125,30 @@ namespace NotABookDataAccess
         {
             db.Users.Local.Remove(user);
             Save();
-        }
-        public void Remove(Book book)
+        }               
+        public void Remove(User user, Book book)
         {
-            db.Books.Local.Remove(book);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.Remove(book);
             Save();
         }
-        public void Remove(Note note)
+        public void Remove(User user, Note note)
         {
-            db.Notes.Local.Remove(note);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.First(bk => bk.Notes.Contains(note)).Notes.Remove(note);
             Save();
         }
-        public void Remove(Category category)
+        public void Remove(User user, Category category)
         {
-            db.Categories.Local.Remove(category);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Categories.Remove(category);
             Save();
         }
-        public void Remove(LinkNoteCategory linkNoteCategory)
+        public void Remove(User user, LinkNoteCategory linkNoteCategory)
         {
-            db.LinkNoteCategories.Local.Remove(linkNoteCategory);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).LinkNoteCategories.Remove(linkNoteCategory);
             Save();
         }
-        public void Remove(Content content)
+        public void Remove(User user, Note note, Content content)
         {
-            db.Contents.Remove(content);
+            db.Users.Local.FirstOrDefault(us => us.Equals(user)).Books.First(bk => bk.Notes.Contains(note)).Notes.First(nt => nt.Equals(note)).RemoveContent(content);
             Save();
         }
 

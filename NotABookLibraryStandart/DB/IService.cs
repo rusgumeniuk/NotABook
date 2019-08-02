@@ -9,35 +9,32 @@ namespace NotABookLibraryStandart.DB
     public interface IService : IAuthenticationService
     {
         IList<User> FindUsers();
-        IList<Book> FindBooks();
-        IList<Note> FindNotes();
-        IList<Category> FindCategories();
-        IList<LinkNoteCategory> FindLinksNoteCategory();
-        IList<Content> FindContents();
+        IList<Book> FindBooks(User user);
+        IList<Note> FindNotes(User user);
+        IList<Category> FindCategories(User user);
+        IList<LinkNoteCategory> FindLinksNoteCategory(User user);        
 
-        IList<User> FindAdmins();
-        IList<Book> FindBooksByUser(User user);
-        IList<Note> FindNotesByBook(Book book);
-        IList<Category> FindCategoriesByUser(User user);
-        IList<LinkNoteCategory> FindLinksNoteCategory(Book book);
-        IList<LinkNoteCategory> FindLinksNoteCategory(Note note);
-        IList<LinkNoteCategory> FindLinksNoteCategory(Category category);
-        IList<Note> FindAllNotesByWord(string text);
-        IList<Content> FindContentsByNote(Note note);
-        IList<Category> FindCategoriesByNote(Note note);
+        IList<User> FindAdmins();        
+        IList<Note> FindNotesByBook(User user, Book book);        
+        IList<LinkNoteCategory> FindLinksNoteCategory(User user, Book book);
+        IList<LinkNoteCategory> FindLinksNoteCategory(User user, Note note);
+        IList<LinkNoteCategory> FindLinksNoteCategory(User user, Category category);
+        IList<Note> FindAllNotesByWord(User user, string text);
+        IList<Content> FindContentsByNote(User user, Note note);
+        IList<Category> FindCategoriesByNote(User user, Note note);
 
-        void AddBook(Book book);
-        void AddNote(Note note);
-        void AddCategory(Category category);
-        void AddLinkNoteCategory(LinkNoteCategory linkNoteCategory);
-        void AddLinkNoteCategory(Note note, Category category);
-        void AddContent(Content content);
+        void AddBook(User user, Book book);
+        void AddNote(User user, Book book, Note note);
+        void AddCategory(User user, Category category);
+        void AddLinkNoteCategory(User user, LinkNoteCategory linkNoteCategory);
+        void AddLinkNoteCategory(User user, Note note, Category category);
+        void AddContent(User user, Note note, Content content);
 
-        void RemoveBook(Book book);
-        void RemoveNote(Note note);
-        void RemoveCategory(Category category);
-        void RemoveLinkNoteCategory(LinkNoteCategory linkNoteCategory);
-        void RemoveContent(Content content);
+        void RemoveBook(User user, Book book);
+        void RemoveNote(User user, Note note);
+        void RemoveCategory(User user, Category category);
+        void RemoveLinkNoteCategory(User user, LinkNoteCategory linkNoteCategory);
+        void RemoveContent(User user, Note note, Content content);
 
         int SaveChanges();
     }
