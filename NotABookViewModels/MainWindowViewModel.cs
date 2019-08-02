@@ -3,17 +3,19 @@ using GalaSoft.MvvmLight.Messaging;
 
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
-
+using NotABookLibraryStandart.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
 
 namespace NotABookViewModels
 {
     public class MainWindowViewModel : ViewModelCustomBase
     {
+        User user;
         #region Bind fields
         private const string FIND_ALL_NOTES_TEXT = "Find all notes";
         private const string FIND_NOTE_TEXT = "Find note";
@@ -28,8 +30,9 @@ namespace NotABookViewModels
 
         public MainWindowViewModel(IService service) : base(service)
         {
-            Books = new ObservableCollection<Book>(Service.FindBooks());
-            CurrentBook = Books.FirstOrDefault(book => book.Title.Equals("Рецепти"));
+            user = Service.GetUser(Thread.CurrentPrincipal.Identity.Name);
+            Books = new ObservableCollection<Book>(Service.FindBooks(user));
+            CurrentBook = Books[0];
             UpdateCurrentBookData();
         }
 
@@ -148,7 +151,7 @@ namespace NotABookViewModels
             UpdateNoteList(
                 String.IsNullOrWhiteSpace(FindNoteText) || String.IsNullOrWhiteSpace(FIND_NOTE_TEXT) ?
                 CurrentBook?.Notes :
-                CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory(CurrentBook))
+                CurrentBook?.FindNotes(FindNoteText, Service.FindLinksNoteCategory(user, CurrentBook))
                 );
         }
         public void FindAllNotes()
@@ -156,7 +159,7 @@ namespace NotABookViewModels
             UpdateNoteList(
                 String.IsNullOrWhiteSpace(FindAllNoteText) || String.IsNullOrWhiteSpace(FIND_ALL_NOTES_TEXT) ?
                 CurrentBook?.Notes :
-                Service.FindAllNotesByWord(FindAllNoteText)
+                Service.FindAllNotesByWord(user, FindAllNoteText)
                 );
         }
         public void SelectNote()
@@ -169,19 +172,19 @@ namespace NotABookViewModels
         }
         public void RemoveNote()
         {
-            Service.RemoveNote(CurrentNote);
+            Service.RemoveNote(user, CurrentNote);
             UpdateDataFromDB();
             UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveCategory()
         {
-            Service.RemoveCategory(SelectedCategory);
+            Service.RemoveCategory(user, SelectedCategory);
             UpdateDataFromDB();
             UpdateNoteList(CurrentBook?.Notes);
         }
         public void RemoveBook()
         {
-            Service.RemoveBook(CurrentBook);
+            Service.RemoveBook(user, CurrentBook);
             UpdateDataFromDB();
             UpdateNoteList(CurrentBook?.Notes);
         }
@@ -207,7 +210,7 @@ namespace NotABookViewModels
 
         private void UpdateDataFromDB()
         {
-            Books = new ObservableCollection<Book>(Service.FindBooks());
+            Books = new ObservableCollection<Book>(Service.FindBooks(user));
             CurrentBook = Books.FirstOrDefault(book => book.Title.Equals(CurrentBook.Title));
             UpdateCurrentBookData();
         }

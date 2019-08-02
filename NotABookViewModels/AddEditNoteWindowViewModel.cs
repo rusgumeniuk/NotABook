@@ -6,12 +6,13 @@ using Microsoft.Win32;
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
-
+using NotABookLibraryStandart.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,6 +23,7 @@ namespace NotABookViewModels
 {
     public class AddEditNoteWindowViewModel : ViewModelCustomBase
     {
+        User user;
         public string Title { get; set; }
         public ObservableCollection<Category> NoteCategories { get; set; }
         public DateTime DateOfCreating { get; set; }
@@ -47,13 +49,14 @@ namespace NotABookViewModels
 
         public AddEditNoteWindowViewModel(IService service, Book currentBook, Note note = null) : base(service)
         {
+            user = Service.GetUser(Thread.CurrentPrincipal.Identity.Name);
             Book = currentBook;
-            AllCategories = Service.FindCategories();
+            AllCategories = Service.FindCategories(user);
             isCreating = note == null;
 
             CurrentNote = note ?? new Note(String.Empty);
             Title = note?.Title ?? String.Empty;
-            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
+            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(user, CurrentNote));
             DateOfCreating = CurrentNote.DateOfCreating;
             DateOfLastChanging = CurrentNote.DateOfLastChanging;
             InputContentsToStackPanel();
@@ -113,7 +116,7 @@ namespace NotABookViewModels
             {
                 foreach (var content in CurrentNote.NoteContents)
                 {
-                    Service.RemoveContent(content);
+                    Service.RemoveContent(user, CurrentNote, content);
                 }
                 CurrentNote.NoteContents.Clear();
                 CurrentNote.NoteContents = addContents;
@@ -237,19 +240,19 @@ namespace NotABookViewModels
             //MessageBox.Show("Note already marked by this category!");
             else
             {
-                Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
-                NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+                Service.AddLinkNoteCategory(user, new LinkNoteCategory(CurrentNote, SelectedCategory));
+                NoteCategories = Service.FindLinksNoteCategory(user, CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
                 Service.SaveChanges();
             }
         }
         private void RemoveCategory()
         {
             Service
-                .RemoveLinkNoteCategory(
-                    Service.FindLinksNoteCategory()
+                .RemoveLinkNoteCategory(user, 
+                    Service.FindLinksNoteCategory(user)
                         .FirstOrDefault(link => link.Note.Equals(CurrentNote) && link.Category.Equals(SelectedCategory))
                 );
-            NoteCategories = Service.FindLinksNoteCategory(CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
+            NoteCategories = Service.FindLinksNoteCategory(user, CurrentNote).Select(link => link.Category) as ObservableCollection<Category>;
             Service.SaveChanges();
         }
     }

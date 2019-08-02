@@ -6,12 +6,13 @@ using Microsoft.Win32;
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
-
+using NotABookLibraryStandart.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +21,7 @@ namespace NotABookViewModels
 {
     public class NotePageViewModel : ViewModelCustomBase
     {
+        User user;
         #region Props
         public Note CurrentNote { get; set; }
         private readonly bool isCreating = true;
@@ -77,11 +79,12 @@ namespace NotABookViewModels
 
         public NotePageViewModel(IService service, Book currentBook, Note note = null) : base(service)
         {
+            user = Service.GetUser(Thread.CurrentPrincipal.Identity.Name);
             Book = currentBook;
-            AllCategories = new ObservableCollection<Category>(Service.FindCategories());
+            AllCategories = new ObservableCollection<Category>(Service.FindCategories(user));
             isCreating = note == null;
             CurrentNote = note ?? new Note(String.Empty);
-            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(CurrentNote));
+            NoteCategories = new ObservableCollection<Category>(Service.FindCategoriesByNote(user, CurrentNote));
             InputContentsToStackPanel();
         }
 
@@ -154,7 +157,7 @@ namespace NotABookViewModels
             {
                 foreach (var content in CurrentNote.NoteContents)
                 {
-                    Service.RemoveContent(content);
+                    Service.RemoveContent(user, CurrentNote, content);
                 }
                 CurrentNote.NoteContents.Clear();
                 CurrentNote.NoteContents = addContents;
@@ -235,7 +238,7 @@ namespace NotABookViewModels
                     Messenger.Default.Send("NoteAlreadyMarked");
                 else
                 {
-                    Service.AddLinkNoteCategory(new LinkNoteCategory(CurrentNote, SelectedCategory));
+                    Service.AddLinkNoteCategory(user, new LinkNoteCategory(CurrentNote, SelectedCategory));
                     NoteCategories.Add(SelectedCategory);
                     Service.SaveChanges();
                 }
@@ -245,7 +248,8 @@ namespace NotABookViewModels
         {
             Service
                 .RemoveLinkNoteCategory(
-                    Service.FindLinksNoteCategory()
+                    user,
+                    Service.FindLinksNoteCategory(user)
                         .FirstOrDefault(link => link.Note.Equals(CurrentNote) && link.Category.Equals(SelectedCategory))
                 );
             NoteCategories.Remove(SelectedCategory);

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NotABookLibraryStandart\NotABook.BusinessLogic.csproj" />
     <ProjectReference Include="..\NotABookLibraryStandart\NotABookLibraryStandart.csproj" />
     <ProjectReference Include="..\NotABookViewModels\NotABook.ViewModels.csproj" />
   </ItemGroup>

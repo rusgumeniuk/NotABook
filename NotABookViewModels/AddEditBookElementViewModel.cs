@@ -6,6 +6,7 @@ using NotABookLibraryStandart.Models;
 using NotABookLibraryStandart.Models.BookElements;
 
 using System;
+using System.Threading;
 using System.Windows.Input;
 
 namespace NotABookViewModels
@@ -54,11 +55,11 @@ namespace NotABookViewModels
                 {
                     if (BookElement is Category)
                     {
-                        Service.AddCategory(new Category(Title));
+                        Service.AddCategory(Service.GetUser(Thread.CurrentPrincipal.Identity.Name), new Category(Title));
                     }
                     else if (BookElement is Book)
                     {
-                        Service.AddBook(new Book(Title));
+                        Service.AddBook(Service.GetUser(Thread.CurrentPrincipal.Identity.Name), new Book(Title));
                     }
                 }
                 Service.SaveChanges();
