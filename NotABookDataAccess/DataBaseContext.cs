@@ -12,27 +12,46 @@ namespace NotABookDataAccess
         public DataBaseContext()
         {
             Database.EnsureCreated();
-        }
-        public DbSet<Note> Notes { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Book> Books { get; set; }
-        public DbSet<TextContent> TextContents { get; set; }
-        public DbSet<PhotoContent> PhotoContents { get; set; }
-        public DbSet<LinkNoteCategory> LinkNoteCategories { get; set; }
-        public DbSet<User> Users { get; set; }
-        public IList<Content> Contents
-        {
-            get
-            {
-                List<Content> result = new List<Content>(TextContents);
-                result.AddRange(PhotoContents);
-                return result;
-            }
-        }
+            AddAdminIfNoOne();
+        }      
+        public DbSet<User> Users { get; set; }       
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=NotABookDB;Trusted_Connection=True;");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TextContent>()
+                .HasBaseType<Content>();
+            modelBuilder.Entity<PhotoContent>()
+                .HasBaseType<Content>();
+
+            modelBuilder.Entity<User>()
+                .HasMany(user => user.Books)
+                .WithOne();
+            modelBuilder.Entity<User>()
+                .HasMany(user => user.Categories)
+                .WithOne();
+            modelBuilder.Entity<User>()
+                .HasMany(user => user.LinkNoteCategories)
+                .WithOne();
+            modelBuilder.Entity<Book>()
+               .HasMany(book => book.Notes)
+               .WithOne();
+            modelBuilder.Entity<Note>()
+                .HasMany(note => note.NoteContents)
+                .WithOne();
+                      
+           
+        }
+        private void AddAdminIfNoOne()
+        {
+            if (Users.Local.Count == 0)
+            {
+                Users.Local.Add(new User("Ruslan", "rus.gumeniuk@gmail.com", "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", "Administrators"));
+                SaveChanges();
+            }
         }
     }
 }
