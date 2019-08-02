@@ -17,15 +17,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotABookUITests", "NotABook
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotABookWPF", "NotABookWPF\NotABookWPF.csproj", "{0DA38B04-5EAF-4A38-8311-0CC3B8952E39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookLibraryStandart", "NotABookLibraryStandart\NotABookLibraryStandart.csproj", "{56E5237A-FE7B-4499-8C4C-462471766AD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABook.BusinessLogic", "NotABookLibraryStandart\NotABook.BusinessLogic.csproj", "{56E5237A-FE7B-4499-8C4C-462471766AD2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookViewModels", "NotABookViewModels\NotABookViewModels.csproj", "{2C4B6431-43DB-4FB2-8094-308993DF688F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABook.ViewModels", "NotABookViewModels\NotABook.ViewModels.csproj", "{2C4B6431-43DB-4FB2-8094-308993DF688F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookDataAccess", "NotABookDataAccess\NotABookDataAccess.csproj", "{DAEE7F4A-A77D-4B6E-AD04-80FBC9B4B99D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABook.DataAccess", "NotABookDataAccess\NotABook.DataAccess.csproj", "{DAEE7F4A-A77D-4B6E-AD04-80FBC9B4B99D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABookTests", "NotABookTests\NotABookTests.csproj", "{66E5A703-3F58-49C7-ABD6-F0E78C541DFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABook.Tests", "NotABookTests\NotABook.Tests.csproj", "{66E5A703-3F58-49C7-ABD6-F0E78C541DFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotABook.API", "NotABook.API\NotABook.API.csproj", "{6231F8BC-FACE-47B9-8E5E-35C1134E9C6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotABook.API", "NotABook.API\NotABook.API.csproj", "{6231F8BC-FACE-47B9-8E5E-35C1134E9C6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

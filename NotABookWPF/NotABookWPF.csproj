@@ -250,15 +250,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NotABookDataAccess\NotABookDataAccess.csproj">
+    <ProjectReference Include="..\NotABookDataAccess\NotABook.DataAccess.csproj">
       <Project>{daee7f4a-a77d-4b6e-ad04-80fbc9b4b99d}</Project>
       <Name>NotABookDataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NotABookLibraryStandart\NotABookLibraryStandart.csproj">
+    <ProjectReference Include="..\NotABookLibraryStandart\NotABook.BusinessLogic.csproj">
       <Project>{56e5237a-fe7b-4499-8c4c-462471766ad2}</Project>
       <Name>NotABookLibraryStandart</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NotABookViewModels\NotABookViewModels.csproj">
+    <ProjectReference Include="..\NotABookViewModels\NotABook.ViewModels.csproj">
       <Project>{2c4b6431-43db-4fb2-8094-308993df688f}</Project>
       <Name>NotABookViewModels</Name>
     </ProjectReference>
