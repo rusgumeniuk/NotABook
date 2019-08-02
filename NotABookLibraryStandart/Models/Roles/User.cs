@@ -19,9 +19,10 @@ namespace NotABookLibraryStandart.Models.Roles
         public string HashedPassword { get; set; }
         public string Roles { get; set; }
 
-        public IList<Book> Books = new ObservableCollection<Book>();
-        public IList<Category> Categories = new ObservableCollection<Category>();      
-        private IEnumerable<Note> GetAllNotes
+        public IList<Book> Books { get; set; } = new ObservableCollection<Book>();
+        public IList<Category> Categories { get; set; } = new ObservableCollection<Category>();
+        public IList<LinkNoteCategory> LinkNoteCategories { get; set; } = new ObservableCollection<LinkNoteCategory>();
+        public IEnumerable<Note> GetAllNotes
         {
             get
             {
