@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,10 +13,19 @@ namespace NotABookLibraryStandart.Models.Roles
 {
     public class User : Entity
     {
+        private string email;
         [Required(ErrorMessage = "Username can not be empty!")]
         public string Username { get; set; }
         [Required(ErrorMessage = "Email can not be empty!")]
-        public string Email { get; set; }
+        public string Email
+        {
+            get => email;
+            set
+            {
+                new MailAddress(value);
+                email = value;
+            }
+        }
         public string HashedPassword { get; set; }
         public string Roles { get; set; }
 
@@ -42,10 +52,11 @@ namespace NotABookLibraryStandart.Models.Roles
             Id = Guid.NewGuid();
             Books.Add(new Book("Your first book"));            
         }
-        public User(string username, string email, string roles) : this()
+        public User(string username, string email, string roles = "Users") : this()
         {
-            Username = username;
+            MailAddress mail = new MailAddress(email);
             Email = email;
+            Username = username;            
             Roles = roles;
         }
         public User(string username, string email, string hashedPassword, string roles) : this(username, email, roles)
