@@ -2,7 +2,6 @@
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.BookElements.Contents;
 using NotABookLibraryStandart.Models.Roles;
-using System.Collections.Generic;
 
 
 namespace NotABookDataAccess
@@ -11,10 +10,9 @@ namespace NotABookDataAccess
     {
         public DataBaseContext()
         {
-            Database.EnsureCreated();
-            AddAdminIfNoOne();
-        }      
-        public DbSet<User> Users { get; set; }       
+            Database.EnsureCreated();            
+        }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,16 +40,8 @@ namespace NotABookDataAccess
             modelBuilder.Entity<Note>()
                 .HasMany(note => note.NoteContents)
                 .WithOne();
-                      
-           
-        }
-        private void AddAdminIfNoOne()
-        {
-            if (Users.Local.Count == 0)
-            {
-                Users.Local.Add(new User("Ruslan", "rus.gumeniuk@gmail.com", "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", "Administrators"));
-                SaveChanges();
-            }
-        }
+
+
+        }       
     }
 }

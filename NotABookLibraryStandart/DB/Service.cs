@@ -14,6 +14,7 @@ namespace NotABookLibraryStandart.DB
         public Service(IRepository repository)
         {
             this._repository = repository;
+            AddAdminIfNoOne();
         }
 
         #region Find
@@ -153,6 +154,15 @@ namespace NotABookLibraryStandart.DB
         public int SaveChanges()
         {
             return _repository.Save();
+        }
+
+        private void AddAdminIfNoOne()
+        {
+            if (_repository.GetUser("Ruslan") == null)
+            {
+                AddUser(new User("Ruslan", "rus.gumeniuk@gmail.com", "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", "Administrators"));
+                SaveChanges();
+            }
         }
     }
 }
