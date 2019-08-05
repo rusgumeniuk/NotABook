@@ -30,8 +30,8 @@ namespace NotABook.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            IList<Book> books = _service.FindBooks();
-            return Ok(books);
+            //IList<Book> books = _service.FindBooks();
+            return Ok(list);
         }
 
         // GET: api/Book/5
