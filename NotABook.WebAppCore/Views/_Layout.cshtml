@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <header>
+        <div class="container justify-content-center">
+            <table class="table table-bordered" style="margin-left: 20px; margin-right: 20px">
+                <tr>
+                    <td colspan="3" align="center">
+                        <a href="/Home/Index">Not a book</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="/Home/About">About</a>
+                    </td>
+                    <td>
+                        <a href="/Home/Login">Log in</a>
+                    </td>
+                    <td>
+                        <a href="/Home/Signup">Sign up</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+    <div>
+        @RenderBody()
+    </div>
+    <footer>
+        <div style="vertical-align:bottom; align-content:flex-end">
+            Designed by Ruslan Humeniuk
+        </div>
+    </footer>
+</body>
+</html>
