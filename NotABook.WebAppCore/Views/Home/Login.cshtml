@@ -1,0 +1,33 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+<div class="container-fluid">
+    <div class="row">
+        <form asp-controller="Home" asp-action="login" method="post" style="max-width: 600px;padding-left: 0;margin-top: 30px;" class="col-7 offset-4">
+            
+            <h2 class="form-heading">Welcome here!</h2><br>
+            <h2 class="form-heading">Please, log in!</h2><br>
+
+            <div>
+
+                <label asp-for="Username" />
+                <input name="Username" type="text" required class="form-control" placeholder="Username" autofocus />
+                <span asp-validation-for="Username" />
+                <label asp-for="HashedPassword" />
+                <input name="HashedPassword" type="password" required class="form-control" placeholder="Password" />
+                <span asp-validation-for="HashedPassword" />
+                <br>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+                <a asp-action="ForgotPassword" class="btn btn-lg btn-link btn-block">Forgot password?</a>
+                <a href="/Home/SignUp" class="btn btn-lg btn-link btn-block">Sign up</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
