@@ -1,28 +1,37 @@
 ﻿<!DOCTYPE html>
 
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
+<head>    
     <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
     <header>
-        <div class="container justify-content-center">
+        <div class="container justify-content-center mt-5" >
             <table class="table table-bordered" style="margin-left: 20px; margin-right: 20px">
                 <tr>
-                    <td colspan="3" align="center">
-                        <a href="/Home/Index">Not a book</a>
+                    <td class="align-middle" style="align-content: flex-start; justify-content: flex-start">
+                        <a class="nav-link" href="/Home/Index">Not a book</a>
                     </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="/Home/About">About</a>
+                    <td class="align-middle" style="text-align: center">
+                        <a class="nav-link" href="/Home/About">About</a>
                     </td>
-                    <td>
-                        <a href="/Home/Login">Log in</a>
-                    </td>
-                    <td>
-                        <a href="/Home/Signup">Sign up</a>
+                    <td class="align-middle justify-content-end">
+                        @if (Context.User.Identity.IsAuthenticated)
+                        {
+                            <label>Welome, @User.Identity.Name</label><br />
+                            <a class="nav-item" href="/Home/Logout">Log out </a>
+                        }
+                        else
+                        {
+                            <div style="text-align: justify">
+                                <a class="nav-item" href="/Home/Login">Log in </a>
+                                <text>or</text>
+                                <a class="nav-item" href="/Home/Signup"> Sign up </a>
+                            </div>                            
+                        }
                     </td>
                 </tr>
             </table>
@@ -32,8 +41,20 @@
         @RenderBody()
     </div>
     <footer>
-        <div style="vertical-align:bottom; align-content:flex-end">
-            Designed by Ruslan Humeniuk
+        <div class="container" style="vertical-align: bottom; width: 100%">
+            <hr>
+            <div class="container" style="margin-left: 20px; margin-right: 20px">
+                <div class="row justify-content-start">
+                    <h2>Designed by Ruslan Humeniuk</h2>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <h3>Here you can leave a feedback:</h3>
+                <ul>
+                    <li><a href="https://t.me/mr_omman">Telegram</a></li>
+                    <li>rus.gumeniuk@gmail.com</li>
+                </ul>
+            </div>
         </div>
     </footer>
 </body>
