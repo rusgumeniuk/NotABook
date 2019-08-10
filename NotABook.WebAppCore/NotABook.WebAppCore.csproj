@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NotABookDataAccess\NotABook.DataAccess.csproj" />
     <ProjectReference Include="..\NotABookLibraryStandart\NotABook.BusinessLogic.csproj" />
   </ItemGroup>
