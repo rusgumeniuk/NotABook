@@ -56,7 +56,7 @@ namespace NotABookLibraryStandart.DB
                 .Where(link => link.Note.IsContainsText(text) || link.Category.IsContainsText(text))
                 .Select(link => link.Note)
                 .Union(_repository.GetNotes(user).Where(note => note.IsContainsText(text)))
-                .ToList();                
+                .ToList();
         }
         public IList<Note> FindNotes(User user)
         {
@@ -144,6 +144,10 @@ namespace NotABookLibraryStandart.DB
         {
             return _repository.GetUser(username, User.CalculateHash(password, username))
                 ?? throw new UnauthorizedAccessException("Access denied. Please provide some valid credentials.");
+        }
+        public User GetUserByEmail(string email)
+        {
+            return String.IsNullOrEmpty(email) ? null : _repository.GetUsers().FirstOrDefault(user => user.Email.Equals(email));
         }
         public void RemoveUser(User user)
         {
