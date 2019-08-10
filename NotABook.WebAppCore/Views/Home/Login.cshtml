@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/_Layout.cshtml";
@@ -17,14 +17,14 @@
                 <label asp-for="Username" />
                 <input name="Username" type="text" required class="form-control" placeholder="Username" autofocus />
                 <span asp-validation-for="Username" />
-                <label asp-for="HashedPassword" />
-                <input name="HashedPassword" type="password" required class="form-control" placeholder="Password" />
-                <span asp-validation-for="HashedPassword" />
+                <label asp-for="Username" />
+                <input name="Password" type="password" required class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" />
                 <br>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
                 <a asp-action="ForgotPassword" class="btn btn-lg btn-link btn-block">Forgot password?</a>
-                <a href="/Home/SignUp" class="btn btn-lg btn-link btn-block">Sign up</a>
+                <a href="/Home/Signup" class="btn btn-lg btn-link btn-block">Sign up</a>
             </div>
 
         </form>
