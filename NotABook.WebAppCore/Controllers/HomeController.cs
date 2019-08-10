@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NotABook.WebAppCore.ViewModels;
 using NotABookLibraryStandart.DB;
 using NotABookLibraryStandart.Models.BookElements;
 using NotABookLibraryStandart.Models.Roles;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace NotABook.WebAppCore.Controllers
 {
@@ -15,7 +16,7 @@ namespace NotABook.WebAppCore.Controllers
     {
         private readonly IService service;
         public HomeController(IService _service)
-        {                      
+        {
             service = _service;
         }
         public IActionResult Index()
@@ -28,46 +29,42 @@ namespace NotABook.WebAppCore.Controllers
             return View();
         }
 
-        public IActionResult LogIn()
+        public IActionResult Login()
         {
-            return View(new User());
+            return View(new LoginViewModel());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogIn(string username, string password)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
                 User user = null;
-#if DEBUG
-                user = new User("Ruslan", "rus.gumeniuk@gmail.com", "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", "Administrators");
-#else
                 try
                 {
-                    user = service.GetUser(username, password);
+                    user = service.GetUser(loginViewModel.Username, loginViewModel.Password);
                 }
-                catch(UnauthorizedAccessException)
+                catch (UnauthorizedAccessException)
                 {
                     ModelState.AddModelError("", "Wrong creaitals!\nPlease try again");
-                }                
-#endif
-                if(user != null)
+                }
+                if (user != null)
                 {
                     await Authenticate(user.Username);
                     return RedirectToAction("Index");
-                }                
+                }
             }
 
             return View();
         }
 
         private async Task Authenticate(string userName)
-        {            
+        {
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-            };            
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);            
+            };
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
@@ -77,8 +74,30 @@ namespace NotABook.WebAppCore.Controllers
             return RedirectToAction("Login");
         }
 
-        public IActionResult SignUp()
+        [HttpGet]
+        public IActionResult Signup()
         {
+            return View(new SignupViewModel());
+        }
+        [HttpPost]
+        public IActionResult Signup(SignupViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (service.GetUser(viewModel.Username) != null)
+                    ModelState.AddModelError("Username", "Oooops, we already have user with same username. Try another please.");
+                else if (service.GetUserByEmail(viewModel.Email) != null)
+                    ModelState.AddModelError("Email", "Oh, Seems like we already have user with same email. Recover password or try another email please");
+                else
+                {
+                    service.AddUser(new User(viewModel.Username, viewModel.Email, NotABookLibraryStandart.Models.Roles.User.CalculateHash(viewModel.Password, viewModel.Username),"Users"));
+                    return Redirect("Login");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Wrong info, try again!");
+            }
             return View();
         }
         public IActionResult ForgotPassword()
