@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <div class="container justify-content-center mt-5" >
+        <div class="container justify-content-center mt-5">
             <table class="table table-bordered" style="margin-left: 20px; margin-right: 20px">
                 <tr>
                     <td class="align-middle" style="align-content: flex-start; justify-content: flex-start">
@@ -30,12 +30,30 @@
                                 <a class="nav-item" href="/Home/Login">Log in </a>
                                 <text>or</text>
                                 <a class="nav-item" href="/Home/Signup"> Sign up </a>
-                            </div>                            
+                            </div>
                         }
                     </td>
                 </tr>
             </table>
         </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="container justify-content-center mt-5">
+                <table class="table table-bordered" style="margin-left: 20px; margin-right: 20px">
+                    <tr>
+                        <td>
+                            <a href="/Note/CreateNote">Create Note</a>
+                        </td>
+                        <td>
+                            Create book item
+                        </td>
+                        <td>
+                            <input type="search" name="FindNoteField" placeholder="Find note here" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
     </header>
     <div>
         @RenderBody()
