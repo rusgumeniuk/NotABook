@@ -1,0 +1,45 @@
+﻿@model NotePartialViewModel
+<body>
+    <text><i>@Model.Note?.Title</i></text>
+    <table>
+        <tr>
+            <td>
+                Date of creation
+            </td>
+            <td>
+                @Model.Note?.DateOfCreating
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Date of lash changing
+            </td>
+            <td>
+                @Model.Note?.DateOfLastChanging
+            </td>
+        </tr>
+    </table>
+    <div class="container">
+        <strong>Categories</strong>
+        <ul style="display:inline">
+            @foreach (var category in Model.NoteCategories)
+            {
+                <li>@category.Title</li>
+            }
+        </ul>
+    </div>
+    <div class="container" id="ContentContainer">
+        @foreach (var content in Model.Note?.NoteContents)
+        {
+            @if (content is TextContent text)
+            {
+                <textarea>@text.Content</textarea>
+            }
+            else if (content is PhotoContent photo)
+            {
+                <img src="/Note/GetImage/@photo.BytesOfPhoto" alt="" height=100 width=200 />
+
+            }
+        }
+    </div>
+</body>
