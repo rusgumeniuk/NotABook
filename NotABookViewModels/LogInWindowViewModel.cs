@@ -71,7 +71,7 @@ namespace NotABookViewModels
                 //Validate credentials through the authentication service
                 user = Service.GetUser(Username, Password.Trim());
 #else
-                user = new User("Ruslan", "rus.gumeniuk@gmail.com", "TySiVs1JHrD5R7etJorugFp5HcDMknAbZi1UK0KyPzw=", "Administrators");
+                user = Service.GetUser("Ruslan", "password");
 #endif
                 //Authenticate the user
                 Principal.Identity = new Identity(user.Username, user.Email, user.Roles);
