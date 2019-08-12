@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Net.Mail;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -11,6 +12,7 @@ using System.Text;
 
 namespace NotABookLibraryStandart.Models.Roles
 {
+    [DebuggerDisplay("{Username} {Books.Count}")]
     public class User : Entity
     {
         private string email;
@@ -50,7 +52,7 @@ namespace NotABookLibraryStandart.Models.Roles
         public User()
         {
             Id = Guid.NewGuid();
-            Books.Add(new Book("Your first book"));            
+           // Books.Add(new Book("Your first book"));            
         }
         public User(string username, string email, string roles = "Users") : this()
         {
@@ -92,7 +94,23 @@ namespace NotABookLibraryStandart.Models.Roles
                 return false;
             Books.Add(book);            
             return Books.Contains(book);
-        }      
+        }
+                
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            User comparedUser = obj as User;
+            return comparedUser.Id.Equals(Id) || comparedUser.Username.Equals(Username) || comparedUser.Email.Equals(Email);
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
 
