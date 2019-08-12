@@ -21,8 +21,14 @@
                     <td class="align-middle justify-content-end">
                         @if (Context.User.Identity.IsAuthenticated)
                         {
-                            <label>Welome, @User.Identity.Name</label><br />
-                            <a class="nav-item" href="/Home/Logout">Log out </a>
+                            <details>
+                                <summary>Welome, @User.Identity.Name</summary>
+                                <ul>
+                                    <li><a class="nav-item" href="/Account/UserInfo">Change user info </a></li>                                    
+                                    <li><a class="nav-item" href="/Home/Logout">Log out </a></li>
+                                </ul>
+                            </details>
+                            
                         }
                         else
                         {
@@ -41,6 +47,9 @@
             <div class="container justify-content-center mt-5">
                 <table class="table table-bordered" style="margin-left: 20px; margin-right: 20px">
                     <tr>
+                        <td>
+                            <a href="/Note/Index">Main page</a>
+                        </td>
                         <td>
                             <a href="/Note/CreateNote">Create Note</a>
                         </td>
