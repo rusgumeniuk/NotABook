@@ -155,7 +155,7 @@ namespace NotABookViewModels
             }
             if (isHasDifferences || !contents.Count.Equals(CurrentNote.NoteContents))
             {
-                foreach (var content in CurrentNote.NoteContents)
+                foreach (var content in CurrentNote.NoteContents.ToArray())
                 {
                     Service.RemoveContent(user, CurrentNote, content);
                 }
