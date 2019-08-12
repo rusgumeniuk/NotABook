@@ -1,0 +1,54 @@
+﻿@model MainPageViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="container col">
+            <div class="container">
+                <label>Curent book:</label>
+                <label>@Model.CurrentBook?.Title</label>
+            </div>
+            <div class="container">
+                <label>All books:</label>
+                <ul>
+                    @foreach(var book in Model.Books)
+                    {
+                        <li>@book.Title</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="container col">
+            <div class="container">
+                <label>@Model.CurrentBook.Notes.Count </label>
+                <label>notes of book </label>
+                <label>@Model.CurrentBook.Title</label>
+            </div>
+            <div class="container">
+                <label>Notes</label>
+                @foreach (var note in Model.CurrentBook.Notes)
+                {
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                @note.Title
+                            </div>
+                            <div class="col">
+                                @note.DateOfLastChanging
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                @note.FirstTextContent.Content
+                            </div>                            
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="container col"></div>
+    </div>
+</div>
